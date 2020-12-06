@@ -1,0 +1,43 @@
+<div class="card">
+  <h5 class="card-header">
+    Products
+  </h5>
+  {{#if this.empty}}
+  <div class="card-body">
+    <p class="card-text">Không có dữ liệu.</p>
+  </div>
+  {{else}}
+  <div class="card-body">
+    <div class="row">
+      {{#each this.products}}
+      <div class="col-sm-4 mb-3">
+        <div class="card h-100">
+          <img src="/public/imgs/sp/{{ProID}}/main_thumbs.jpg" class="card-img-top" alt="{{ProName}}"
+            title="{{ProName}}">
+          <div class="card-body">
+            <h6 class="card-title">{{ProName}}</h6>
+            <h5 class="card-title text-danger">{{format Price}}</h5>
+            <p class="card-text">
+              {{TinyDes}}
+            </p>
+          </div>
+          <div class="card-footer">
+            <a class="btn btn-sm btn-outline-primary" href="#" role="button">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              Details
+            </a>
+            <a class="btn btn-sm btn-outline-success" href="#" role="button">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              Add to cart
+            </a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+  <div class="card-footer text-muted">
+    Footer
+  </div>
+</div>
