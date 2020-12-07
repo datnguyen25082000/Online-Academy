@@ -9,24 +9,6 @@ router.get('/', async function (req, res) {
     categories: rows,
     empty: rows.length === 0
   });
-
-  // const p = db.load('select * from categories');
-  // p.then(function (rows) {
-  //   res.render('vwCategories/index', {
-  //     categories: rows,
-  //     empty: rows.length === 0
-  //   });
-  // }).catch(function (err) {
-  //   console.error(err);
-  //   res.send('View error log at server console.');
-  // });
-
-  // db.load('select * from categories', function (rows) {
-  //   res.render('vwCategories/index', {
-  //     categories: rows,
-  //     empty: rows.length === 0
-  //   });
-  // });
 })
 
 router.get('/:id', async function (req, res) {
@@ -47,8 +29,6 @@ router.get('/add', function (req, res) {
 
 router.post('/add', async function (req, res) {
   const ret = await categoryModel.add(req.body);
-  // console.log(ret);
-  // res.send('OK');
   res.render('vwCategories/add');
 })
 

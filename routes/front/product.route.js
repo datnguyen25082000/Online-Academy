@@ -13,8 +13,8 @@ router.get('/byCat/:id', async function (req, res) {
   }
 
   const rows = await productModel.byCat(catId);
-  res.render('vwProducts/byCat', {
-    products: rows,
+  res.render('vwCourses/byCat', {
+    courses: rows,
     empty: rows.length === 0
   })
 })
