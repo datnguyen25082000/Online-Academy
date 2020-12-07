@@ -1,6 +1,6 @@
 <div class="card">
   <h5 class="card-header">
-    Products
+    courses
   </h5>
   {{#if this.empty}}
   <div class="card-body">
@@ -9,13 +9,13 @@
   {{else}}
   <div class="card-body">
     <div class="row">
-      {{#each this.products}}
+      {{#each this.courses}}
       <div class="col-sm-4 mb-3">
         <div class="card h-100">
-          <img src="/public/imgs/sp/{{ProID}}/main_thumbs.jpg" class="card-img-top" alt="{{ProName}}"
-            title="{{ProName}}">
+          <img src="/public/imgs/sp/{{courseID}}/main_thumbs.jpg" class="card-img-top" alt="{{courseName}}"
+            title="{{courseName}}">
           <div class="card-body">
-            <h6 class="card-title">{{ProName}}</h6>
+            <h6 class="card-title">{{courseName}}</h6>
             <h5 class="card-title text-danger">{{format Price}}</h5>
             <p class="card-text">
               {{TinyDes}}

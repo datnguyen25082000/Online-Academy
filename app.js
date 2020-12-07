@@ -1,16 +1,25 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const numeral = require('numeral');
-require('express-async-errors');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser')
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 
+require('dotenv');
+// Passport Config
+require('./controllers/passport')(passport);
+
+dotenv.config({path: './.env'});
 app.use(express.urlencoded({
   extended: true
 }));
+// app.use(cookieParser('mysupersecretcookiesstring'));
 
-app.use('/public', express.static('public'));
-
+// VIEW ENGINE
 app.engine('hbs', exphbs({
   defaultLayout: 'main.hbs',
   extname: '.hbs',
@@ -24,38 +33,56 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 
-app.use(require('./middlewares/locals.mdw'));
+// Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
-app.get('/', function (req, res) {
-  res.render('home');
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
 });
 
-app.get('/bs4', function (req, res) {
-  const show = +req.query.show || 0;
-  const visible = show !== 0;
-
-  res.render('bs4', {
-    layout: false,
-    data: { visible: visible }
-  });
-});
-
-// app.use('/', require('./routes/index.route'));
-// app.use('/admin', require('./routes/index.route'));
-// app.use('/', require('./routes/index.route'));
-// app.use('/', require('./routes/index.route'));
-// app.use('/admin/categories', require('./routes/category.route'));
-// app.use('/admin/products', require('./routes/product.route'));
-// app.use('/products', require('./routes/front/product.route'));
+// STATIC FILE
+app.use('/public', express.static('public'));
 
 
+
+// MIDDLEWARE
+// app.use(require('./middleware/locals.mdw'));
+
+///------------------- ROUTE ---------------------///
+
+// DEFAULT
+app.use('/', require('./routes/index.route'));
+
+app.use('/auth', require('./routes/auth.route'));
+
+// ROUTE THAO TÁC VỚI TÀI KHOẢN USER: THÔNG TIN, THAY ĐỔI MẬT KHẨU,...
+app.use('/user', require('./routes/user.route'));
+
+// CLIENT ERROR
 app.use(function (req, res) {
   res.render('404', {
     layout: false
   })
 });
 
-// default error handler
+// DEFAULT ERROR HANDER - SERVER ERROR
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.render('500', {
@@ -63,6 +90,7 @@ app.use(function (err, req, res, next) {
   })
 })
 
+// START 
 const PORT = 3000;
 app.listen(PORT, _ => {
   console.log(`Example app listening at http://localhost:${PORT}`);
