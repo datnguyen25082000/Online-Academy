@@ -13,23 +13,16 @@ module.exports = function(passport) {
         if (!user) {
           return done(null, false, { message: 'That account is not registered' });
         }
-
-        if(password == user.userPassword) {
-            console.log('success roi ne');
+        
+        //Match password
+        bcrypt.compare(password, user.userPassword, (err, isMatch) => {
+          if (err) throw err;
+          if (isMatch) {
             return done(null, user);
           } else {
-            console.log('pass sai roi ne')
             return done(null, false, { message: 'Password incorrect' });
-        }
-        // Match password
-        // bcrypt.compare(password, user.password, (err, isMatch) => {
-        //   if (err) throw err;
-        //   if (isMatch) {
-        //     return done(null, user);
-        //   } else {
-        //     return done(null, false, { message: 'Password incorrect' });
-        //   }
-        // });
+          }
+        });
       });
     })
   );

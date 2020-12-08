@@ -19,6 +19,12 @@ app.use(express.urlencoded({
 }));
 // app.use(cookieParser('mysupersecretcookiesstring'));
 
+// PREVENT CLICK BACK TO PRIVATE ROUTE
+app.use(function(req, res, next) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  next();
+});
+
 // VIEW ENGINE
 app.engine('hbs', exphbs({
   defaultLayout: 'main.hbs',

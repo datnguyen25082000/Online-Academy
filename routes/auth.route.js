@@ -5,20 +5,19 @@ const passport = require('passport');
 
 const User = require('../models/user.model');
 const { forwardAuthenticated } = require('../controllers/auth');
-  
 
 // Login Page
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login', {layout: false}));
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login', { layout: false }));
 
 // Register Page
-router.get('/register', forwardAuthenticated, (req, res) => res.render('register', {layout: false}));
+router.get('/register', forwardAuthenticated, (req, res) => res.render('register', { layout: false}));
 
 // Register
 router.post('/register', (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const { name, email, username, password, password2 } = req.body;
   let errors = [];
 
-  if (!name || !email || !password || !password2) {
+  if (!name || !email || !password || !password2 || !username) {
     errors.push({ msg: 'Please enter all fields' });
   }
 
@@ -30,15 +29,36 @@ router.post('/register', (req, res) => {
     errors.push({ msg: 'Password must be at least 6 characters' });
   }
 
-  if (errors.length > 0) {
+  if (errors.length > 0) {  
+    console.log(errors[0].msg)
     res.render('register', {
-      errors,
-      name,
-      email,
-      password,
-      password2
-    });}
-  });
+      err:true,
+      errorMsg: errors[0].msg,
+      layout: false,
+    });
+  }else {
+    User.single(username).then(user => {
+      if (user) {
+        errors.push({ msg: 'Email already exists' });
+        res.render('register', {
+          err: true,
+          errorMsg: errors[0].msg,
+          layout: false,
+        });
+      } else {
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(password, salt, (err, hash) => {
+            if (err) throw err;
+           
+            User.add({userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name})
+              
+            res.redirect('/auth/login');
+          });
+        });
+      }
+    });
+  }
+});
 
 // Login
 router.post('/login', (req, res, next) => {
