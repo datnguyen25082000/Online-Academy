@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-
+const authMiddleware = require('./controllers/auth');
 const app = express();
 
 require('dotenv');
@@ -18,6 +18,12 @@ app.use(express.urlencoded({
   extended: true
 }));
 // app.use(cookieParser('mysupersecretcookiesstring'));
+
+// PREVENT CLICK BACK TO PRIVATE ROUTE
+app.use(function(req, res, next) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  next();
+});
 
 // VIEW ENGINE
 app.engine('hbs', exphbs({
@@ -70,10 +76,15 @@ app.use('/public', express.static('public'));
 // DEFAULT
 app.use('/', require('./routes/index.route'));
 
+// ROUTE ĐĂNG NHẬP ĐĂNG KÍ
 app.use('/auth', require('./routes/auth.route'));
 
-// ROUTE THAO TÁC VỚI TÀI KHOẢN USER: THÔNG TIN, THAY ĐỔI MẬT KHẨU,...
-app.use('/user', require('./routes/user.route'));
+// ROUTE THAO TÁC VỚI TỪNG TÀI KHOẢN
+app.use('/admin/', authMiddleware.adminAuthenticated ,require('./routes/admin.route'));
+app.use('/user/', authMiddleware.userAuthenticated ,require('./routes/user.route'));
+app.use('/author/', authMiddleware.authorAuthenticated ,require('./routes/author.route'));
+
+
 
 // CLIENT ERROR
 app.use(function (req, res) {

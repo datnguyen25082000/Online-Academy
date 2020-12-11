@@ -1,18 +1,65 @@
 module.exports = {
-  ensureAuthenticated: function(req, res, next) {
-    console.log('vào ensure roi ne');
+  // LOGGED ??
+  ensureAuthenticated: function (req, res, next) {
     if (req.isAuthenticated()) {
-      console.log('vao authen roi ne')
       return next();
     }
     req.flash('error_msg', 'Please log in to view that resource');
     res.redirect('/auth/login');
   },
-  
-  forwardAuthenticated: function(req, res, next) {
+
+  // RENDER DASHBOARD SCREEN EACH ACCOUNT
+  typeAuthenticated: function (req, res, next) {
+    if (req.isAuthenticated()) {
+      // ADMIN
+      if (req.user.userType === 0) {
+        return res.render('admin', {
+          user: req.user,
+        })
+      }
+      // AUTHOR
+      else if (req.user.userType === 2) {
+        return res.render('author', {
+          user: req.user,
+        })
+      }
+      // USER
+      else
+        return next();
+    }
+    req.flash('error_msg', 'Please log in to view that resource');
+    res.redirect('/auth/login');
+  },
+
+  forwardAuthenticated: function (req, res, next) {
     if (!req.isAuthenticated()) {
       return next();
     }
-    res.redirect('/dashboard');      
-  }
+    res.redirect('/dashboard');
+  },
+
+  // ADMIN ACCOUNT
+  adminAuthenticated: function (req, res, next) {
+    if (req.isAuthenticated() && req.user.userType == 0) {
+      console.log('vao roi ')
+      return next();
+    }
+    return res.redirect('/');
+  },
+
+  // USER ACCOUNT
+  userAuthenticated: function (req, res, next) {
+    if (req.isAuthenticated() && req.user.userType === 1) {
+      return next();
+    }
+    return res.redirect('/');
+  },
+
+  // AUTHOR ACCOUNT
+  authorAuthenticated: function (req, res, next) {
+    if (req.isAuthenticated() && req.user.userType === 2) {
+      return next();
+    }
+    return res.redirect('/');
+  },
 };
