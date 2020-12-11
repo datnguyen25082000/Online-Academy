@@ -7,10 +7,10 @@ const User = require('../models/user.model');
 const { forwardAuthenticated } = require('../controllers/auth');
 
 // Login Page
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login', { layout: false }));
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 
 // Register Page
-router.get('/register', forwardAuthenticated, (req, res) => res.render('register', { layout: false}));
+router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 
 // Register
 router.post('/register', (req, res) => {
@@ -34,7 +34,6 @@ router.post('/register', (req, res) => {
     res.render('register', {
       err:true,
       errorMsg: errors[0].msg,
-      layout: false,
     });
   }else {
     User.single(username).then(user => {
@@ -43,7 +42,6 @@ router.post('/register', (req, res) => {
         res.render('register', {
           err: true,
           errorMsg: errors[0].msg,
-          layout: false,
         });
       } else {
         bcrypt.genSalt(10, (err, salt) => {
