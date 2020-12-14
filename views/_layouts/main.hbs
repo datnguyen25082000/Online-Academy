@@ -13,18 +13,20 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
-   <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
 
+  {{{_sections.css}}}
 </head>
 
 <body>
 
   {{{body}}}
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+  {{{_sections.js}}}
 </body>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
@@ -33,17 +35,6 @@
     duration: 1000,
   });
 
-</script>
-<script>
-  $("#menu-toggle").click(function (e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-    $("#page-content-wrapper").toggleClass("content-toggled");
-    $("#menu-toggle-icon").toggleClass("fa-outdent");
-  });
-  function goToByScroll(id){
-    document.getElementById(id).scrollIntoView(true);
-}
 </script>
 
 </html>

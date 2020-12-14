@@ -1,3 +1,23 @@
+{{#section 'js'}}
+
+<script>
+  $('#form').on('submit', function (e) {
+    e.preventDefault();
+
+    $.getJSON(`/auth/is-available?user=${username}`, function (data) {
+      if(data === true) {
+        $('form').off('submit').submit(); // tawts submit truoc 
+      }
+      else {
+        alert('invalid username')
+      }
+    })
+  })
+
+</script>
+{{/section }}
+
+
 <form action="/auth/register" method="post">
   <div class="jumbotron">
     <h1 class="display-4">REGISTER</h1>

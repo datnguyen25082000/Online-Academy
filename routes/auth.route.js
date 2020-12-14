@@ -74,4 +74,14 @@ router.get('/logout', (req, res) => {
   res.redirect('/auth/login');
 });
 
+// check username
+router.get('/is-available', async function(req, res) {
+  const username = req.query.user;
+  const user = await User.singleByUsername(username);
+  if(user === null) {
+    return res.json(true);
+  }
+  res.json(false);
+}) 
+
 module.exports = router;

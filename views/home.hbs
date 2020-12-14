@@ -1,3 +1,21 @@
+{{#section 'css'}}
+{{/section}}
+
+{{#section 'js'}}
+<script>
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+    $("#page-content-wrapper").toggleClass("content-toggled");
+    $("#menu-toggle-icon").toggleClass("fa-outdent");
+  });
+  function goToByScroll(id){
+    document.getElementById(id).scrollIntoView(true);
+}
+</script>
+
+{{/section}}
+
 {{>nav}}
 <div class="d-flex toggled" id='wrapper'>
   {{>sidebar}}

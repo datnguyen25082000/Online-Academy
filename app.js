@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const hbs_sections = require('express-handlebars-sections');
 const numeral = require('numeral');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser')
@@ -25,21 +26,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-// VIEW ENGINE
-app.engine('hbs', exphbs({
-  defaultLayout: 'main.hbs',
-  extname: '.hbs',
-  layoutsDir: 'views/_layouts',
-  partialsDir: 'views/_partials',
-  helpers: {
-    format(val) {
-      return numeral(val).format('0,0');
-    }
-  }
-}));
-app.set('view engine', 'hbs');
+require('./middleware/view.mdw')(app);
 
-// Express session
+// Express session (luwu thong tin dung chung co cacs req - thong tin dang nhap)
 app.use(
   session({
     secret: 'secret',
