@@ -7,26 +7,23 @@ const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-const authMiddleware = require('./controllers/auth');
+const authMiddleware = require('./routes/controllers/auth');
 const app = express();
 
 require('dotenv');
 // Passport Config
-require('./controllers/passport')(passport);
+require('./routes/controllers/passport')(passport);
 
 dotenv.config({path: './.env'});
 app.use(express.urlencoded({
   extended: true
 }));
-// app.use(cookieParser('mysupersecretcookiesstring'));
 
 // PREVENT CLICK BACK TO PRIVATE ROUTE
 app.use(function(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
 });
-
-require('./middleware/view.mdw')(app);
 
 // Express session (luwu thong tin dung chung co cacs req - thong tin dang nhap)
 app.use(
@@ -58,37 +55,9 @@ app.use('/public', express.static('public'));
 
 
 // MIDDLEWARE
-// app.use(require('./middleware/locals.mdw'));
-
-///------------------- ROUTE ---------------------///
-
-// DEFAULT
-app.use('/', require('./routes/index.route'));
-
-// ROUTE ĐĂNG NHẬP ĐĂNG KÍ
-app.use('/auth', require('./routes/auth.route'));
-
-// ROUTE THAO TÁC VỚI TỪNG TÀI KHOẢN
-app.use('/admin/', authMiddleware.adminAuthenticated ,require('./routes/admin.route'));
-app.use('/user/', authMiddleware.userAuthenticated ,require('./routes/user.route'));
-app.use('/author/', authMiddleware.authorAuthenticated ,require('./routes/author.route'));
-
-
-
-// CLIENT ERROR
-app.use(function (req, res) {
-  res.render('404', {
-    layout: false
-  })
-});
-
-// DEFAULT ERROR HANDER - SERVER ERROR
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.render('500', {
-    layout: false
-  })
-})
+require('./middleware/view.mdw')(app);
+require('./middleware/routes.mdw')(app);
+require('./middleware/error.mdw')(app);
 
 // START 
 const PORT = 3000;

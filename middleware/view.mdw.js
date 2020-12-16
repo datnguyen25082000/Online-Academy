@@ -1,4 +1,3 @@
-
 const exphbs = require('express-handlebars');
 const hbs_sections = require('express-handlebars-sections');
 const numeral = require('numeral');

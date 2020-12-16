@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 const User = require('../models/user.model');
-const { forwardAuthenticated } = require('../controllers/auth');
+const { forwardAuthenticated } = require('./controllers/auth');
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));

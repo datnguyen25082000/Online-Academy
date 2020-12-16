@@ -20,8 +20,14 @@
 </head>
 
 <body>
-
+{{>nav}}
+<div class="d-flex toggled" id='wrapper'>
+  {{>sidebar}}
+   <div id="page-content-wrapper">
   {{{body}}}
+
+   </div>
+</div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -29,6 +35,17 @@
   {{{_sections.js}}}
 </body>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+    $("#page-content-wrapper").toggleClass("content-toggled");
+    $("#menu-toggle-icon").toggleClass("fa-outdent");
+  });
+  function goToByScroll(id){
+    document.getElementById(id).scrollIntoView(true);
+}
+</script>
 <script>
   AOS.init({
     offset: 300,

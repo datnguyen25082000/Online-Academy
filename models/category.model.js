@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 
-const TBL_CATEGORIES = 'categories';
+const TBL_CATEGORIES = 'categoriesLevel2';
 
 module.exports = {
   all() {

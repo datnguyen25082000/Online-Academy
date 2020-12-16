@@ -1,32 +1,22 @@
 {{#section 'css'}}
+<style>
+
+</style>
+
 {{/section}}
 
 {{#section 'js'}}
-<script>
-  $("#menu-toggle").click(function (e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-    $("#page-content-wrapper").toggleClass("content-toggled");
-    $("#menu-toggle-icon").toggleClass("fa-outdent");
-  });
-  function goToByScroll(id){
-    document.getElementById(id).scrollIntoView(true);
-}
-</script>
 
 {{/section}}
 
-{{>nav}}
-<div class="d-flex toggled" id='wrapper'>
-  {{>sidebar}}
 
   <div id="page-content-wrapper">
 
     <div class=''>
 
-      <div class="d-flex bg-image" style="height: 90vh">
-        <div class="row justify-content-center align-self-lg-center pt-5 bg-text">
-          <div class='col-lg-5' data-aos="fade-right" data-aos-delay='300' data-aos-offset='150'
+      <div class="d-flex bg-image" style="height: 90vh" id='intro-landing'>
+        <div class="row d-flex justify-content-center align-self-lg-center text-lg-left text-md-center pt-5 bg-text">
+          <div class='col-lg-5 justify-content-center align-self-lg-center' data-aos="fade-right" data-aos-delay='300' data-aos-offset='150'
             data-aos-duration='1400'>
             <h1 class="display-4">Welcome to <span class="text-danger">Online</span>
               <span class='font-italic'
@@ -42,8 +32,9 @@
             </p>
           </div>
           <div class="col-lg-5" data-aos="fade-left" data-aos-delay='1000' data-aos-offset='150'
-            data-aos-duration='1400'>
-            <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
+            data-aos-duration='1400' >
+            <img src="/public/svg/undraw_education_f8ru.svg" style= alt="">
+            {{!-- <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
               <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators1" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators1" data-slide-to="1"></li>
@@ -69,7 +60,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
               </a>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
@@ -186,4 +177,3 @@
 
     </div>
   </div>
-</div>

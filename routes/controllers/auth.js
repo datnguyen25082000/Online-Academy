@@ -32,6 +32,7 @@ module.exports = {
   },
 
   forwardAuthenticated: function (req, res, next) {
+    console.log('auth  ne')
     if (!req.isAuthenticated()) {
       return next();
     }
