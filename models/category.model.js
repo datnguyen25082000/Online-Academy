@@ -29,12 +29,12 @@ module.exports = {
   },
 
   del(entity) {
-    const condition = { CatID: entity.catID };
+    const condition = { catID: entity.catID };
     return db.del(condition, TBL_CATEGORIES);
   },
 
   patch(entity) {
-    const condition = { CatID: entity.catID };
+    const condition = { catID: entity.catID };
     delete entity.catID;
     return db.patch(entity, condition, TBL_CATEGORIES);
   }

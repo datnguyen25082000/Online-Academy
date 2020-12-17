@@ -1,6 +1,5 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
-
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -23,7 +22,7 @@ router.post('/add', async function (req, res) {
 })
 
 router.post('/del', async function (req, res) {
-  console.log('delete')
+  console.log(req.body)
   const ret = await categoryModel.del(req.body);
   res.redirect('/categories');
 })
@@ -35,7 +34,6 @@ router.post('/patch', async function (req, res) {
 
 router.get('/:id', async function (req, res) {
   const id = req.params.id;
-  console.log('vao id')
   const category = await categoryModel.single(id);
   if (category === null) {
     return res.redirect('/categories');
