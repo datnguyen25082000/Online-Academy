@@ -1,198 +1,144 @@
-<div class="container-fluid pt-5" data-aos="zoom-in-left">
-    <h1 class="text-center" style="">
+<div class="mt-5 container pt-5">
+    <h1 class="" style="">
         <span class='font-italic'
             style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>
             TOP TRENDING</span>
         <hr>
     </h1>
 
-    <div class='d-flex container-fluid'>
-        <div class='d-flex ml-5'>
+    <div class='d-flex row' style="position: relative">
+        <div style="position: absolute; top: 50%; z-index: 10;left:-25px; transform: translate(0,-100%)">
             <a class=" align-self-center" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <i class=" fa fa-backward fa-2x text-primary" aria-hidden="true"></i>
                 <span class="sr-only">Previous</span>
             </a>
         </div>
-        <div id="carouselExampleIndicators" class="carousel slide flex-grow-1" data-ride="carousel" data-interval="false">
+        <div id="carouselExampleIndicators" class="carousel slide flex-grow-1" data-ride="carousel"
+            data-interval="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <ul id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/Ant-Man.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/AntMan-logo.png" class="logo" width="100px"
-                                        style="height: auto;">
-                                    <!--character-details-->
-
+                    <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
+                        {{#each parameter}}
+                        <div class="col-md-3 mb-5">
+                            <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
+                                <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
+                                <div class="p-2 d-flex flex-column flex-grow-1">
+                                    <h5 class="font-weight-bold">{{courseName}}</h5>
+                                    <span class="mb-2">
+                                        {{{courseDes}}}
+                                    </span>
+                                    <div class="mt-auto">
+                                        <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format
+                                                coursePrice}}</span>
+                                        </span>
+                                        <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
+                                    <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
                                 </div>
 
-                            </div>
-                        </li>
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/DeadPool.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/Deadpool-logo.png" class="logo">
-                                    <!--character-details-->
-
+                                <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
+                                    <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}"
+                                        role="button">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        Details
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-success py-2 w-60" href="#" role="button">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        Add to cart
+                                    </a>
                                 </div>
-
                             </div>
-                        </li>
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/SpiderMan.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/SpiderMan-logo.png" class="logo">
-                                    <!--character-details-->
+                        </div>
+                        {{/each}}
 
-                                </div>
-
-                            </div>
-                        </li>
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/Venom.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/Venom-logo.png" class="logo">
-                                    <!--character-details-->
-
-                                </div>
-
-                            </div>
-                        </li>
                     </ul>
                 </div>
                 <div class="carousel-item ">
-                    <ul id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/SpiderMan.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/SpiderMan-logo.png" class="logo">
-                                    <!--character-details-->
-
+                    <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
+                        {{#each parameter}}
+                        <div class="col-md-3 mb-5">
+                            <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
+                                <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
+                                <div class="p-2 d-flex flex-column flex-grow-1">
+                                    <h5 class="font-weight-bold">{{courseName}}</h5>
+                                    <span class="mb-2">
+                                        {{{courseDes}}}
+                                    </span>
+                                    <div class="mt-auto">
+                                        <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format
+                                                coursePrice}}</span>
+                                        </span>
+                                        <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
+                                    <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
                                 </div>
 
-                            </div>
-                        </li>
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/Venom.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/Venom-logo.png" class="logo">
-                                    <!--character-details-->
-
+                                <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
+                                    <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}"
+                                        role="button">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        Details
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-success py-2 w-60" href="#" role="button">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        Add to cart
+                                    </a>
                                 </div>
-
                             </div>
-                        </li>
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/Ant-Man.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/AntMan-logo.png" class="logo" width="100px"
-                                        style="height: auto;">
-                                    <!--character-details-->
+                        </div>
+                        {{/each}}
 
-                                </div>
-
-                            </div>
-                        </li>
-                        <li class="item-a col-3">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/DeadPool.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/Deadpool-logo.png" class="logo">
-                                    <!--character-details-->
-
-                                </div>
-
-                            </div>
-                        </li>
                     </ul>
                 </div>
                 <div class="carousel-item ">
-                    <ul id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        <li class="item-a col-3 ml-auto">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/Ant-Man.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/AntMan-logo.png" class="logo" width="100px"
-                                        style="height: auto;">
-                                    <!--character-details-->
-
+                    <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
+                        {{#each parameter}}
+                        <div class="col-md-3 mb-5">
+                            <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
+                                <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
+                                <div class="p-2 d-flex flex-column flex-grow-1">
+                                    <h5 class="font-weight-bold">{{courseName}}</h5>
+                                    <span class="mb-2">
+                                        {{{courseDes}}}
+                                    </span>
+                                    <div class="mt-auto">
+                                        <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format
+                                                coursePrice}}</span>
+                                        </span>
+                                        <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
+                                    <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
                                 </div>
 
-                            </div>
-                        </li>
-                        <li class="item-a col-3 mr-auto">
-                            <!--slider-box-->
-                            <div class="box">
-                                <p class="marvel">MARVEL</p>
-                                <!--model-->
-                                <img src="/public/images/Venom.png" class="model">
-                                <!--details-->
-                                <div class="details">
-                                    <!--logo-character-->
-                                    <img src="/public/images/Venom-logo.png" class="logo">
-                                    <!--character-details-->
-
+                                <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
+                                    <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}"
+                                        role="button">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        Details
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-success py-2 w-60" href="#" role="button">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        Add to cart
+                                    </a>
                                 </div>
-
                             </div>
-                        </li>
+                        </div>
+                        {{/each}}
+
                     </ul>
                 </div>
             </div>
         </div>
-        <div class='d-flex mr-5'>
+        <div style="position: absolute; top: 50%; z-index: 10; right: -25px; transform: translate(0,-100%)">
             <a class="align-self-center" href="#carouselExampleIndicators" role="button" data-slide="next">
                 <i class=" fa fa-forward fa-2x text-primary" aria-hidden="true"></i>
                 <span class="sr-only">Next</span>

@@ -34,7 +34,6 @@ router.post('/register', (req, res) => {
   }
 
   if (errors.length > 0) {
-    console.log(errors[0].msg)
     res.render('register', {
       err: true,
       errorMsg: errors[0].msg,
@@ -74,7 +73,7 @@ router.post('/login', (req, res, next) => {
 });
 
 // Logout
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
   req.logout();
   req.flash('success_msg', 'You are logged out');
   res.redirect('/auth/login');

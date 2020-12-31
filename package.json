@@ -27,6 +27,11 @@
     "nodemon": "^2.0.6",
     "numeral": "^2.0.6",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-facebook": "^3.0.0",
+    "passport-local": "^1.0.0",
+    "sweetalert2": "^10.12.6"
+  },
+  "devDependencies": {
+    "stickybits": "^3.7.8"
   }
 }

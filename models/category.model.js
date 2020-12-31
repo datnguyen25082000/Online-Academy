@@ -10,8 +10,7 @@ module.exports = {
   allWithDetails() {
     const sql = `
       select c.*, count(p.courseId) as CourseCount
-      from categories c left join courses p on c.catID = p.courseCatId
-      group by c.catID, c.catName
+      from ${TBL_CATEGORIES} 
     `;
     return db.load(sql);
   },

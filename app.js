@@ -55,6 +55,7 @@ app.use('/public', express.static('public'));
 
 
 // MIDDLEWARE
+require('./middleware/locals.mdw')(app);
 require('./middleware/view.mdw')(app);
 require('./middleware/routes.mdw')(app);
 require('./middleware/error.mdw')(app);

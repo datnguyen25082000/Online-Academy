@@ -16,15 +16,11 @@ router.get('/add', function (req, res) {
 })
 
 router.post('/add', async function (req, res) {
-  console.log(req.body)
   const ret = await UserModel.add(req.body);
-  res.render('vwUsers/add');
 })
 
 router.post('/del', async function (req, res) {
-  console.log(req.body)
   const ret = await UserModel.del(req.body);
-  res.redirect('/users');
 })
 
 router.post('/patch', async function (req, res) {
@@ -34,14 +30,13 @@ router.post('/patch', async function (req, res) {
 
 router.get('/:id', async function (req, res) {
   const id = req.params.id;
-  console.log(id)
   const user = await UserModel.single(id);
   if (user === null) {
     return res.redirect('/users');
   }
 
   res.render('vwUsers/edit', {
-    user
+    editUser: user
   });
 })
 
