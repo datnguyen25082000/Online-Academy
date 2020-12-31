@@ -13,13 +13,12 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
-   <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+  {{{_sections.css}}}
 </head>
 
 <body>
-
   {{{body}}}
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -41,9 +40,11 @@
     $("#page-content-wrapper").toggleClass("content-toggled");
     $("#menu-toggle-icon").toggleClass("fa-outdent");
   });
-  function goToByScroll(id){
+  function goToByScroll(id) {
     document.getElementById(id).scrollIntoView(true);
-}
+  }
 </script>
+
+ {{{_sections.js}}}
 
 </html>

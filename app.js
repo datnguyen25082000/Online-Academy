@@ -7,6 +7,8 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 const authMiddleware = require('./controllers/auth');
+const hbs_sections = require('express-handlebars-sections');
+
 const app = express();
 
 require('dotenv');
@@ -32,6 +34,7 @@ app.engine('hbs', exphbs({
   layoutsDir: 'views/_layouts',
   partialsDir: 'views/_partials',
   helpers: {
+    section: hbs_sections(),
     format(val) {
       return numeral(val).format('0,0');
     }
@@ -81,7 +84,7 @@ app.use('/auth', require('./routes/auth.route'));
 
 // ROUTE THAO TÁC VỚI TỪNG TÀI KHOẢN
 app.use('/admin/', authMiddleware.adminAuthenticated ,require('./routes/admin.route'));
-app.use('/user/', authMiddleware.userAuthenticated ,require('./routes/user.route'));
+app.use('/user/', require('./routes/user.route'));
 app.use('/author/', authMiddleware.authorAuthenticated ,require('./routes/author.route'));
 
 

@@ -1,0 +1,90 @@
+{{#section 'js'}}
+<script src="https://cdn.tiny.cloud/1/3z24aq1ehvn6w8i0d878thpnmydyb6o2uqwjclilcagozhbt/tinymce/5/tinymce.min.js"
+  referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#describe',
+    height: 200,
+    plugins: 'paste image link autolink lists table media',
+    menubar: false,
+    toolbar: [
+      'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+    ],
+  });
+</script>
+{{/section}}
+
+{{>nav}}
+<div class="container">
+
+
+  <div class="card">
+    <h5 class="card-header text-center">
+      Profile
+      <div></div>
+    </h5>
+    <div class="row vh-100">
+      <div class="bg-light border-right col-md-3">
+        <div style="height: 200px; width: auto;" class="text-center m-3">
+          <img src="" alt="avatar" width="100%" height="auto">
+        </div>
+        <div class="list-group list-group-flush border-top text-center">
+          <a href="/user/profile?tab=general" class="list-group-item list-group-item-action bg-light">
+            <i class="fa fa-gear mr-3" aria-hidden="true"></i>
+            General
+          </a>
+          <a href="/user/profile?tab=password" class="list-group-item list-group-item-action bg-light">
+            <i class="fa fa-key mr-3" aria-hidden="true"></i>
+            Password
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body col-md-9">
+        <form action="/user/profile/save" method="POST">
+          {{#if this.isGeneralTab}}
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="userDisplayName"
+              value="{{this.info.userDisplayName}}" required>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Username</label>
+            <input type="text" class="form-control" id="username" name="userUsername" value="{{this.info.userUsername}}"
+              readonly>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" name="userEmail" aria-describedby="emailHelp"
+              value="{{this.info.userEmail}}" required>
+          </div>
+          <div class="form-group">
+            <label for="describe">FullDes</label>
+            <textarea class="form-control" name="userDescribe" id="describe" cols="30" rows="10"></textarea>
+          </div>
+          {{else}}
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="userPassword"
+              value="{{this.info.userPassword}}" required>
+          </div>
+          {{/if}}
+          <div class="text-right">
+            <a class="btn btn-outline-success mr-2" href="/" role="button">
+              <i class="fa fa-backward" aria-hidden="true"></i>
+              Back
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Save
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>

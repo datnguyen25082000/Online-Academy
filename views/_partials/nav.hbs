@@ -8,18 +8,18 @@
     <div class="collapse navbar-collapse flex-grow-1" id="navbarSupportedContent">
       <ul class="navbar-nav">
         {{!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Categories
-        </a>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Categories
+          </a>
 
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Web Development</a>
-          <a class="dropdown-item" href="#">Mobile Development</a>
-          <a class="dropdown-item" href="#">Game Development</a>
-          <a class="dropdown-item" href="#">Data Science</a>
-        </div>
-      </li> --}}
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Web Development</a>
+            <a class="dropdown-item" href="#">Mobile Development</a>
+            <a class="dropdown-item" href="#">Game Development</a>
+            <a class="dropdown-item" href="#">Data Science</a>
+          </div>
+        </li> --}}
       </ul>
       <button class="btn btn-primary d-lg-inline d-none" id="menu-toggle"><i id="menu-toggle-icon"
           class="fas fa-indent"></i></button>
@@ -29,26 +29,49 @@
 
         <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" type="search" placeholder="Search"
           aria-label="Search">
-        <div class="ml-3">
-          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/login">
-            Teach on OA
+      </form>
+      <div class="ml-3">
+        <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/login">
+          Teach on OA
+        </a>
+        <a class="btn my-2 my-sm-0 m-1 flex-grow-1 mr-4" href="/auth/login">
+          <i class="fa fa-cart-plus" aria-hidden="true"></i>
+        </a>
+      </div>
+      {{#if 1}}
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user " aria-hidden="true"></i>
+            Welcome, user!
           </a>
-          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 mr-4" href="/auth/login">
-            <i class="fa fa-cart-plus" aria-hidden="true"></i> </a>
-          <div class="d-lg-inline d-none">
-            <a class="btn btn-outline-primary my-2 my-sm-0 m-1 text-primary" style="width: 6rem!important;"
-              href="/auth/login">
-              Log in
+
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/user/profile">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              Profile
             </a>
-            <a class="btn btn-outline-primary my-2 my-sm-0 m-1 bg-primary text-white " style="width: 6rem!important;"
-              href="/auth/register">
-              Sign up
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascrips:;">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+              Sign out
             </a>
           </div>
-
-        </div>
-
-      </form>
+        </li>
+      </ul>
+      {{else}}
+      <div class="d-lg-inline d-none">
+        <a class="btn btn-outline-primary my-2 my-sm-0 m-1 text-primary" style="width: 6rem!important;"
+          href="/auth/login">
+          Log in
+        </a>
+        <a class="btn btn-outline-primary my-2 my-sm-0 m-1 bg-primary text-white " style="width: 6rem!important;"
+          href="/auth/register">
+          Sign up
+        </a>
+      </div>
+      {{/if}}
     </div>
   </nav>
 </div>
