@@ -19,7 +19,7 @@ module.exports = {
       }
       // AUTHOR
       else if (req.user.userType === 2) {
-        return res.render('author', {
+        return res.render('home', {
           user: req.user,
         })
       }
@@ -41,7 +41,6 @@ module.exports = {
   // ADMIN ACCOUNT
   adminAuthenticated: function (req, res, next) {
     if (req.isAuthenticated() && req.user.userType == 0) {
-      console.log('vao roi ')
       return next();
     }
     return res.redirect('/');

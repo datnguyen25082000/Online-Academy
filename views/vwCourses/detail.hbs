@@ -1,0 +1,267 @@
+{{#section 'css'}}
+{{/section}}
+
+{{#section 'js'}}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/jquery.star-rating-svg.min.js"></script>
+<link rel="stylesheet" type="text/css"
+  href="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/css/star-rating-svg.min.css">
+
+<script>
+  $(".my-rating").starRating({
+    readOnly: true,
+    strokeColor: '#EB8A2F',
+    strokeWidth: 10,
+    starSize: 18
+  });
+</script>
+
+{{/section}}
+
+{{#with course}}
+<div class="course-des" style="width: inherit;height: 350px; background-color: #1E1E1C; z-index: 9">
+  <div class="row container m-auto p-5 text-white " style="z-index: 10">
+    <div class="col-8">
+      <div class="p-2 d-flex flex-column flex-grow-1">
+        <h2 style="font-size: 2rem" class="font-weight-bold">{{courseName}}</h2>
+        <span class="mb-2" style="font-size: 1.5rem">
+          {{{courseDes}}}
+        </span>
+        <div class="mt-auto">
+          <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format coursePrice}}</span>
+          </span>
+          <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
+        <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
+      </div>
+      <div class="card-footer d-flex " style="padding:1rem!important">
+        <a class="btn btn-sm btn-outline-light mr-3 p-2 w-35" href="/courses/{{courseID}}" role="button">
+          <i class="fa fa-share mr-2" aria-hidden="true"></i>
+          Share
+        </a>
+        <a class="btn btn-sm btn-outline-light mr-3 p-2 w-60" href="#" role="button">
+          <i class="fas fa-loveseat  mr-2  "></i>
+          Love
+        </a>
+        <a class="btn btn-sm btn-outline-light p-2 w-60" href="#" role="button">
+          <i class="fas fa-loveseat  mr-2  "></i>
+          Love
+        </a>
+      </div>
+    </div>
+    <div class="col-4">
+    </div>
+  </div>
+</div>
+<div class="row container p-5 m-auto d-flex" style="z-index: 7; position: relative">
+  <div class="course-main-content col-8">
+    <div class="course-detail">
+      <h3>{{courseDetail}}</h3>
+    </div>
+
+    <div class="course-instructor mt-5">
+      <div class="styles--instructors--2JsS3">
+        <h4 class="font-weight-bold pb-2" style="border-bottom: 1px rgb(151, 144, 144) solid">Giảng viên</h4>
+
+        <div class="instructor--instructor--1wSOF" data-purpose="instructor-bio"><span
+            class="in-page-offset-anchor"></span>
+          <div>
+            <div class="udlite-heading-lg instructor--instructor__title--34ItB"><a href="/user/abc">Dr. Angela Yu</a>
+            </div>
+            <div class="udlite-text-md instructor--instructor__job-title--1HUmd">Developer and Lead Instructor</div>
+          </div>
+          <div class="instructor-intro d-flex my-3">
+            <a class="instructor-image" href="/user/4b4368a3-b5c8-4529-aa65-2056ec31f37e/"><img class="rounded-circle"
+                width="64" height="64" style="width:6.4rem;height:6.4rem"
+                src="https://img-b.udemycdn.com/user/75x75/31334738_a13c_2.jpg?secure=FNcWRT6-QGYEdB10-nggaA%3D%3D%2C1609457290"></a>
+            <ul class=" ml-3">
+              <li>
+                <div class="udlite-block-list-item-content">4.7 Instructor Rating</div>
+              </li>
+              <li>
+                <div class="udlite-block-list-item-content">232,716 Reviews</div>
+              </li>
+              <li>
+                <div class="udlite-block-list-item-content">678,727 Students</div>
+              </li>
+              <li>
+                <div class="udlite-block-list-item-content">8 Courses</div>
+              </li>
+            </ul>
+          </div>
+          <div class="show-more--container">
+            <div class="show-more--content">
+              <div>
+                <div class="udlite-text-sm instructor--instructor__description--1dHxF">
+                  <p>I'm Angela, I'm a developer with a passion for teaching. I'm the <strong>lead instructor</strong>
+                    at the London App Brewery, London's leading <strong>Programming Bootcamp</strong>. I've helped
+                    hundreds of thousands of students learn to code and change their lives by becoming a developer. I've
+                    been invited by companies such as Twitter, Facebook and Google to teach their employees.</p>
+
+                  <p>I spend most of my time researching how to make <strong>learning to code fun</strong> and make
+                    <strong>hard concepts easy to understand</strong>. I apply everything I discover into my bootcamp
+                    courses. In my courses, you'll find lots of geeky humour but also lots of <strong>explanations and
+                      animations</strong> to make sure everything is easy to understand.
+                  </p>
+                  <p><strong>I'll be there for you every step of the way.</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5 comment-list">
+      <h4 class="font-weight-bold pb-2" style="border-bottom: 1px rgb(151, 144, 144) solid">Bình luận về khóa học</h4>
+      <div class="comment_detail d-flex pt-2">
+        <div class="comment_avatar rounded-circle mr-3"><img style="width: 40px" class="comment_avatar rounded-circle"
+            src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400" alt="d"></div>
+        <div class="comment_comment">
+          <div class="comment_comment  px-3 py-2" style="background-color: #d1cece; border-radius: 20px;">
+            <span class="comment_comment font-weight-bold">dang thuyen Vuong</span>
+            <div class="d-flex">
+              <div class="my-rating " data-rating="4"></div>
+            </div>
+            <div class="comment_comment"><span>Donec rutrum congue leo eget malesuada. Praesent sapien massa, convallis
+                a pellentesque nec, egestas non nisi.</span></div>
+          </div>
+          <div class="comment_commentTime px-3" style="color: #8b8a8a">
+            <p class="comment_createdAt">6 ngày trước</p>
+          </div>
+        </div>
+      </div>
+      <div class="comment_detail d-flex pt-2">
+        <div class="comment_avatar rounded-circle mr-3"><img style="width: 40px" class="comment_avatar rounded-circle"
+            src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400" alt="d"></div>
+        <div class="comment_comment">
+          <div class="comment_comment  px-3 py-2" style="background-color: #d1cece; border-radius: 20px;">
+            <span class="comment_comment font-weight-bold">dang thuyen Vuong</span>
+            <div class="d-flex">
+              <div class="my-rating " data-rating="4"></div>
+            </div>
+            <div class="comment_comment"><span>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</span></div>
+          </div>
+          <div class="comment_commentTime px-3" style="color: #8b8a8a">
+            <p class="comment_createdAt">6 ngày trước</p>
+          </div>
+        </div>
+      </div>
+      <div class="comment_detail d-flex pt-2">
+        <div class="comment_avatar rounded-circle mr-3"><img style="width: 40px" class="comment_avatar rounded-circle"
+            src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400" alt="d"></div>
+        <div class="comment_comment">
+          <div class="comment_comment  px-3 py-2" style="background-color: #d1cece; border-radius: 20px;">
+            <span class="comment_comment font-weight-bold">dang thuyen Vuong</span>
+            <div class="d-flex">
+              <div class="my-rating  " data-rating="4"></div>
+            </div>
+            <div class="comment_comment"><span>Quisque velit nisi, pretium ut lacinia in, elementum id enim.</span>
+            </div>
+          </div>
+          <div class="comment_commentTime px-3" style="color: #8b8a8a">
+            <p class="comment_createdAt">6 ngày trước</p>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="comment-form d-flex">
+      <div class="user-avatar rounded-circle p-3 mr-3">
+        <img class="rounded-circle" src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400" style="width: 50px" alt="">
+      </div>
+      <div class="form-group flex-grow-1">
+        <textarea class="form-control" name="" id="" rows="3"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-4 fixed-course-content " id="fixed-course-content"
+    style="z-index: 9; top: -250px ; right: 0; position: relative">
+    <div class="card shadow d-flex m-auto">
+      <img src="{{largeImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
+      <div class="p-2 d-flex flex-column flex-grow-1">
+
+        <div class="mt-auto d-flex flex-column p-3">
+          <a class="btn btn-sm btn-outline-primary p-2 w-35 m-1" href="/courses/{{courseID}}" role="button">
+            THÊM VÀO GIỎ
+          </a>
+          <a class="btn btn-sm btn-outline-success py-2 w-60 m-1" href="#" role="button">
+            ĐĂNG KÝ KHÓA HỌC
+          </a>
+          <h5 class="my-3">Miêu tả về khóa học:</h5>
+          <div class="ml-4">
+            <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 " style="width: 20px"></i> Giá: <span
+                class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn Phí
+                {{else}}{{coursePrice}}{{/if}}</span>
+            </li>
+            <li class="card-text d-block"><i class="fas fa-user-friends mr-3   " style="width: 20px"></i> Số lượng học
+              viên: {{courseRegistered}}
+            </li>
+            <li class="card-text d-block"><i class="fa fa-clock-o mr-3" aria-hidden="true" style="width: 20px"></i> Thời
+              gian khóa học:
+              {{courseRegistered}}</li>
+            <li class="card-text d-block"><i class="fa fa-list-ol mr-3" aria-hidden="true" style="width: 20px"></i> Lĩnh
+              vực: abc</li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{/with}}
+
+<div class="course-relate-to p-5 m-auto">
+  <div class="list-1 container p-5 w-100" style="padding-top: 30px!important" id='list-1'>
+    <div class="" style="padding: 15px">
+      <h4 class="font-weight-bold pb-2" style="border-bottom: 1px rgb(151, 144, 144) solid">Khóa học có liên quan</h4>
+
+    </div>
+    <div class="row">
+      {{#each this.topTrending}}
+
+      <div class="col-md-4 mb-5 ">
+        <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
+          <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
+          <div class="p-2 d-flex flex-column flex-grow-1">
+            <h5 class="font-weight-bold">{{courseName}}</h5>
+            <span class="mb-2">
+              {{{courseDes}}}
+            </span>
+            <div class="mt-auto">
+              <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn
+                  Phí {{else}}{{coursePrice}}{{/if}}</span>
+              </span>
+              <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
+            <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
+          </div>
+
+          <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
+            <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}" role="button">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              Details
+            </a>
+            <a class="btn btn-sm btn-outline-success py-2 w-60" href="#" role="button">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              Add to cart
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {{/each}}
+    </div>
+  </div>
+</div>
+{{> footer}}

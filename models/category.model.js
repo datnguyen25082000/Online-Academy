@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 
-const TBL_CATEGORIES = 'categories';
+const TBL_CATEGORIES = 'categoriesLevel2';
 
 module.exports = {
   all() {
@@ -10,8 +10,7 @@ module.exports = {
   allWithDetails() {
     const sql = `
       select c.*, count(p.courseId) as CourseCount
-      from categories c left join courses p on c.catID = p.courseCatId
-      group by c.catID, c.catName
+      from ${TBL_CATEGORIES} 
     `;
     return db.load(sql);
   },
@@ -29,12 +28,12 @@ module.exports = {
   },
 
   del(entity) {
-    const condition = { CatID: entity.catID };
+    const condition = { catID: entity.catID };
     return db.del(condition, TBL_CATEGORIES);
   },
 
   patch(entity) {
-    const condition = { CatID: entity.catID };
+    const condition = { catID: entity.catID };
     delete entity.catID;
     return db.patch(entity, condition, TBL_CATEGORIES);
   }

@@ -1,25 +1,23 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const hbs_sections = require('express-handlebars-sections');
 const numeral = require('numeral');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-const authMiddleware = require('./controllers/auth');
-const hbs_sections = require('express-handlebars-sections');
-
+const authMiddleware = require('./routes/controllers/auth');
 const app = express();
 
 require('dotenv');
 // Passport Config
-require('./controllers/passport')(passport);
+require('./routes/controllers/passport')(passport);
 
 dotenv.config({path: './.env'});
 app.use(express.urlencoded({
   extended: true
 }));
-// app.use(cookieParser('mysupersecretcookiesstring'));
 
 // PREVENT CLICK BACK TO PRIVATE ROUTE
 app.use(function(req, res, next) {
@@ -27,22 +25,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-// VIEW ENGINE
-app.engine('hbs', exphbs({
-  defaultLayout: 'main.hbs',
-  extname: '.hbs',
-  layoutsDir: 'views/_layouts',
-  partialsDir: 'views/_partials',
-  helpers: {
-    section: hbs_sections(),
-    format(val) {
-      return numeral(val).format('0,0');
-    }
-  }
-}));
-app.set('view engine', 'hbs');
-
-// Express session
+// Express session (luwu thong tin dung chung co cacs req - thong tin dang nhap)
 app.use(
   session({
     secret: 'secret',
@@ -72,37 +55,10 @@ app.use('/public', express.static('public'));
 
 
 // MIDDLEWARE
-// app.use(require('./middleware/locals.mdw'));
-
-///------------------- ROUTE ---------------------///
-
-// DEFAULT
-app.use('/', require('./routes/index.route'));
-
-// ROUTE ĐĂNG NHẬP ĐĂNG KÍ
-app.use('/auth', require('./routes/auth.route'));
-
-// ROUTE THAO TÁC VỚI TỪNG TÀI KHOẢN
-app.use('/admin/', authMiddleware.adminAuthenticated ,require('./routes/admin.route'));
-app.use('/user/', require('./routes/user.route'));
-app.use('/author/', authMiddleware.authorAuthenticated ,require('./routes/author.route'));
-
-
-
-// CLIENT ERROR
-app.use(function (req, res) {
-  res.render('404', {
-    layout: false
-  })
-});
-
-// DEFAULT ERROR HANDER - SERVER ERROR
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.render('500', {
-    layout: false
-  })
-})
+require('./middleware/locals.mdw')(app);
+require('./middleware/view.mdw')(app);
+require('./middleware/routes.mdw')(app);
+require('./middleware/error.mdw')(app);
 
 // START 
 const PORT = 3000;

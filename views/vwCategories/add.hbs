@@ -1,20 +1,35 @@
-<form method="POST" action="">
-  <div class="card">
+{{#section 'js'}}
+<script>
+  $("#submitAddCat").click(function () {
+    form = $("#formAddCat").submit();
+    Swal.fire(
+      'Added successful',
+      'This category has been added.',
+      'success'
+    ).then((result) => {
+      location.reload();
+    })
+  });
+</script>
+{{/section}}
+
+<form method="POST" action="" id="formAddCat">
+  <div class="card  m-5 mt-5">
     <h5 class="card-header">
       New Category
     </h5>
     <div class="card-body">
       <div class="form-group">
         <label for="txtCatName">Category</label>
-        <input type="text" class="form-control" id="txtCatName" name="CatName" autofocus>
+        <input type="text" class="form-control" id="txtCatName" name="catName" autofocus>
       </div>
     </div>
     <div class="card-footer text-muted">
-      <a class="btn btn-primary" href="/admin/categories" role="button">
+      <a class="btn btn-primary" href="/categories" role="button">
         <i class="fa fa-backward" aria-hidden="true"></i>
         Back to List
       </a>
-      <button type="submit" class="btn btn-outline-success">
+      <button type="button" id="submitAddCat" class="btn btn-outline-success">
         <i class="fa fa-check" aria-hidden="true"></i>
         Save
       </button>
