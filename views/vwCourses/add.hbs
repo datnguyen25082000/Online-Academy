@@ -1,0 +1,38 @@
+{{#section 'js'}}
+<script>
+  $("#submitAddCourse").click(function () {
+    form = $("#formAddCourse").submit();
+    Swal.fire(
+      'Added successful',
+      'This Course has been added.',
+      'success'
+    ).then((result) => {
+      location.reload();
+    })
+  });
+</script>
+{{/section}}
+
+<form method="POST" action="" id="formAddCourse">
+  <div class="card  m-5 mt-5">
+    <h5 class="card-header">
+      New Course
+    </h5>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="txtCourseName">Course</label>
+        <input type="text" class="form-control" id="txtCourseName" name="CourseName" autofocus>
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+      <a class="btn btn-primary" href="/courses" role="button">
+        <i class="fa fa-backward" aria-hidden="true"></i>
+        Back to List
+      </a>
+      <button type="button" id="submitAddCourse" class="btn btn-outline-success">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Save
+      </button>
+    </div>
+  </div>
+</form>

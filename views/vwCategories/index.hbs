@@ -1,14 +1,21 @@
-<div class="card">
+{{#section 'js'}}
+
+{{/section}}
+
+<div class="card m-5 mt-5">
   <h5 class="card-header d-flex justify-content-between">
-    Categories
-    <a class="btn btn-outline-success" href="/admin/categories/add" role="button">
+    <div>
+      <i class="fa fa-list-ol mr-2" aria-hidden="true"></i>Categories
+    </div>
+    
+    <a class="btn btn-outline-success" href="/categories/add" role="button">
       <i class="fa fa-plus" aria-hidden="true"></i>
       Add Category
     </a>
   </h5>
   {{#if this.empty}}
   <div class="card-body">
-    <p class="card-text">Không có dữ liệu.</p>
+    <p class="card-text">No data.</p>
   </div>
   {{else}}
   <div class="card-body">
@@ -26,7 +33,7 @@
           <th scope="row">{{catID}}</th>
           <td>{{catName}}</td>
           <td class="text-right">
-            <a class="btn btn-sm btn-primary" href="/admin/categories/{{catID}}" role="button" title="Edit Category">
+            <a class="btn btn-sm btn-primary" href="/categories/{{catID}}" role="button" title="Edit Category">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
           </td>
@@ -37,6 +44,6 @@
   </div>
   {{/if}}
   <div class="card-footer text-muted">
-    Footer
+    
   </div>
 </div>

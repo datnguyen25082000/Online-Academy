@@ -4,13 +4,17 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 const User = require('../models/user.model');
-const { forwardAuthenticated } = require('../controllers/auth');
+const { forwardAuthenticated } = require('./controllers/auth');
 
 // Login Page
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login', {
+  layout: false
+}));
 
 // Register Page
-router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
+router.get('/register', forwardAuthenticated, (req, res) => res.render('register' , {
+  layout: false
+}));
 
 // Register
 router.post('/register', (req, res) => {
@@ -29,27 +33,28 @@ router.post('/register', (req, res) => {
     errors.push({ msg: 'Password must be at least 6 characters' });
   }
 
-  if (errors.length > 0) {  
-    console.log(errors[0].msg)
+  if (errors.length > 0) {
     res.render('register', {
-      err:true,
+      err: true,
       errorMsg: errors[0].msg,
+      layout: false
     });
-  }else {
+  } else {
     User.single(username).then(user => {
       if (user) {
         errors.push({ msg: 'Email already exists' });
         res.render('register', {
           err: true,
           errorMsg: errors[0].msg,
+          layout: false
         });
       } else {
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(password, salt, (err, hash) => {
             if (err) throw err;
-           
-            User.add({userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name})
-              
+
+            User.add({ userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name })
+
             res.redirect('/auth/login');
           });
         });
@@ -68,10 +73,20 @@ router.post('/login', (req, res, next) => {
 });
 
 // Logout
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
   req.logout();
   req.flash('success_msg', 'You are logged out');
   res.redirect('/auth/login');
 });
+
+// check username
+router.get('/is-available', async function (req, res) {
+  const username = req.query.user;
+  const user = await User.singleByUsername(username);
+  if (user === null) {
+    return res.json(true);
+  }
+  res.json(false);
+})
 
 module.exports = router;

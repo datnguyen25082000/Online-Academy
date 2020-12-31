@@ -1,27 +1,34 @@
 const categoryModel = require('../models/category.model');
 
-module.mdw1 = async function (req, res, next) {
-  const rows = await categoryModel.allWithDetails();
-  res.locals.lcCategories = rows;
-  next();
-}
+module.exports = function (app) {
+  app.use(async function (req, res, next) {
 
+    try {
+      if (req.session.isActiveSidebar === undefined) {
+        req.session.isActiveSidebar = false;
+      }
 
-exports.isAuthenticated = async function (req, res, next) {
-  try {
-    const options = {
-      httpOnly: true,
-      signed: true,
-    };
-   
-    if (req.signedCookies.account === 'admin') {
-      res.render('admin', { layout: false });
+      if (req.body.isActiveSidebar === "active") {
+        var c = req.session.isActiveSidebar;
+        if (c) {
+          req.session.isActiveSidebar = false;
+        }
+        else
+          req.session.isActiveSidebar = true;
+      }
+        
+      req.session.save();
+      res.locals.isActiveSidebar = req.session.isActiveSidebar
+      res.locals.user = req.session.passport.user;
+      next();
+    } catch (error) {
+      next();
     }
-    else if (req.signedCookies.account === 'user') {
-      res.render('user', { layout: false });
-    }
-    else next();
-  } catch (error) {
-    next();
-  }
+  })
+
+  // app.use(async function (req, res, next) {
+  //   const rows = await categoryModel.allWithDetails();
+  //   res.locals.lcCategories = rows;
+  //   next();
+  // })
 }

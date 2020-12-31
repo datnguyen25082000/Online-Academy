@@ -1,0 +1,49 @@
+{{#section 'js'}}
+
+{{/section}}
+
+<div class="card m-5 mt-5">
+  <h5 class="card-header d-flex justify-content-between">
+    <div>
+      <i class="fas fa-user-cog mr-2"></i>Users
+    </div>
+    
+    <a class="btn btn-outline-success" href="/users/add" role="button">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      Add user
+    </a>
+  </h5>
+  {{#if this.empty}}
+  <div class="card-body">
+    <p class="card-text">No data.</p>
+  </div>
+  {{else}}
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Email</th>
+          <th scope="col">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.users}}
+        <tr>
+          <th scope="row">{{userUsername}}</th>
+          <td>{{userEmail}}</td>
+          <td class="text-right">
+            <a class="btn btn-sm btn-primary" href="/users/{{userUsername}}" role="button" title="Edit User">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{/if}}
+  <div class="card-footer text-muted">
+    
+  </div>
+</div>
