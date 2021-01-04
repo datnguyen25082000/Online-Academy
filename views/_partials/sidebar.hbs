@@ -3,14 +3,38 @@
 {{/section}}
 <!-- Sidebar -->
 <div class="bg-light border-right position-fixed" id="sidebar-wrapper">
-  <div class="sidebar-heading text-center">   <span class='font-italic'
-                style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>PAGES
-              </span></div>
+  <div class="sidebar-heading text-center"> <span class='font-italic'
+      style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>Trang
+    </span></div>
   <div class="list-group list-group-flush">
-    <a href="/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-home mr-3" aria-hidden="true"></i> Home</a>
-    <a href="/categories/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-list-ol mr-3" aria-hidden="true"></i> Categories</a>
-    <a href="/courses" class="list-group-item list-group-item-action bg-light"><i class="fas fa-books mr-3"></i> Courses</a>
-    <a href="/users" class="list-group-item list-group-item-action bg-light"> <i class="fas fa-user-cog mr-3"></i> Users</a>
-    <a href="/users" class="list-group-item list-group-item-action bg-light"> <i class="fas fa-chalkboard-teacher  mr-3  "></i> New Instructor </a>
+    {{#if (isUndefined user.userType)}}
+    <a href="/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-home mr-3"
+        aria-hidden="true"></i> Trang chủ</a>
+    <a href="/categories/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-list-ol mr-3"
+        aria-hidden="true"></i> Lĩnh vực</a>
+    <a href="/courses" class="list-group-item list-group-item-action bg-light"><i class="fas fa-books mr-3"></i>
+      Khóa học</a>
+    {{else}}
+    {{#if (isAdmin user.userType)}}
+    <a href="/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-home mr-3"
+        aria-hidden="true"></i> Trang chủ</a>
+    <a href="/categories1/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-list-ol mr-3"
+        aria-hidden="true"></i> Quản lý lĩnh vực Lv1</a>
+    <a href="/categories/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-list-ol mr-3"
+        aria-hidden="true"></i> Quản lý lĩnh vực Lv2</a>
+    <a href="/courses" class="list-group-item list-group-item-action bg-light"><i class="fas fa-books mr-3"></i>
+      Quản lý khóa học</a>
+    <a href="/users" class="list-group-item list-group-item-action bg-light"> <i class="fas fa-user-cog mr-3"></i>
+      Quản lý người dùng</a>
+    <a href="/users" class="list-group-item list-group-item-action bg-light"> <i
+        class="fas fa-chalkboard-teacher  mr-3  "></i> Giảng viên mới</a>
+    {{else}}
+    <a href="/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-home mr-3"
+        aria-hidden="true"></i> Trang chủ</a>
+    <a href="/categories/" class="list-group-item list-group-item-action bg-light"><i class="fa fa-list-ol mr-3"
+        aria-hidden="true"></i>  Lĩnh vực</a>
+    <a href="/courses" class="list-group-item list-group-item-action bg-light"><i class="fas fa-books mr-3"></i> Khóa học</a>
+    {{/if}}
+    {{/if}}
   </div>
 </div>

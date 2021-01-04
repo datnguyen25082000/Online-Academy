@@ -23,7 +23,7 @@ router.post('/updateSidebar', (req, res) => {
 
 // Dashboard
 router.get('/dashboard', typeAuthenticated, (req, res) =>
-  res.render('user', {
+  res.render('home', {
     user: req.user,
   })
 );

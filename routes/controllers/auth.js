@@ -19,7 +19,7 @@ module.exports = {
       }
       // AUTHOR
       else if (req.user.userType === 2) {
-        return res.render('lecturer', {
+        return res.render('home', {
           user: req.user,
         })
       }

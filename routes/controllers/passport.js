@@ -9,6 +9,7 @@ module.exports = function (passport) {
   passport.use(
     new LocalStrategy({ usernameField: 'username' }, (username, password, done) => {
       // Match user
+      console.log("vao passport r ne");
       User.single(username.toString())
         .then(user => {
           if (!user) {

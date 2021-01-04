@@ -14,13 +14,13 @@
 </script>
 {{/section}}
 
-<div class="card m-5 mt-5">
+<div class="card m-5 mt-5 ">
   <h5 class="card-header d-flex justify-content-between">
     <div>
-      <i class="fa fa-list-ol mr-2" aria-hidden="true"></i>Danh sách lĩnh vực bậc 2
+      <i class="fa fa-list-ol mr-2" aria-hidden="true"></i>Danh sách lĩnh vực bậc 1
     </div>
-
-    <a class="btn btn-outline-success" href="/categories/add" role="button">
+    
+    <a class="btn btn-outline-success" href="/categories1/add" role="button">
       <i class="fa fa-plus" aria-hidden="true"></i>
       Thêm lĩnh vực
     </a>
@@ -36,7 +36,6 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Lĩnh vực</th>
-          <th scope="col">Lĩnh vực bậc 1</th>
           <th scope="col">&nbsp;</th>
         </tr>
       </thead>
@@ -45,9 +44,8 @@
         <tr>
           <th scope="row">{{catID}}</th>
           <td>{{catName}}</td>
-          <td>{{catLevel1Name}}</td>
           <td class="text-right">
-            <a class="btn btn-sm btn-primary" href="/categories/{{catID}}" role="button" title="Edit Category">
+            <a class="btn btn-sm btn-primary" href="/categories1/{{catID}}" role="button" title="Edit Category">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
           </td>
@@ -58,6 +56,6 @@
   </div>
   {{/if}}
   <div class="card-footer text-muted">
-
+    
   </div>
 </div>

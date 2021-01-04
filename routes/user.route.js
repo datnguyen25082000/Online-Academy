@@ -16,7 +16,12 @@ router.get('/add', function (req, res) {
 })
 
 router.post('/add', async function (req, res) {
-  const ret = await UserModel.add(req.body);
+  try {
+    const ret = await UserModel.add(req.body);
+    res.status(200).send({ 'added': true });
+  } catch (error) {
+    res.status(200).send({ 'added': false })
+  }
 })
 
 router.post('/del', async function (req, res) {
@@ -24,8 +29,12 @@ router.post('/del', async function (req, res) {
 })
 
 router.post('/patch', async function (req, res) {
-  const ret = await UserModel.patch(req.body);
-  res.redirect('/users');
+  try {
+    const ret = await UserModel.patch(req.body);
+    res.status(200).send({ 'saved': true });
+  } catch (error) {
+    res.status(200).send({ 'saved': false })
+  }
 })
 
 router.get('/:id', async function (req, res) {
