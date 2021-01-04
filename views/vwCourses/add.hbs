@@ -87,14 +87,14 @@
         var counter = 0;
 
         function addanlesson() {
-            var thisList = document.getElementById("courseList");
+            var thisList = document.getElementById("lesson");
             var breakLine = document.createElement("br");
             counter++;
 
 
             var node = document.createElement("input");
             node.setAttribute("type", "text");
-            node.setAttribute("name", "Lesson");
+            node.setAttribute("name", "lesson");
             node.setAttribute("placeholder", counter + ". Ten bai hoc");
 
             node.style.width = "100%";
@@ -119,13 +119,15 @@
         <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
         <form id="frmCourse" class="form form-vertical" action="" method="post" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-sm-4 text-center">
-                    <div class="kv-avatar">
-                        <div class="file-loading">
-                            <input id="avatar-2" name="avatar-2" type="file">
+                <div class="col-sm-4 text-center ">
+                    <div class="mt-5">
+                        <div class="kv-avatar">
+                            <div class="file-loading">
+                                <input id="avatar-2" name="avatar-2" type="file">
+                            </div>
                         </div>
+                        <p>Anh khoa hoc</p>
                     </div>
-
                 </div>
                 <div class="col-sm-8">
                     <div class="card  m-5 mt-5">
@@ -142,16 +144,19 @@
                         <span class="alert-heading">MESSAGE</span>
                         </div>
                         {{/if}}
+
+                        
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="txtCourseName">Course</label>
-                                <input type="text" class="form-control" id="txtCourseName" name="CourseName" autofocus>
+                                <label for="courseName">Ten khoa hoc<span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="courseName" name="courseName" autofocus>
                             </div>
                         </div>
-
+                        
+                    
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="short_des">Mo ta ngan gon</label>
+                                <label for="short_des">Mo ta ngan gon<span style="color: red;">*</span></label>
                                 <input type="text" class="form-control" id="short_des" name="short_des">
                             </div>
                         </div>
@@ -159,7 +164,7 @@
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="full_des">Mo ta day du</label>
+                                <label for="full_des">Mo ta day du<span style="color: red;">*</span></label>
                                 <div id="editor" style="height: 300px;"></div>
                                 <input type="text" class="form-control" id="full_des" name="full_des" style="visibility: hidden; height: 0px;">
                             </div>
@@ -167,7 +172,7 @@
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="price">Hoc phi</label>
+                                <label for="price">Hoc phi<span style="color: red;">*</span></label>
                                 <input type="number" class="form-control" id="price" name="price">
                             </div>
                         </div>
@@ -179,15 +184,19 @@
                             </div>
                         </div>
 
+                       
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="Lesson">Danh sach cac khoa hoc</label>
-                                <div id="courseList"></div>
-                                <button type="button" id="addNewCourse" onclick="addanlesson()">Them</button>
+                                <label for="lesson">Danh sach cac khoa hoc</label>
+                                <div id="lesson"></div>
+                                <div class="    text-muted text-right">
+                                    <button class="" type="button" id="addNewCourse" onclick="addanlesson()">Them</button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card-footer text-muted">
+
+                        <div class="card-footer text-muted text-right">
                             <button type="submit" id="submitAddCourse" class="btn btn-outline-success">
                             <i class="fa fa-check" aria-hidden="true"></i>
                                 Save

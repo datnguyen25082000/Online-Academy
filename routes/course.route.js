@@ -28,7 +28,7 @@ router.post('/add', function(req, res) {
 
     var storage = multer.diskStorage({
         destination: function(req, file, cb) {
-            cb(null, '../public/imagesCourse')
+            cb(null, './public/imagesCourse')
         },
         filename: function(req, file, cb) {
             cb(null, file.originalname)
@@ -41,56 +41,57 @@ router.post('/add', function(req, res) {
             // An error occurred when uploading
             console.log(err);
         } else {
+            const { courseName, short_des, full_des, price, discount, lesson } = req.body;
+            let errors = [];
+
+            if (!courseName || !short_des || !full_des || !price) {
+                errors.push({ msg: 'Please enter all fields' });
+            }
+
+            console.log(req.body);
+            console.log(courseName);
+            console.log(short_des);
+            console.log(full_des);
+            console.log(price);
+            console.log(discount);
+
+            if (!(lesson === undefined)) {
+                for (i = 0; i < lesson.length; i++) {
+                    console.log(lesson[i]);
+                }
+            }
+
+            if (errors.length > 0) {
+                res.render('vwCourses/add', {
+                    err: true,
+                    errorMsg: errors[0].msg
+                });
+            } else {
+                courseModel.single(courseName).then(course => {
+                    if (course) {
+                        // errors.push({ msg: 'Email already exists' });
+                        // res.render('register', {
+                        //     err: true,
+                        //     errorMsg: errors[0].msg,
+                        //     layout: false
+                        // });
+                    } else {
+                        // bcrypt.genSalt(10, (err, salt) => {
+                        //     bcrypt.hash(password, salt, (err, hash) => {
+                        //         if (err) throw err;
+
+                        //         User.add({ userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name })
+
+                        //         res.redirect('/auth/login');
+                        //     });
+                        // });
+                    }
+                });
+            }
             res.render('vwCourses/add')
         }
     });
-    /*
 
-    const { avatar, courseName, short_des, full_des, price, discount, lessons } = req.body;
-    let errors = [];
-
-    if (!courseName || !short_des || !full_des || !price) {
-        errors.push({ msg: 'Please enter all fields' });
-    }
-
-    console.log(req.body);
-    //console.log(avatar);
-    //console.log(courseName);
-    console.log(short_des);
-    console.log(full_des);
-    console.log(price);
-    //console.log(discount);
-    for (i = 0; i < lessons.length; i++) {
-        console.log(lessons[i]);
-    }
-    if (errors.length > 0) {
-        res.render('vwCourses/add', {
-            err: true,
-            errorMsg: errors[0].msg
-        });
-    } else {
-        courseModel.single(courseName).then(course => {
-            if (course) {
-                // errors.push({ msg: 'Email already exists' });
-                // res.render('register', {
-                //     err: true,
-                //     errorMsg: errors[0].msg,
-                //     layout: false
-                // });
-            } else {
-                // bcrypt.genSalt(10, (err, salt) => {
-                //     bcrypt.hash(password, salt, (err, hash) => {
-                //         if (err) throw err;
-
-                //         User.add({ userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name })
-
-                //         res.redirect('/auth/login');
-                //     });
-                // });
-            }
-        });
-    }
-    */
 })
 
 router.post('/del', async function(req, res) {
