@@ -22,10 +22,14 @@ router.post('/updateSidebar', (req, res) => {
 
 
 // Dashboard
-router.get('/dashboard', typeAuthenticated, (req, res) =>
+router.get('/dashboard', typeAuthenticated, async (req, res) => {
+  const rows = await courseModel.all();
   res.render('home', {
+    topTrending: rows.slice(0,4),
+    empty: rows.length === 0,
     user: req.user,
   })
+}
 );
 
 module.exports = router;
