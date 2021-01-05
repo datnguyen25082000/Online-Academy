@@ -1,8 +1,8 @@
 {{#section 'js'}}
 <script>
-  $("#submitDeleteUser").click(function () {
+  $("#submitDeleteCat").click(function () {
     Swal.fire({
-      title: 'Xóa người dùng này?',
+      title: 'Bạn chắc chứ?',
       text: "Thao tác này không hoàn lại được",
       icon: 'warning',
       showCancelButton: true,
@@ -13,28 +13,29 @@
     }).then((result) => {
       if (result.value) {
         var action = $(this).attr('formaction')
-        var form = $("#formEditUser");
+        var form = $("#formEditCat");
         form.attr('action', action);
         form.submit();
         Swal.fire(
           'Xóa thành công!',
-          'Người dùng này đã được xóa.',
+          'Lĩnh vực này đã được xóa.',
           'success'
         ).then((result) => {
           if (result.value)
-            $(location).attr('href', '/users')
+            $(location).attr('href', '/categories1')
         })
       }
     })
   });
 
-  $("#submitSaveUser").click(function () {
-      submitSaveUser();
+  $("#submitSaveCat").click(function () {
+    if ($("#txtCatName").val().length > 0)
+      submitSaveCat();
   })
 
-  function submitSaveUser() {
-    var action = $("#submitSaveUser").attr('formaction')
-    var form = $("#formEditUser");
+  function submitSaveCat() {
+    var action = $("#submitSaveCat").attr('formaction')
+    var form = $("#formEditCat");
     form.attr('action', action);
     $.ajax({
       type: "POST",
@@ -44,7 +45,7 @@
         if (data.saved) {
           Swal.fire(
             'Thay đổi thành công',
-            'Đã thay đổi thông tin người dùng này.',
+            'Đã đổi tên lĩnh vực này.',
             'success'
           ).then((result) => {
             location.reload();
@@ -52,8 +53,8 @@
         }
         else {
           Swal.fire(
-            'Email đã tồn tại!!!',
-            'Vui lòng nhập email khác',
+            'Tên đã tồn tại!!!',
+            'Vui lòng nhập tên khác',
             'error'
           ).then((result) => {
             location.reload();
@@ -65,37 +66,32 @@
 </script>
 {{/section}}
 
-<form method="POST" id="formEditUser">
+<form method="POST" id="formEditCat">
   <div class="card  m-5 mt-5">
     <h5 class="card-header">
-      Thay đổi thông tin người dùng
+      Thay đổi tên lĩnh vực
     </h5>
     <div class="card-body">
       <div class="form-group">
-        <label for="txtUserID">#</label>
-        <input type="text" class="form-control" id="txtUserID" name="userUsername" value="{{this.editUser.userUsername}}" readonly>
+        <label for="txtCatID">#</label>
+        <input type="text" class="form-control" id="txtCatID" name="catID" value="{{this.category.catID}}" readonly>
       </div>
       <div class="form-group">
-        <label for="userEmail">Email</label>
-        <input type="text" class="form-control" id="userEmail" name="userEmail" value="{{this.editUser.userEmail}}"
-          autofocus>
-      </div>
-      <div class="form-group">
-        <label for="userDisplayName">Họ tên</label>
-        <input type="text" class="form-control" id="userDisplayName" name="userDisplayName" value="{{this.editUser.userDisplayName}}"
-          >
+        <label for="txtCatName">Tên lĩnh vực:</label>
+        <input type="text" class="form-control" id="txtCatName" name="catName" value="{{this.category.catName}}"
+          autofocus required>
       </div>
     </div>
     <div class="card-footer text-muted">
-      <a class="btn btn-primary mr-1" href="/users" role="button">
+      <a class="btn btn-primary mr-1" href="/categories1" role="button">
         <i class="fa fa-backward" aria-hidden="true"></i>
         Quay về
       </a>
-      <button type="button" id="submitDeleteUser" class="btn btn-outline-danger mr-1" formaction="/users/del">
+      <button type="button" id="submitDeleteCat" class="btn btn-outline-danger mr-1" formaction="/categories1/del">
         <i class="fa fa-trash" aria-hidden="true"></i>
-        Xóa người dùng này
+        Xóa lĩnh vực
       </button>
-      <button type="button" id="submitSaveUser" class="btn btn-outline-success" formaction="/users/patch">
+      <button type="button" id="submitSaveCat" class="btn btn-outline-success" formaction="/categories1/patch">
         <i class="fa fa-check" aria-hidden="true"></i>
         Lưu
       </button>

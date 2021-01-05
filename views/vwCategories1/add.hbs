@@ -40,25 +40,16 @@
 <form method="POST" action="" id="formAddCat">
   <div class="card  m-5 mt-5">
     <h5 class="card-header">
-      Thêm lĩnh vực
+      Thêm lĩnh vực 
     </h5>
     <div class="card-body">
       <div class="form-group">
         <label for="txtCatName">Tên lĩnh vực</label>
         <input type="text" class="form-control" id="txtCatName" name="catName" autofocus />
       </div>
-
-      <div class="form-group">
-        <label for="txtUsername mr-5">Lĩnh vực bậc 1 trực thuộc:</label>
-        <select name="catLevel1ID" id="" class="p-1 ml-2">
-          {{#each this.catLevel1}}
-          <option value="{{catID}}">{{catName}}</option>
-          {{/each}}
-        </select>
-      </div>
     </div>
     <div class="card-footer text-muted">
-      <a class="btn btn-primary mr-1" href="/categories" role="button">
+      <a class="btn btn-primary mr-1" href="/categories1" role="button">
         <i class="fa fa-backward" aria-hidden="true"></i>
         Quay về
       </a>

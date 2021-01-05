@@ -189,13 +189,15 @@
       <img src="{{largeImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
       <div class="p-2 d-flex flex-column flex-grow-1">
 
-        <div class="mt-auto d-flex flex-column p-3">
-          <a class="btn btn-sm btn-outline-primary p-2 w-35 m-1" href="/courses/{{courseID}}" role="button">
-            THÊM VÀO GIỎ
-          </a>
-          <a class="btn btn-sm btn-outline-success py-2 w-60 m-1" href="#" role="button">
-            ĐĂNG KÝ KHÓA HỌC
-          </a>
+        <div class="mt-auto d-flex flex-column p-3 mx-auto">
+          <form action="/users/addFavorite" method="POST">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button type="submit" class="btn btn-sm btn-outline-primary p-2 m-1 w-100"> THÊM VÀO KHÓA HỌC YÊU THÍCH</button>
+          </form>
+          <form action="/users/registerCourse" method="POST" class="text-center">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button class="btn btn-sm btn-outline-success py-2 m-1 w-100" type="submit"> ĐĂNG KÝ KHÓA HỌC </button>
+          </form>
           <h5 class="my-3">Miêu tả về khóa học:</h5>
           <div class="ml-4">
             <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 " style="width: 20px"></i> Giá: <span
