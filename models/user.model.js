@@ -26,7 +26,9 @@ module.exports = {
 
   patch(entity) {
     const condition = { userUsername: entity.userUsername };
-    delete entity.username;
+    delete entity.userUsername;
     return db.patch(entity, condition, TBL_USERS);
   }
+
+
 };

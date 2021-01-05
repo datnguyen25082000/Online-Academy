@@ -1,5 +1,7 @@
 const express = require('express');
 const courseModel = require('../models/course.model');
+const registedCourseModel = require('../models/registedCourse.model');
+const watchListModel = require('../models/watchList.model');
 
 const router = express.Router();
 
@@ -11,7 +13,6 @@ router.get('/', async function (req, res) {
       empty: rows.length === 0
     });
   } catch (err) {
-    
     res.send('View error log at server console.');
   }
 })
@@ -20,6 +21,26 @@ router.get('/', async function (req, res) {
 router.get('/add', function (req, res) {
   res.render('vwCourses/add');
 
+})
+
+router.get('/registed', async function (req, res) {
+  const rows = await registedCourseModel.byUsername(req.session.passport.user.userUsername);
+
+  // const courses = await courseModel.byID(rows.courseID);
+  res.render('vwCourses/registed', {
+    courses: rows,
+    empty: rows.length === 0
+  })
+})
+
+router.get('/watchList', async function (req, res) {
+  const rows = await watchListModel.byUsername(req.session.passport.user.userUsername);
+
+  // const courses = await courseModel.byID(rows.courseID);
+  res.render('vwCourses/watchList', {
+    courses: rows,
+    empty: rows.length === 0
+  })
 })
 
 router.post('/add', async function (req, res) {
