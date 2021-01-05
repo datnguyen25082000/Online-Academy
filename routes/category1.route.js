@@ -20,7 +20,6 @@ router.post('/add', async function (req, res) {
     const ret = await categoryModel.add(req.body);
     res.status(200).send({'added': true});
   } catch (error) {
-    console.log('vao err r ne')
     res.status(200).send({'added': false})
   }
 })

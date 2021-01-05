@@ -40,13 +40,17 @@ router.post("/patch", async function (req, res) {
 
 //register a course
 router.post("/registerCourse", async function (req, res) {
-  let data = {
-    username: req.session.passport.user.userUsername,
-    courseID: req.body.courseID,
-  };
-  const ret = await registedCourseModel.add(data);
+  try {
+    let data = {
+      username: req.session.passport.user.userUsername,
+      courseID: req.body.courseID,
+    };
 
-  res.redirect(`/courses/${data.courseID}`);
+    const ret = await registedCourseModel.add(data);
+    res.status(200).send({enrol: true});
+  } catch (error) {
+    res.status(200).send({enrol: false})
+  }
 });
 
 //add a course to watch list
@@ -62,7 +66,6 @@ router.post("/addFavorite", async function (req, res) {
 
 //remove a course from watch list
 router.post("/removeFavorite", async function (req, res) {
-  console.log(req.body);
   let data = {
     username: req.session.passport.user.userUsername,
     courseID: +req.body.courseID,
@@ -123,7 +126,6 @@ router.post("/profile", function (req, res) {
 
 //save info
 router.post("/profile/save", async function (req, res) {
-  console.log(req.body);
   const ret = await UserModel.patch(req.body);
   res.redirect("/users/profile");
 });

@@ -9,7 +9,6 @@ router.get('/', async function (req, res) {
     rows.forEach(async element => {
       const catLevel1 = await categoryModel1.single(element.catLevel1ID);
       element['catLevel1Name'] = catLevel1.catName;
-      console.log(element);
     });
   } catch (error) {
 
@@ -32,7 +31,6 @@ router.post('/add', async function (req, res) {
     const ret = await categoryModel.add(req.body);
     res.status(200).send({ 'added': true });
   } catch (error) {
-    console.log('vao err r ne')
     res.status(200).send({ 'added': false })
   }
 })

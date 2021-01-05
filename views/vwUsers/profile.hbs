@@ -23,24 +23,23 @@
   $('#fuMain').fileinput({
     theme: 'fa',
     dropZoneEnabled: false,
-    dataShowPreview="false",
     allowedFileExtensions: ['png', 'jpg', 'gif'],
   });
 </script>
 {{/section}}
-<div class="container overflow-hidden mt-5">
+<div class="container overflow-hidden mt-5 mb-5">
   <div class="card">
     <h5 class="card-header text-center">
-      Profile
+      THÔNG TIN CÁ NHÂN
       <div></div>
     </h5>
 
     <div class="row vh-100 m-0">
       <div class="bg-light border-right col-md-4">
-        <div class="text-center my-2">
+        <div class="text-center my-2 mt-4">
           <form action="" method="POST" enctype="multipart/form-data">
             <div class="card">
-              <h5 class="card-header">Upload</h5>
+              <h5 class="card-header">Ảnh đại diện</h5>
               <div class="card-body">
                 <div class="form-group">
                   <input id="fuMain" name="fuMain" type="file" class="file" multiple>
@@ -49,25 +48,25 @@
             </div>
           </form>
         </div>
-        <div class="list-group list-group-flush border rounded text-center">
+        <div class="list-group list-group-flush border rounded mt-4">
           <a href="/users/profile?tab=general"
             class="list-group-item list-group-item-action {{#if this.isGeneralTab}} active {{else}} bg-light {{/if}}">
             <i class="fa fa-gear mr-3" aria-hidden="true"></i>
-            General
+            Cài đặt chung
           </a>
           <a href="/users/profile?tab=password"
             class="list-group-item list-group-item-action {{#if this.isGeneralTab}} bg-light {{else}} active {{/if}}">
             <i class="fa fa-key mr-3" aria-hidden="true"></i>
-            Password
+            Quản lý mật khẩu
           </a>
         </div>
       </div>
 
-      <div class="card-body col-md-8">
+      <div class="card-body col-md-8 mt-2">
         <form action="/users/profile/save" method="POST">
           {{#if this.isGeneralTab}}
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Họ tên</label>
             <input type="text" class="form-control" id="name" name="userDisplayName"
               value="{{this.info.userDisplayName}}" required>
           </div>
@@ -78,31 +77,31 @@
               readonly>
           </div>
           <div class="form-group">
-            <label for="email">Email address</label>
+            <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="userEmail" aria-describedby="emailHelp"
               value="{{this.info.userEmail}}" required>
           </div>
           <div class="form-group">
-            <label for="describe">Describe</label>
+            <label for="describe">Giới thiệu bản thân</label>
             <textarea class="form-control" name="userIntro" id="describe" cols="30" rows="10">
               {{this.info.userIntro}}
             </textarea>
           </div>
           {{else}}
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Mật khẩu</label>
             <input type="password" class="form-control" id="password" name="userPassword"
               value="{{this.info.userPassword}}" required>
           </div>
           {{/if}}
           <div class="text-right">
             <a class="btn btn-outline-success mr-2" href="/" role="button">
-              <i class="fa fa-backward" aria-hidden="true"></i>
-              Back
+              <i class="fa fa-backward mr-2" aria-hidden="true"></i>
+              Quay về
             </a>
             <button type="submit" class="btn btn-primary">
-              <i class="fas fa-save"></i>
-              Save
+              <i class="fas fa-save mr-2"></i>
+              Lưu
             </button>
           </div>
         </form>
