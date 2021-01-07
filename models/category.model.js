@@ -7,10 +7,12 @@ module.exports = {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
 
-  allWithDetails() {
+  allWithDetails(cat1) {
     const sql = `
-      select c.*, count(p.courseId) as CourseCount
-      from ${TBL_CATEGORIES} 
+    select c2.*, count(p.courseID) as ProductCount
+    from categoriesLevel2 c2 left join courses p on c2.catID = p.courseCatLevel2ID
+	  where c2.catLevel1ID = '${cat1}'
+    group by c2.CatID, c2.CatName, c2.catLevel1ID
     `;
     return db.load(sql);
   },

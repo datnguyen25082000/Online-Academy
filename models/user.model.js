@@ -24,6 +24,14 @@ module.exports = {
     return rows[0];
   },
 
+  async singleEmail(id) {
+    const rows = await db.load(`select * from ${TBL_USERS} where userEmail = '${id}' `);
+    if (rows.length === 0)
+      return null;
+
+    return rows[0];
+  },
+
   patch(entity) {
     const condition = { userUsername: entity.userUsername };
     delete entity.userUsername;

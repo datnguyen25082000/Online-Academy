@@ -8,7 +8,11 @@ module.exports = {
   },
 
   byCat(catId) {
-    return db.load(`select * from ${TBL_COURSES} where courseCatId = ${catId}`);
+    return db.load(`select * from ${TBL_COURSES} where courseCatLevel2ID = ${catId}`);
+  },
+
+  fullTextSearch(text) {
+    return db.load(`select * from ${TBL_COURSES} where match(courseName) AGAINST('${text}') `);
   },
 
   async single(id) {

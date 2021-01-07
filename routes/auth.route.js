@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
+const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 const { forwardAuthenticated } = require('./controllers/auth');
 
@@ -12,7 +14,7 @@ router.get('/login', forwardAuthenticated, (req, res) => res.render('login', {
 }));
 
 // Register Page
-router.get('/register', forwardAuthenticated, (req, res) => res.render('register' , {
+router.get('/register', forwardAuthenticated, (req, res) => res.render('register', {
   layout: false
 }));
 
@@ -42,24 +44,111 @@ router.post('/register', (req, res) => {
   } else {
     User.single(username).then(user => {
       if (user) {
-        errors.push({ msg: 'Email already exists' });
+        errors.push({ msg: 'Username already exists' });
         res.render('register', {
           err: true,
           errorMsg: errors[0].msg,
           layout: false
         });
       } else {
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(password, salt, (err, hash) => {
-            if (err) throw err;
+        User.singleEmail(email).then(user => {
+          if (user) {
+            errors.push({ msg: 'Email already exists' });
+            res.render('register', {
+              err: true,
+              errorMsg: errors[0].msg,
+              layout: false
+            });
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(password, salt, (err, hash) => {
+                if (err) throw err;
 
-            User.add({ userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name })
+                // User.add({ userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name, isConfirm: false })
 
-            res.redirect('/auth/login');
-          });
+                var transporter = nodemailer.createTransport({ // config mail server
+                  host: 'smtp.gmail.com',
+                  port: 465,
+                  secure: true,
+                  auth: {
+                    user: 'onlineacademysystem@gmail.com',
+                    pass: 'datquadeptrai123'
+                  },
+                  tls: {
+                    rejectUnauthorized: false
+                  }
+                });
+
+                const token = jwt.sign(
+                  { userUsername: username, userPassword: hash, userEmail: email, userDisplayName: name },
+                  process.env.JWT_ACCOUNT_ACTIVATION,
+                  {
+                    expiresIn: '5m'
+                  }
+                );
+
+                // content of confirm mail
+                var content = '';
+                content += `
+                    <div style="padding: 10px; background-color: #003375">
+                        <div style="padding: 10px; background-color: white;">
+                            <h1 style="text-align: center">Online Academy</h1>
+                            <h3 style="color: #0085ff">Chào mừng bạn đến với hệ thống học trực tuyến Online Academy</h3>
+                            <span style="color: black">Click vào link để xác nhận đăng ký tài khoản:</span>
+                            http://localhost:3000/auth/confirm?data=` + token + `
+                        </div>
+                    </div>
+                `;
+
+                var mainOptions = {
+                  from: 'onlineacademysystem@gmail.com',
+                  to: email,
+                  subject: 'Test Nodemailer',
+                  text: 'Your text is here',
+                  html: content
+                }
+
+                transporter.sendMail(mainOptions, function (err, info) {
+                  if (err) {
+                    console.log(err);
+                     res.status(200).send('confirm', {
+                       step: 1,
+                       sendMail: false
+                     })
+                  } else {
+                    console.log('Message sent: ' + info.response);
+                     res.render('confirm', {
+                       step: 1, 
+                       sendMail: true
+                     })
+                  }
+                });
+              });
+            });
+          }
         });
       }
     });
+  }
+})
+
+router.get('/confirm', (req, res) => {
+  const token = req.query.data;
+  if (token) {
+    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+      if (err) {
+        console.log('Activation error');
+        return res.status(401).json({
+          errors: 'Expired link. Signup again'
+        });
+      } else {
+        const { userUsername, userPassword, userEmail, userDisplayName } = jwt.decode(token);
+        User.add({ userUsername, userPassword, userType: 1, userEmail, userDisplayName })
+        res.render('confirm')
+      }
+    });
+  } else {
+    return res.render('500', { layout: false });
   }
 });
 
@@ -87,6 +176,6 @@ router.get('/is-available', async function (req, res) {
     return res.json(true);
   }
   res.json(false);
-})
+});
 
 module.exports = router;

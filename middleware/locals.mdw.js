@@ -1,4 +1,5 @@
 const categoryModel = require('../models/category.model');
+const categoryModel1 = require('../models/category1.model')
 
 module.exports = function (app) {
   app.use(async function (req, res, next) {
@@ -16,7 +17,7 @@ module.exports = function (app) {
         else
           req.session.isActiveSidebar = true;
       }
-        
+
       req.session.save();
       res.locals.isActiveSidebar = req.session.isActiveSidebar
       res.locals.user = req.session.passport.user;
@@ -26,9 +27,17 @@ module.exports = function (app) {
     }
   })
 
-  // app.use(async function (req, res, next) {
-  //   const rows = await categoryModel.allWithDetails();
-  //   res.locals.lcCategories = rows;
-  //   next();
-  // })
+  app.use(async function (req, res, next) {
+    let lcCategories = await categoryModel1.all();
+    var resultArray = Object.values(JSON.parse(JSON.stringify(lcCategories)))
+
+    resultArray.forEach(async element => {
+      element['catLevel2'] = [];
+      const catLevel2 = await categoryModel.allWithDetails(element.catID);
+      var resultArray2 = Object.values(JSON.parse(JSON.stringify(catLevel2)));
+      element.catLevel2 = resultArray2;
+    });
+    res.locals.lcCategories = resultArray;
+    next();
+  })
 }
