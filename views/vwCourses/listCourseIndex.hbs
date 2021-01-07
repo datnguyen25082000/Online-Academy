@@ -29,6 +29,14 @@
     var newUrl = url.href;
     window.location.href = newUrl;
   })
+  $('.page-link').click(function () {
+    const value = $(this).val()
+    var currentUrl = window.location.href;
+    var url = new URL(currentUrl);
+    url.searchParams.set("page", value);
+    var newUrl = url.href;
+    window.location.href = newUrl;
+  })
 </script>
 {{/section}}
 
@@ -36,9 +44,9 @@
   <div>
     <h2>Tất cả các khóa học </h2>
     {{#if (isUndefined dataSearch)}}
-      {{else}}
-      <span class="text-danger">Từ khóa tìm kiếm: {{dataSearch}}</span>
-      {{/if}}
+    {{else}}
+    <span class="text-danger">Từ khóa tìm kiếm: {{dataSearch}}</span>
+    {{/if}}
   </div>
 
   <div class="row my-5">
@@ -153,6 +161,19 @@
 
           </div>
           {{/each}}
+           <nav aria-label="Page navigation example" class="px-auto">
+          <ul class="pagination text-center">
+            <div class="mx-auto d-flex mt-3">
+              <li class="page-item"><button class="page-link" {{#if can_go_prev}} {{else}}disabled{{/if}}
+                  value={{prev_value}}>Trang trước</button></li>
+              {{#each page_items}}
+              <li class="page-item"><button class="page-link" value={{value}}>{{value}}</button></li>
+              {{/each}}
+              <li class="page-item"><button class="page-link" {{#if can_go_next}} {{else}}disabled{{/if}}
+                  value={{next_value}}>Trang tiếp theo</button></li>
+            </div>
+          </ul>
+        </nav>
           {{/if}}
         </div>
 

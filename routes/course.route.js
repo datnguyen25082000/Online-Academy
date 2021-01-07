@@ -5,6 +5,8 @@ const registedCourseModel = require('../models/registedCourse.model');
 const watchListModel = require('../models/watchList.model');
 const multer = require('multer');
 const router = express.Router();
+const limitPage = process.env.LIMIT_PAGE;
+
 
 router.get('/', async function (req, res) {
     try {
@@ -19,9 +21,20 @@ router.get('/', async function (req, res) {
 })
 
 router.get('/listCourse/', async function (req, res) {
-    let listCourse = await courseModel.all();
-
+    const pageNumber = req.query.page || 1;
+    let listCourse = await courseModel.allPage((pageNumber - 1) * limitPage);
     let rating = "", price = "";
+
+    const totalResult = await courseModel.allCount();
+    const total = totalResult[0].total;
+    nPage = Math.ceil(total / limitPage);
+    const page_items = [];
+    for (i = 1; i <= nPage; i++) {
+        const item = {
+            value: i
+        }
+        page_items.push(item);
+    }
 
     try {
         rating = req.query.rating;
@@ -59,15 +72,34 @@ router.get('/listCourse/', async function (req, res) {
     res.render('vwCourses/listCourseIndex', {
         listCourse,
         price,
+        nPage, 
+        prev_value: parseInt(pageNumber) - 1,
+        next_value: parseInt(pageNumber) + 1,
+        can_go_prev: pageNumber > 1,
+        can_go_next: pageNumber < nPage,
+        page_items,
         rating
     });
 })
 
 
 router.get('/listCourse/:id', async function (req, res) {
+    const pageNumber = req.query.page || 1;
     const category = req.params.id;
-    const listCourse = await courseModel.byCat(category);
+
+    const listCourse = await courseModel.byCatPage(category, (pageNumber - 1) * limitPage);
     const catLevel2 = await categoriesLevelModel.single(category);
+    const totalResult = await courseModel.byCat(category);
+
+    const total = totalResult[0].total;
+    nPage = Math.ceil(total / limitPage);
+    const page_items = [];
+    for (i = 1; i <= nPage; i++) {
+        const item = {
+            value: i
+        }
+        page_items.push(item);
+    }
 
     if (listCourse.length === 0)
         empty = true;
@@ -113,64 +145,87 @@ router.get('/listCourse/:id', async function (req, res) {
         catLevel2,
         listCourse,
         empty,
+        page_items,
+        nPage,
+        prev_value: parseInt(pageNumber) - 1,
+        next_value: parseInt(pageNumber) + 1,
+        can_go_prev: pageNumber > 1,
+        can_go_next: pageNumber < nPage,
         rating,
         price,
     });
 })
 
 router.get('/search/', async function (req, res) {
-    try {
-        const dataSearch = req.query.dataSearch;
-        const listCourse = await courseModel.fullTextSearch(dataSearch);
-        if (listCourse.length === 0)
-            empty = true
-        else
-            empty = false
+    const pageNumber = req.query.page || 1;
+    const dataSearch = req.query.dataSearch;
 
-        let rating = "", price = "";
-
-        try {
-            rating = req.query.rating;
-            price = req.query.price;
-        } catch (error) {
-
+    const totalResult = await courseModel.fullTextSearch(dataSearch);
+    const total = totalResult[0].total;
+    nPage = Math.ceil(total / limitPage);
+    const page_items = [];
+    for (i = 1; i <= nPage; i++) {
+        const item = {
+            value: i
         }
+        page_items.push(item);
+    }
 
-        try {
-            if (rating !== undefined) {
-                for (i = 0; i < listCourse.length; i++) {
-                    if (Math.round(parseInt(listCourse[i].coursePointEval)) < parseInt(rating)) {
-                        listCourse.splice(i, 1);
-                    }
+    const listCourse = await courseModel.fullTextSearchPage(dataSearch, (pageNumber - 1) * limitPage);
+    if (listCourse.length === 0)
+        empty = true
+    else
+        empty = false
+
+    let rating = "", price = "";
+
+    try {
+        rating = req.query.rating;
+        price = req.query.price;
+    } catch (error) {
+
+    }
+
+    try {
+        if (rating !== undefined) {
+            for (i = 0; i < listCourse.length; i++) {
+                if (Math.round(parseInt(listCourse[i].coursePointEval)) < parseInt(rating)) {
+                    listCourse.splice(i, 1);
                 }
             }
-        } catch (error) {
-
         }
-
-        if (price !== undefined) {
-            if (price === 'asc')
-                listCourse.sort((a, b) => (a.coursePrice > b.coursePrice) ? 1 : -1)
-            else
-                listCourse.sort((a, b) => (a.coursePrice < b.coursePrice) ? 1 : -1)
-        }
-
-        if (price !== undefined) {
-            if (price === 'asc')
-                price = 'Tăng dần'
-            else
-                price = 'Giảm dần'
-        }
-        res.render('vwCourses/listCourseIndex', {
-            listCourse,
-            dataSearch,
-            empty,
-            price,
-            rating
-        });
-
     } catch (error) {
+
     }
+
+    if (price !== undefined) {
+        if (price === 'asc')
+            listCourse.sort((a, b) => (a.coursePrice > b.coursePrice) ? 1 : -1)
+        else
+            listCourse.sort((a, b) => (a.coursePrice < b.coursePrice) ? 1 : -1)
+    }
+
+    if (price !== undefined) {
+        if (price === 'asc')
+            price = 'Tăng dần'
+        else
+            price = 'Giảm dần'
+    }
+    res.render('vwCourses/listCourseIndex', {
+        listCourse,
+        dataSearch,
+        empty,
+        prev_value: parseInt(pageNumber) - 1,
+        next_value: parseInt(pageNumber) + 1,
+        can_go_prev: pageNumber > 1,
+        can_go_next: pageNumber < nPage,
+        page_items,
+        nPage,
+        price,
+        rating
+    });
+
+
 })
 
 //Adding an Course Pages

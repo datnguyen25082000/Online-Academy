@@ -1,18 +1,33 @@
 const db = require('../utils/db');
 
 const TBL_COURSES = 'courses';
+const limitPage = process.env.LIMIT_PAGE;
 
 module.exports = {
+  allPage(page) {
+    return db.load(`select * from courses limit ${limitPage} offset ${page}`);
+  },
+  byCatPage(catId, page) {
+    return db.load(`select * from ${TBL_COURSES} where courseCatLevel2ID = ${catId} limit ${limitPage} offset ${page}`);
+  },
+  fullTextSearchPage(text, page) {
+    return db.load(`select * from ${TBL_COURSES} where match(courseName) AGAINST('${text}') limit ${limitPage} offset ${page}`);
+  },
+
   all() {
     return db.load('select * from courses');
   },
 
+  allCount() {
+    return db.load(`select count(*) as total from ${TBL_COURSES}`);
+  },
+
   byCat(catId) {
-    return db.load(`select * from ${TBL_COURSES} where courseCatLevel2ID = ${catId}`);
+    return db.load(`select count(*) as total from ${TBL_COURSES} where courseCatLevel2ID = ${catId}`);
   },
 
   fullTextSearch(text) {
-    return db.load(`select * from ${TBL_COURSES} where match(courseName) AGAINST('${text}') `);
+    return db.load(`select count(*) as total from ${TBL_COURSES} where match(courseName) AGAINST('${text}') `);
   },
 
   async single(id) {
