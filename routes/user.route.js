@@ -7,6 +7,7 @@ const UserModel = require("../models/user.model");
 const registedCourseModel = require("../models/registedCourse.model");
 const watchListModel = require("../models/watchList.model");
 const multer = require("multer");
+const reviewModel = require("../models/review.model");
 
 router.get("/", async function (req, res) {
   const rows = await UserModel.all();
@@ -33,6 +34,23 @@ router.post("/patch", async function (req, res) {
   res.redirect("/users");
 });
 
+//send comment
+router.post("/sendComment", async function (req, res) {
+  let data = {
+    username: req.session.passport.user.userUsername,
+    courseID: req.body.courseID,
+    content: req.body.content,
+    vote: req.body.vote,
+    dateReview: new Date().toISOString().slice(0, 19).replace('T', ' ')
+  };
+
+  console.log(data);
+
+  const ret = await reviewModel.add(data);
+
+  res.redirect(`/courses/${data.courseID}`);
+});
+
 //register a course
 router.post("/registerCourse", async function (req, res) {
   let data = {
@@ -57,7 +75,6 @@ router.post("/addFavorite", async function (req, res) {
 
 //remove a course from watch list
 router.post("/removeFavorite", async function (req, res) {
-  console.log(req.body);
   let data = {
     username: req.session.passport.user.userUsername,
     courseID: +req.body.courseID,

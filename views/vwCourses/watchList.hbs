@@ -11,6 +11,20 @@
     strokeWidth: 10,
     starSize: 18
   });
+
+  $(".formSubmit").on('submit', function (event) {
+    event.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: form.serialize(),
+      success: function (data) {
+         location.reload();
+      }
+    })
+  })
 </script>
 
 {{/section}}
@@ -30,7 +44,7 @@
     <div class="row">
       {{#each this.courses}}
 
-      <div class="col-md-3 mb-5">
+      <div class="col-md-3">
         <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
           <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
           <div class="p-2 d-flex flex-column flex-grow-1">
@@ -55,7 +69,7 @@
               <i class="fa fa-eye" aria-hidden="true"></i>
               Details
             </a>
-            <form action="/users/removeFavorite" method="POST">
+            <form action="/users/removeFavorite" method="POST" class="formSubmit">
               <input type="text" value="{{courseID}}" name="courseID" class="d-none">
               <button type="submit" class="btn btn-sm btn-outline-danger py-2 mx-2">
                 <i class="fa fa-trash" aria-hidden="true"></i>
