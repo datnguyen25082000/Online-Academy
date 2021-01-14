@@ -8,6 +8,7 @@ const registedCourseModel = require("../models/registedCourse.model");
 const watchListModel = require("../models/watchList.model");
 const multer = require("multer");
 const reviewModel = require("../models/review.model");
+const learnModel = require("../models/learn.model");
 
 router.get("/", async function (req, res) {
   const rows = await UserModel.all();
@@ -115,7 +116,7 @@ router.post("/profile", function (req, res) {
   const upload = multer({ storage });
   // upload.single('fuMain')(req, res, function (err) {
 
-  upload.array("fuMain", 3)(req, res, function (err) {
+  upload.array("fuMain", 1)(req, res, function (err) {
     if (err) {
       console.log(err);
     } else {
@@ -130,6 +131,20 @@ router.post("/profile/save", async function (req, res) {
   const ret = await UserModel.patch(req.body);
   res.redirect("/users/profile");
 });
+
+//learning process
+router.post("/saveState", async function (req, res) {
+  const data = req.body;
+  data.learnUser = req.session.passport.user.userUsername;
+  try {
+    const ret = await learnModel.add(data);
+  } catch (error) {
+    console.log(error);
+  }
+  let link = "/courses/learn?courseID=" + data.learnCourse + "&lessonID=" + data.learnLesson + "&unit=" + data.learnUnit;
+  console.log(link);
+  res.redirect(link);
+})
 
 router.get("/:id", async function (req, res) {
   const id = req.params.id;

@@ -65,9 +65,9 @@
           </div>
 
           <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
-            <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}" role="button">
-              <i class="fa fa-eye" aria-hidden="true"></i>
-              Details
+            <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/learn?courseID={{courseID}}" role="button">
+              <i class="fa fa-book" aria-hidden="true"></i>
+              Learn
             </a>
             {{#if isFavorite}}
             <form action="/users/removeFavorite" method="POST" class="formSubmit">

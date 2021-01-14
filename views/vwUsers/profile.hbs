@@ -7,6 +7,43 @@
   referrerpolicy="origin"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="sweetalert2.all.min.js"></script>
+<!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+<script>
+  $("#passwordTab").on("click", function (e) {
+    e.preventDefault();
+    Swal.fire({
+      title: 'Hãy nhập mật khẩu của bạn',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Kiểm tra',
+      showLoaderOnConfirm: true,
+      preConfirm: (input) => {
+        
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: 'success',
+          title: 'OK..',
+          text: "Bạn đã nhập đúng mật khẩu",
+        })
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Bạn đã nhập sai mật khẩu!!!',
+        })
+      }
+    })
+  })
+</script>
 
 <script>
   tinymce.init({
@@ -25,6 +62,7 @@
     allowedFileExtensions: ['png', 'jpg', 'gif'],
   });
 </script>
+
 {{/section}}
 <div class="container overflow-hidden">
   <div class="card">
@@ -53,7 +91,7 @@
             <i class="fa fa-gear mr-3" aria-hidden="true"></i>
             General
           </a>
-          <a href="/users/profile?tab=password"
+          <a id="passwordTab" href="/users/profile?tab=password"
             class="list-group-item list-group-item-action {{#if this.isGeneralTab}} bg-light {{else}} active {{/if}}">
             <i class="fa fa-key mr-3" aria-hidden="true"></i>
             Password
@@ -87,6 +125,7 @@
             </textarea>
           </div>
           {{else}}
+          
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" name="userPassword"
