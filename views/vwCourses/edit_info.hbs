@@ -79,8 +79,17 @@
             let html = getQuillHtml();
             console.log(html);
             document.getElementById('full_des').value = html;
-            document.getElementById('output-html').innerText = html;
         }
+
+        function getfullDes(){
+            let des =  `{{{this.course.courseDetail}}}`;
+
+            console.log(des);
+            document.getElementById('full_des').value = des;
+            document.getElementById('editor').innerText = des;
+        }
+
+        getfullDes();
     </script>
 
     <script>
@@ -123,7 +132,9 @@
                     <div class="mt-5">
                         <div class="kv-avatar">
                             <div class="file-loading">
-                                <input id="avatar-2" name="avatar-2" type="file">
+                                <input id="avatar-2" name="avatar-2" type="file" src="{{largeImage course.courseImage}}">
+                                {{!-- <img src="{{largeImage course.courseImage}}" alt="{{course.courseName}}" title="{{course.courseName}}"> --}}
+
                             </div>
                         </div>
                         <p>Anh khoa hoc</p>
@@ -149,55 +160,46 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="courseName">Ten khoa hoc<span style="color: red;">*</span></label>
-                                <input type="text" class="form-control" id="courseName" name="courseName" autofocus>
+                                <input type="text" class="form-control" id="courseName" name="courseName" value="{{this.course.courseName}}"autofocus>
                             </div>
                         </div>
                         
                     
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="short_des">Mo ta ngan gon<span style="color: red;">*</span></label>
-                                <input type="text" class="form-control" id="short_des" name="short_des">
+                                <label for="short_des">Mo ta ngan gon<span style="color: red;" >*</span></label>
+                                <input type="text" class="form-control" id="short_des" name="short_des" value="{{this.course.courseDes}}" >
                             </div>
                         </div>
 
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="full_des">Mo ta day du<span style="color: red;">*</span></label>
-                                <div id="editor" style="height: 300px;"></div>
-                                <input type="text" class="form-control" id="full_des" name="full_des" style="visibility: hidden; height: 0px;">
+                                <label for="full_des">Mo ta day du<span style="color: red;" >*</span></label>
+                                <div id="editor" style="height: 300px;" ></div>
+                                <input type="text" class="form-control" id="full_des" name="full_des" style="visibility: hidden; height: 0px;" >
                             </div>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="price">Hoc phi<span style="color: red;">*</span></label>
-                                <input type="number" class="form-control" id="price" name="price">
+                                <input type="number" class="form-control" id="price" name="price" value="{{this.course.coursePrice}}">
                             </div>
                         </div>
 
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="discount">Thong tin khuyen mai</label>
-                                <input type="text" class="form-control" id="discount" name="discount">
+                                <input type="text" class="form-control" id="discount" name="discount" value="{{this.course.courseDiscount}}">
                             </div>
                         </div>
-
-                       
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="lesson">Danh sach cac khoa hoc</label>
-                                <div id="lesson"></div>
-                                <input type="text" class="form-control" id="lesson" name="lesson" style="visibility:hidden;">
-                                <div class="    text-muted text-right">
-                                    <button class="" type="button" id="addNewCourse" onclick="addanlesson()">Them</button>
-                                </div>
-                            </div>
-                        </div>
-
 
                         <div class="card-footer text-muted text-right">
+                            <form>
+                                <input class="btn btn-outline-success" type="button" value="Back" onclick="history.go(-1)">
+                            </form>
+                            
                             <button type="submit" id="submitAddCourse" class="btn btn-outline-success">
                             <i class="fa fa-check" aria-hidden="true"></i>
                                 Save
