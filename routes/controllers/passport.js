@@ -15,19 +15,19 @@ module.exports = function (passport) {
             return done(null, false, { message: 'That account is not registered' });
           }
 
-          if (password == user.userPassword)
-            return done(null, user);
-          else
-            return done(null, false, { message: 'Password incorrect' });
+          // if (password == user.userPassword)
+          //   return done(null, user);
+          // else
+          //   return done(null, false, { message: 'Password incorrect' });
           //Match password
-          // bcrypt.compare(password, user.userPassword, (err, isMatch) => {
-          //   if (err) throw err;
-          //   if (isMatch) {
-          //     return done(null, user);
-          //   } else {
-          //     return done(null, false, { message: 'Password incorrect' });
-          //   }
-          // });
+          bcrypt.compare(password, user.userPassword, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+              return done(null, user);
+            } else {
+              return done(null, false, { message: 'Password incorrect' });
+            }
+          });
         });
     })
   );

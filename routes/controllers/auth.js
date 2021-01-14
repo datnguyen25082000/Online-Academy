@@ -1,3 +1,5 @@
+
+
 module.exports = {
   // LOGGED ??
   ensureAuthenticated: function (req, res, next) {
@@ -14,12 +16,6 @@ module.exports = {
       // ADMIN
       if (req.user.userType === 0) {
         return res.render('admin', {
-          user: req.user,
-        })
-      }
-      // AUTHOR
-      else if (req.user.userType === 2) {
-        return res.render('home', {
           user: req.user,
         })
       }

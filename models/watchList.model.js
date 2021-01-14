@@ -8,6 +8,8 @@ module.exports = {
     return db.load(`select * from ${TBL_FAVORITES}`);
   },
 
+
+
   byUsername(username) {
     return db.load(`select * 
                     from ${TBL_FAVORITES} r join ${TBL_COURSES} c on c.courseID = r.courseID
@@ -28,9 +30,11 @@ module.exports = {
     return db.delWith2Condition(condition1, condition2, TBL_FAVORITES);
   },
 
-  async single(id) {
+  async single (username, courseID) {
     const rows = await db.load(
-      `select * from ${TBL_FAVORITES} where userUsername = '${id}' `
+      `select * 
+        from ${TBL_FAVORITES}
+        where username = '${username}' and courseID = '${courseID}' `
     );
     if (rows.length === 0) return null;
 

@@ -1,4 +1,4 @@
-<div class='position-sticky w-100' style="z-index: 10; top: 0px">
+<div class='position-sticky w-100' style="z-index: 15; top: 0px">
   <nav class="navbar navbar-expand-md navbar-light bg-light shadow d-flex px-4 py-3 ">
     <a class="navbar-brand mr-4" href="/">
       <img src="/public/images/logo.png" width="35px" />
@@ -14,15 +14,13 @@
       <form class="form-inline my-2 my-lg-0 form-nav flex-grow-1">
 
         {{#if (isUndefined user.userType)}}
-        <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" type="search" placeholder="Tìm kiếm khóa học"
-          aria-label="Search">
+        <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" id="searchInput" name="dataSearch" type="search"
+          placeholder="Tìm kiếm khóa học" aria-label="Search">
         <div class="ml-3">
           <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/login">
             Giảng dạy với OA
           </a>
-          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 mr-4" href="/auth/login">
-            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-          </a>
+       
           <div class="d-lg-inline d-none">
             <a class="btn btn-outline-primary my-2 my-sm-0 m-1 text-primary" style="width: 8rem!important;"
               href="/auth/login">
@@ -51,21 +49,24 @@
               <i class="fa fa-user-circle mr-1" aria-hidden="true"></i>
               <b>{{user.userUsername}}</b>
             </a>
-              <div class="dropdown-menu  dropdown-menu-right" style="padding: 0px!important; " aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu  dropdown-menu-right" style="padding: 0px!important; "
+              aria-labelledby="navbarDropdown">
               <p style="text-align: center;background-color: #D6DADE;padding: 5px; margin: 0px!important">Tài khoản</p>
-              <a class="dropdown-item" style="padding: 5px important ;border-bottom: 1px #D6DADE solid" href="/users/profile">
+              <a class="dropdown-item" style="padding: 5px important ;border-bottom: 1px #D6DADE solid"
+                href="/users/profile">
                 <i class="fa fa-user mr-2" aria-hidden="true"></i>
                 Thông tin cá nhân
               </a>
-               <a class="dropdown-item" style="border-bottom: 1px #D6DADE solid" href="/courses/watchList">
-                  <i class="fa fa-heart mr-2" aria-hidden="true"></i>
-                  Danh sách yêu thích
-                </a>
-              <a class="dropdown-item" style="padding: 0px important; ;border-bottom: 1px #D6DADE solid" href="javascript: $('#frmLogout').submit();">
+              <a class="dropdown-item" style="border-bottom: 1px #D6DADE solid" href="/courses/watchList">
+                <i class="fa fa-heart mr-2" aria-hidden="true"></i>
+                Danh sách yêu thích
+              </a>
+              <a class="dropdown-item" style="padding: 0px important; ;border-bottom: 1px #D6DADE solid"
+                href="javascript: $('#frmLogout').submit();">
                 <i class="fa fa-sign-out mr-2" aria-hidden="true"></i>
                 Đăng xuất
               </a>
-              
+
             </div>
           </div>
         </div>
@@ -74,7 +75,7 @@
         <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" type="search" placeholder="Tìm kiếm khóa học"
           aria-label="Search">
         <div class="ml-3 d-flex">
-          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/login">
+          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/lecturer/courses">
             Khóa học của tôi
           </a>
           <div class="nav-item dropdown d-lg-inline d-none">
@@ -83,17 +84,20 @@
               <i class="fa fa-user-circle mr-1" aria-hidden="true"></i>
               <b>{{user.userUsername}}</b>
             </a>
-              <div class="dropdown-menu  dropdown-menu-right" style="padding: 0px!important; " aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu  dropdown-menu-right" style="padding: 0px!important; "
+              aria-labelledby="navbarDropdown">
               <p style="text-align: center;background-color: #D6DADE;padding: 5px; margin: 0px!important">Tài khoản</p>
-              <a class="dropdown-item" style="padding: 0px important ;border-bottom: 2px #D6DADE solid" href="/users/profile">
+              <a class="dropdown-item" style="padding: 0px important ;border-bottom: 2px #D6DADE solid"
+                href="/users/profile">
                 <i class="fa fa-user mr-2" aria-hidden="true"></i>
                 Thông tin cá nhân
               </a>
-               <a class="dropdown-item" style="border-bottom: 1px #D6DADE solid" href="/courses/watchList">
-                  <i class="fa fa-heart mr-2" aria-hidden="true"></i>
-                  Danh sách yêu thích
-                </a>
-               <a class="dropdown-item" style="padding: 0px important; ;border-bottom: 1px #D6DADE solid" href="javascript: $('#frmLogout').submit();">
+              <a class="dropdown-item" style="border-bottom: 1px #D6DADE solid" href="/courses/watchList">
+                <i class="fa fa-heart mr-2" aria-hidden="true"></i>
+                Danh sách yêu thích
+              </a>
+              <a class="dropdown-item" style="padding: 0px important; ;border-bottom: 1px #D6DADE solid"
+                href="javascript: $('#frmLogout').submit();">
                 <i class="fa fa-sign-out mr-2" aria-hidden="true"></i>
                 Đăng xuất
               </a>
@@ -110,9 +114,11 @@
               <i class="fa fa-user-circle mr-1" style="font-size: 20px" aria-hidden="true"></i>
               <b>{{user.userUsername}}</b>
             </a>
-            <div class="dropdown-menu  dropdown-menu-right" style="padding: 0px!important; " aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu  dropdown-menu-right" style="padding: 0px!important; "
+              aria-labelledby="navbarDropdown">
               <p style="text-align: center;background-color: #D6DADE;padding: 5px; margin: 0px!important">Tài khoản</p>
-              <a class="dropdown-item" style="padding: 0px important ;border-bottom: 2px #D6DADE solid" href="/users/profile">
+              <a class="dropdown-item" style="padding: 0px important ;border-bottom: 2px #D6DADE solid"
+                href="/users/profile">
                 <i class="fa fa-user mr-2" aria-hidden="true"></i>
                 Thông tin cá nhân
               </a>

@@ -1,5 +1,15 @@
 {{#section 'css'}}
+<style>
+  .top-cat {
+    position: relative;
+    top: 0;
+    transition: top ease 0.5s;
+  }
 
+  .top-cat:hover {
+    top: -10px;
+  }
+</style>
 {{/section}}
 
 {{#section 'js'}}
@@ -17,6 +27,22 @@
   });
 </script>
 
+<script>
+  $(".formSubmit").on('submit', function (event) {
+    event.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: form.serialize(),
+      success: function (data) {
+         location.reload();
+      }
+    })
+  })
+</script>
+
 {{/section}}
 
 
@@ -24,17 +50,18 @@
   <div class="d-flex bg-image" style="height: 90vh" id='intro-landing'>
     <div class="row d-flex justify-content-center align-self-lg-center text-lg-left text-md-center pt-5 bg-text">
       <div class='col-lg-5 justify-content-center align-self-lg-center'>
-        <h1 class="display-4">Welcome to <span class="text-danger">Online</span>
+        <h1 class="display-4">Chào mừng bạn đến với <span class="text-danger">Online</span>
           <span class='font-italic'
             style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>Academy
           </span>
         </h1>
-        <p class="lead">This is the most reputable and quality online learning system in HCMUS for programming
-          courses.
+        <p class="lead">Đây là hệ thống học trực tuyến uy tín và chất lượng về các khóa học lập trình và kỹ năng sống
+          khác.
+
         </p>
         <hr class="my-4">
         <p class="lead">
-          <button class="btn btn-primary btn-lg" onclick="goToByScroll('list-0')">GET STARTED</button>
+          <button class="btn btn-primary btn-lg" onclick="goToByScroll('list-0')">Bắt đầu</button>
         </p>
       </div>
       <div class="col-lg-5">
@@ -73,14 +100,12 @@
   {{!-- LIST BEST SELLER --}}
   <div id="list-0"></div>
   <div class="list-1 mt-5 container w-100" style="padding-top: 100px!important" id='list-1'>
-    <h1 class="" style="">
-      <span class='font-italic'
-        style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>BEST
-        SELLER</span>
+    <h3 class="" style="">
+      <span class=''>Những khóa học nổi bật</span>
       <hr>
-    </h1>
+    </h3>
     <div class="row">
-      {{#each this.topTrending}}
+      {{#each this.outStandingCourse}}
 
       <div class="col-md-3 mb-5">
         <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
@@ -92,21 +117,34 @@
             </span>
             <div class="mt-auto d-flex justify-content-between">
               <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn
-                  Phí {{else}}{{coursePrice}}{{/if}}</span>
+                  Phí {{else}}{{format coursePrice}}{{/if}}</span>
               </span>
               <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
             </div>
           </div>
 
-          <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
-            <a class="btn btn-sm btn-outline-primary py-2" href="/courses/{{courseID}}" role="button">
-              <i class="fa fa-eye mr-1" aria-hidden="true"></i>
-              <span>Chi tiết</span>
+          <div class="card-footer d-flex justify-content-around" style="padding:1rem!important">
+            <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}" role="button">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              Chi tiết 
             </a>
-            <a class="btn btn-sm btn-outline-success py-2" href="#" role="button">
-              <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
-              <span>Thêm vào giỏ</span>
-            </a>
+            {{#if (isUser ../user.userType)}}
+              {{#if isFavorite}}
+              <form action="/users/removeFavorite" class="formSubmit" method="POST">
+                <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                <button type="submit" class="btn btn-sm py-2 btn-success" title="Xóa khỏi danh sách khóa học yêu thích">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </button>
+              </form>
+              {{else}}
+              <form action="/users/addFavorite" method="POST" class="formSubmit">
+                <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                <button type="submit" class="btn btn-sm py-2 btn-outline-success" title="Thêm vào danh sách khóa học yêu thích">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </button>
+              </form>
+              {{/if}}
+            {{/if}}
           </div>
         </div>
       </div>
@@ -116,13 +154,38 @@
     </div>
   </div>
 
+
+
+  <div class="list-1 container w-100" style="padding-top: 100px!important" id='list-1'>
+    <h3 class="" style="">
+      <span class=''>Những lĩnh vực được đăng ký nhiều nhất</span>
+      <hr>
+    </h3>
+    <div class="row">
+      {{#each this.catMostRegistered}}
+
+      <div class="col-md-3 mb-5">
+        <a class="btn top-cat card h-100 shadow d-flex bg-info m-auto" style="max-width: 250px" href="/courses/listCourse/{{catID}}">
+          <div class="p-5 text-center d-flex flex-column flex-grow-1">
+            <h5 class="font-weight-bold">{{catName}}</h5>
+
+            </span>
+
+          </div>
+        </a>
+      </div>
+
+
+      {{/each}}
+    </div>
+  </div>
+
   {{!-- SLIDE SHOW ENROL --}}
 
-  {{> slideshow parameter=this.topTrending}}
-  {{> slideshow parameter=this.topTrending}}
+  {{> slideshow parameter=this.mostViewedCourse name="Những khóa học được xem nhiều nhất" index=1}}
+  {{> slideshow parameter=this.latestCourse name="Những khóa học mới nhất" index=2}}
   {{!-- SLIDE SHOW NEW --}}
   {{!-- SLIDE SHOW SEEN --}}
-
   {{> footer}}
 
 

@@ -7,14 +7,6 @@ module.exports = {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
 
-  allWithDetails() {
-    const sql = `
-      select c.*, count(p.courseId) as CourseCount
-      from ${TBL_CATEGORIES} 
-    `;
-    return db.load(sql);
-  },
-
   async single(id) {
     const rows = await db.load(`select * from ${TBL_CATEGORIES} where catID = '${id}'`);
     if (rows.length === 0)

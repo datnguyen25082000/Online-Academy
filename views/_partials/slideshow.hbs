@@ -1,24 +1,23 @@
 <div class="mt-5 container pt-5">
-    <h1 class="" style="">
-        <span class='font-italic'
-            style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>
-            TOP TRENDING</span>
+    <h3 class="" style="">
+        <span  >
+            {{this.name}}</span>
         <hr>
-    </h1>
+    </h3>
 
     <div class='d-flex row' style="position: relative">
         <div style="position: absolute; top: 50%; z-index: 10;left:-25px; transform: translate(0,-100%)">
-            <a class=" align-self-center" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <a class=" align-self-center" href="#carouselExampleIndicators_{{this.index}}" role="button" data-slide="prev">
                 <i class=" fa fa-backward fa-2x text-primary" aria-hidden="true"></i>
                 <span class="sr-only">Previous</span>
             </a>
         </div>
-        <div id="carouselExampleIndicators" class="carousel slide flex-grow-1" data-ride="carousel"
+        <div id="carouselExampleIndicators_{{this.index}}" class="carousel slide flex-grow-1" data-ride="carousel"
             data-interval="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        {{#each parameter}}
+                        {{#each (subArray parameter 0)}}
                         <div class="col-md-3 mb-5">
                             <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                                 <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
@@ -29,8 +28,8 @@
                                     </span>
                                     <div class="mt-auto d-flex justify-content-between">
                                         <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if
-                                                (isZero coursePrice)}}Miễn
-                                                Phí {{else}}{{coursePrice}}{{/if}}</span>
+                                                (isZero format coursePrice)}}Miễn
+                                                Phí {{else}}{{format coursePrice}}{{/if}}</span>
                                         </span>
                                         <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
                                     </div>
@@ -42,10 +41,25 @@
                                         <i class="fa fa-eye mr-1" aria-hidden="true"></i>
                                         <span>Chi tiết</span>
                                     </a>
-                                    <a class="btn btn-sm btn-outline-success py-2" href="#" role="button">
-                                        <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
-                                        <span>Thêm vào giỏ</span>
-                                    </a>
+                                    {{#if (isUser ../user.userType)}}
+                                    {{#if isFavorite}}
+                                    <form action="/users/removeFavorite" class="formSubmit" method="POST">
+                                        <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                                        <button type="submit" class="btn btn-sm py-2 btn-success"
+                                            title="Xóa khỏi danh sách khóa học yêu thích">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                    {{else}}
+                                    <form action="/users/addFavorite" method="POST" class="formSubmit">
+                                        <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                                        <button type="submit" class="btn btn-sm py-2 btn-outline-success"
+                                            title="Thêm vào danh sách khóa học yêu thích">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                    {{/if}}
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
@@ -55,7 +69,7 @@
                 </div>
                 <div class="carousel-item ">
                     <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        {{#each parameter}}
+                        {{#each (subArray parameter 1)}}
                         <div class="col-md-3 mb-5">
                             <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                                 <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
@@ -66,8 +80,8 @@
                                     </span>
                                     <div class="mt-auto d-flex justify-content-between">
                                         <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if
-                                                (isZero coursePrice)}}Miễn
-                                                Phí {{else}}{{coursePrice}}{{/if}}</span>
+                                                (isZero format coursePrice)}}Miễn
+                                                Phí {{else}}{{format coursePrice}}{{/if}}</span>
                                         </span>
                                         <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
                                     </div>
@@ -79,10 +93,25 @@
                                         <i class="fa fa-eye mr-1" aria-hidden="true"></i>
                                         <span>Chi tiết</span>
                                     </a>
-                                    <a class="btn btn-sm btn-outline-success py-2" href="#" role="button">
-                                        <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
-                                        <span>Thêm vào giỏ</span>
-                                    </a>
+                                    {{#if (isUser ../user.userType)}}
+                                    {{#if isFavorite}}
+                                    <form action="/users/removeFavorite" class="formSubmit" method="POST">
+                                        <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                                        <button type="submit" class="btn btn-sm py-2 btn-success"
+                                            title="Xóa khỏi danh sách khóa học yêu thích">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                    {{else}}
+                                    <form action="/users/addFavorite" method="POST" class="formSubmit">
+                                        <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                                        <button type="submit" class="btn btn-sm py-2 btn-outline-success"
+                                            title="Thêm vào danh sách khóa học yêu thích">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                    {{/if}}
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
@@ -92,7 +121,7 @@
                 </div>
                 <div class="carousel-item ">
                     <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        {{#each parameter}}
+                        {{#each (subArray parameter 2)}}
                         <div class="col-md-3 mb-5">
                             <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                                 <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
@@ -103,8 +132,8 @@
                                     </span>
                                     <div class="mt-auto d-flex justify-content-between">
                                         <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if
-                                                (isZero coursePrice)}}Miễn
-                                                Phí {{else}}{{coursePrice}}{{/if}}</span>
+                                                (isZero format coursePrice)}}Miễn
+                                                Phí {{else}}{{format coursePrice}}{{/if}}</span>
                                         </span>
                                         <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
                                     </div>
@@ -116,10 +145,25 @@
                                         <i class="fa fa-eye mr-1" aria-hidden="true"></i>
                                         <span>Chi tiết</span>
                                     </a>
-                                    <a class="btn btn-sm btn-outline-success py-2" href="#" role="button">
-                                        <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
-                                        <span>Thêm vào giỏ</span>
-                                    </a>
+                                    {{#if (isUser ../user.userType)}}
+                                        {{#if isFavorite}}
+                                        <form action="/users/removeFavorite" class="formSubmit" method="POST">
+                                            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                                            <button type="submit" class="btn btn-sm py-2 btn-success"
+                                                title="Xóa khỏi danh sách khóa học yêu thích">
+                                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        {{else}}
+                                        <form action="/users/addFavorite" method="POST" class="formSubmit">
+                                            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+                                            <button type="submit" class="btn btn-sm py-2 btn-outline-success"
+                                                title="Thêm vào danh sách khóa học yêu thích">
+                                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        {{/if}}
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
@@ -130,7 +174,7 @@
             </div>
         </div>
         <div style="position: absolute; top: 50%; z-index: 10; right: -25px; transform: translate(0,-100%)">
-            <a class="align-self-center" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <a class="align-self-center" href="#carouselExampleIndicators_{{index}}" role="button" data-slide="next">
                 <i class=" fa fa-forward fa-2x text-primary" aria-hidden="true"></i>
                 <span class="sr-only">Next</span>
             </a>

@@ -1,0 +1,241 @@
+{{#section 'js'}}
+<!-- the fileinput plugin initialization -->
+
+<!-- Int fileInput-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+
+
+<script>
+
+    {
+        {
+            !--$('#video_0').fileinput({
+                theme: 'fa',
+                dropZoneEnabled: false,
+                allowedFileExtensions: ['mp4', 'gif'],
+            }); --}
+    }
+    $('#dom_0').fileinput({
+        theme: 'fa',
+        dropZoneEnabled: false,
+        allowedFileExtensions: ['mp4', 'pdf', 'gif'],
+    });
+
+    var counter = 0;
+
+    function addanlesson() {
+        var thisList = document.getElementById("lesson");
+        var breakLine = document.createElement("br");
+        counter++;
+
+
+        var node = document.createElement("input");
+        node.setAttribute("type", "text");
+        node.setAttribute("name", "lesson");
+        node.setAttribute("placeholder", counter + ". Ten bai hoc");
+
+        node.style.width = "100%";
+        node.style.padding = "10px";
+        node.style.margin = "10px";
+
+
+
+        thisList.appendChild(node);
+        thisList.appendChild(breakLine.cloneNode());
+
+    }
+
+    // Get the modal
+    var modal = document.getElementById('id{{lessonID}}');
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function checkdone() {
+
+    }
+</script>
+
+
+
+{{/section}}
+
+{{#section 'css'}}
+<link rel="stylesheet" href="../../public/css/modal.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+{{/section}}
+
+<div class="">
+
+    <div class="">
+        <div class="course-des" style="width: inherit;height: 350px; background-color: #1E1E1C; z-index: 9">
+            <div class="row container m-auto p-5 text-white " style="z-index: 10">
+                <div class="col-8">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h2 style="font-size: 2rem" class="font-weight-bold">{{course.courseName}}</h2>
+                        <span class="mb-2" style="font-size: 1.5rem">
+                            {{{course.courseDes}}}
+                        </span>
+                        <div class="mt-auto">
+                            <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format
+                                    coursePrice}}</span>
+                            </span>
+                            <span class="card-text d-block">Số lượng học viên: {{course.courseRegistered}}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="my-rating pl-2 pb-2 " data-rating="{{course.coursePointEval}}"></div>
+                        <div class=" mt-1 text-danger ml-2 font-weight-bold">{{course.coursePointEval}}</div>
+                    </div>
+
+                </div>
+                <div class="col-4"></div>
+            </div>
+
+        </div>
+
+        <div class="row container mx-auto">
+            <div class="row col-8">
+                <div class="row container p-5 m-auto d-flex" style="z-index: 7; position: relative">
+                    <div class="course-main-content col-8">
+                        <div class="course-detail">
+                            <h3>{{{course.courseDetail}}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-4 fixed-course-content" id="fixed-course-content"
+                style="z-index: 9; top: -250px ; right: 0; position: relative">
+                <div class="card shadow d-flex m-auto">
+                    <img src="{{largeImage course.courseImage}}" alt="{{course.courseName}}"
+                        title="{{course.courseName}}">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+
+                        <div class="mt-auto d-flex flex-column p-3">
+
+                            <h5 class="my-3">Miêu tả về khóa học:</h5>
+                            <div class="ml-4">
+                                <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 "
+                                        style="width: 20px"></i> Giá: <span class="text-danger font-weight-bold">{{#if
+                                        (isZero course.coursePrice)}}Miễn Phí
+                                        {{else}}{{course.coursePrice}}{{/if}}</span>
+                                </li>
+                                <li class="card-text d-block"><i class="fas fa-user-friends mr-3   "
+                                        style="width: 20px"></i> Số lượng học
+                                    viên: {{course.courseRegistered}}
+                                </li>
+                                <li class="card-text d-block"><i class="fa fa-clock-o mr-3" aria-hidden="true"
+                                        style="width: 20px"></i> Thời
+                                    gian khóa học:
+                                    {{course.courseRegistered}}</li>
+                                <li class="card-text d-block"><i class="fa fa-list-ol mr-3" aria-hidden="true"
+                                        style="width: 20px"></i> Lĩnh
+                                    vực: abc</li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-muted text-right" style="width: 100%;">
+                    <div class="mx-auto p-5">
+                        <a href="/courses/edit_course/{{course.courseID}}" type="button" onclick=""
+                            class="btn_save btn btn-outline-success">Chỉnh sửa</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="card p-0 m-5 mt-5 container mx-auto" style=";">
+        <div class="card-header ">
+            <label>
+                <h5>Danh sách bài học</h5>
+            </label>
+            <div class="text-muted text-right" style="display: inline; float :right;">
+                {{!-- <form action="">
+                    <input type="submit" class="addNewCourse" type="button" id="addNewCourse" onclick="addanlesson()"
+                        value="Them">
+                    <button class="addNewCourse" type="button" id="addNewCourse" onclick="addanlesson()">Them</button>
+                </form> --}}
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên bài học</th>
+                    <th scope="col text-right">Thay đổi bài học</th>
+                    <th scope="col" class="text-right">Hoàn thành</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.lesson_items}}
+                <tr>
+                    <th scope="row"> {{stt}}</th>
+                    <td>{{lessonName}}</td>
+                    <div id="upload" name="upload">
+                        <td>
+                            <button onclick="document.getElementById('id{{lessonID}}').style.display='block'"
+                                type="button" class="btn btn-primary">Đăng tài liệu</button>
+                            <div id="id{{lessonID}}" class="modal">
+                                <span onclick="document.getElementById('id{{lessonID}}').style.display='none'"
+                                    class="close" title="Close Modal">×</span>
+                                <form class="upload_course" id="upload_course"
+                                    action="/courses/upload_course/{{courseID}}/{{lessonID}}" method="post"
+                                    enctype="multipart/form-data">
+                                    <div class="card formcontainer">
+                                        <h1>Tải file</h1>
+                                        <p>Bạn cần tải file PDF hoặc Video tại đây</p>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <input type="number" name="courseID" id="courseID" value="{{courseID}}"
+                                                    hidden>
+                                                <input type="number" name="lessonID" id="lessonID" value="{{lessonID}}"
+                                                    hidden>
+                                                <label for="lessonName">Tên bài học {{stt}}</label>
+                                                <input type="text" name="lessonName" id="lessonName"
+                                                    value="{{lessonName}}">
+                                            </div>
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="file" class="file" name="dom_{{lessonID}}"
+                                                id="dom_{{lessonID}}" multiple>
+                                            <button type="button"
+                                                onclick="document.getElementById('id{{lessonID}}').style.display='none'"
+                                                class="cancelbtn">Hủy</button>
+                                            <button type="submit"
+                                                onclick="document.getElementById('id{{lessonID}}').style.display='none'; checkdone();"
+                                                class="save_btn">Lưu</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            {{#if done}}
+                            Done
+                            {{else}}
+                            Not yet
+                            {{/if}}
+                        </td>
+                    </div>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <div class="card-footer text-muted text-right">
+            <a href="/courses/courses" type="button" id="submitAddCourse" class="btn btn-outline-success">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Save
+            </a>
+        </div>
+    </div>
+</div>
