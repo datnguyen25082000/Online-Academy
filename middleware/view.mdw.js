@@ -35,6 +35,10 @@ module.exports = function (app) {
             }, 
             isLecturer(value) {
                 return value === 2;
+            },
+
+            subArray(value, number) {
+                return value.slice(4 * number, 4 * number + 4);
             }
         }
     }));

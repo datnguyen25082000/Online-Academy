@@ -1,3 +1,4 @@
+
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/jquery.star-rating-svg.min.js"></script>
 <link rel="stylesheet" type="text/css"
@@ -55,7 +56,7 @@
     <div class="row w-100 container">
       <div class="col-3 ">
         <h5>Bộ lọc</h5>
-        <div class="price-order mt-3">
+        <div class="price-order mt-3 shadow">
           <div class="select-box " style="">
             <div class="options-container active">
               <div class="option option-price pl-2 d-block p-3" style="color: black;text-decoration: none;">
@@ -70,13 +71,13 @@
               </div>
             </div>
 
-            <a href="javascript:void(0)" class="selected list-group-item list-group-item-action bg-light border-0"
-              style="border-bottom: 1px rgba(0,0,0,.125) solid !important">
+            <a href="javascript:void(0)" class="selected list-group-item rounded list-group-item-action border-0"
+              style="border-bottom: 1px rgba(0,0,0,.125) solid !important; background-color: #56a4f1">
               <span><span class=""></span>Giá</span>
             </a>
           </div>
         </div>
-        <div class="rating-score">
+        <div class="rating-score mt-3 shadow">
           <div class="select-box " style="">
             <div class="options-container active">
               <div class="option option-rating pl-2 d-block p-3" style="color: black;text-decoration: none;">
@@ -113,8 +114,8 @@
               </div>
             </div>
 
-            <a href="javascript:void(0)" class="selected list-group-item list-group-item-action bg-light border-0"
-              style="border-bottom: 1px rgba(0,0,0,.125) solid !important">
+            <a href="javascript:void(0)" class="selected list-group-item rounded list-group-item-action border-0"
+              style="border-bottom: 1px rgba(0,0,0,.125) solid !important; background-color: #56a4f1">
               <span><span class=""></span>Điểm đánh giá</span>
             </a>
           </div>
@@ -122,7 +123,7 @@
       </div>
       <div class="col-9">
         <div class="d-inline">
-          <h5>Danh sách khóa học</h5>
+          <h5 class="pb-2">Danh sách khóa học</h5>
           {{#if (isUndefined price)}}
           {{else}}
           <label class="btn btn-outline-info mr-4">Giá: {{price}}</label>
@@ -155,25 +156,25 @@
             </div>
             <div class="ml-auto p-3">
               <span class="card-text"><span class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn
-                  Phí {{else}}{{coursePrice}}{{/if}}</span>
+                  Phí {{else}}{{format coursePrice}}{{/if}}</span>
               </span>
             </div>
 
           </div>
           {{/each}}
-           <nav aria-label="Page navigation example" class="px-auto">
-          <ul class="pagination text-center">
-            <div class="mx-auto d-flex mt-3">
-              <li class="page-item"><button class="page-link" {{#if can_go_prev}} {{else}}disabled{{/if}}
-                  value={{prev_value}}>Trang trước</button></li>
-              {{#each page_items}}
-              <li class="page-item"><button class="page-link" value={{value}}>{{value}}</button></li>
-              {{/each}}
-              <li class="page-item"><button class="page-link" {{#if can_go_next}} {{else}}disabled{{/if}}
-                  value={{next_value}}>Trang tiếp theo</button></li>
-            </div>
-          </ul>
-        </nav>
+          <nav aria-label="Page navigation example" class="px-auto">
+            <ul class="pagination text-center">
+              <div class="mx-auto d-flex mt-3">
+                <li class="page-item"><button class="page-link" {{#if can_go_prev}} {{else}}disabled{{/if}}
+                    value={{prev_value}}>Trang trước</button></li>
+                {{#each page_items}}
+                <li class="page-item"><button class="page-link" value={{value}}>{{value}}</button></li>
+                {{/each}}
+                <li class="page-item"><button class="page-link" {{#if can_go_next}} {{else}}disabled{{/if}}
+                    value={{next_value}}>Trang tiếp theo</button></li>
+              </div>
+            </ul>
+          </nav>
           {{/if}}
         </div>
 
@@ -182,3 +183,4 @@
 
   </div>
 </div>
+{{> footer}}

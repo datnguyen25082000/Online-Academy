@@ -1,5 +1,15 @@
 {{#section 'css'}}
+<style>
+  .top-cat {
+    position: relative;
+    top: 0;
+    transition: top ease 0.5s;
+  }
 
+  .top-cat:hover {
+    top: -10px;
+  }
+</style>
 {{/section}}
 
 {{#section 'js'}}
@@ -29,8 +39,9 @@
             style='color:rgb(123, 234, 253); text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;'>Academy
           </span>
         </h1>
-        <p class="lead">Đây là hệ thống học trực tuyến uy tín và chất lượng về các khóa học lập trình và kỹ năng sống khác.
-         
+        <p class="lead">Đây là hệ thống học trực tuyến uy tín và chất lượng về các khóa học lập trình và kỹ năng sống
+          khác.
+
         </p>
         <hr class="my-4">
         <p class="lead">
@@ -74,12 +85,11 @@
   <div id="list-0"></div>
   <div class="list-1 mt-5 container w-100" style="padding-top: 100px!important" id='list-1'>
     <h3 class="" style="">
-      <span class=''
-        >Những khóa học nổi bật</span>
+      <span class=''>Những khóa học nổi bật</span>
       <hr>
     </h3>
     <div class="row">
-      {{#each this.topTrending}}
+      {{#each this.outStandingCourse}}
 
       <div class="col-md-3 mb-5">
         <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
@@ -91,7 +101,7 @@
             </span>
             <div class="mt-auto d-flex justify-content-between">
               <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn
-                  Phí {{else}}{{coursePrice}}{{/if}}</span>
+                  Phí {{else}}{{format coursePrice}}{{/if}}</span>
               </span>
               <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
             </div>
@@ -115,31 +125,25 @@
     </div>
   </div>
 
-  {{!-- SLIDE SHOW ENROL --}}
 
-  {{> slideshow parameter=this.topTrending name="Những khóa học được xem nhiều nhất" index=1}}
-  {{> slideshow parameter=this.topTrending name="Những khóa học mới nhất" index=2}}
-  {{!-- SLIDE SHOW NEW --}}
-  {{!-- SLIDE SHOW SEEN --}}
 
   <div class="list-1 container w-100" style="padding-top: 100px!important" id='list-1'>
     <h3 class="" style="">
-      <span class=''
-        >Những lĩnh vực được đăng ký nhiều nhất</span>
+      <span class=''>Những lĩnh vực được đăng ký nhiều nhất</span>
       <hr>
     </h3>
     <div class="row">
-      {{#each this.topTrending}}
+      {{#each this.catMostRegistered}}
 
       <div class="col-md-3 mb-5">
-        <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
+        <a class="btn top-cat card h-100 shadow d-flex bg-info m-auto" style="max-width: 250px" href="/courses/listCourse/{{catID}}">
           <div class="p-5 text-center d-flex flex-column flex-grow-1">
-            <h5 class="font-weight-bold">{{courseName}}</h5>
-            <span class="mb-2">
+            <h5 class="font-weight-bold">{{catName}}</h5>
+
             </span>
-           
+
           </div>
-        </div>
+        </a>
       </div>
 
 
@@ -147,6 +151,12 @@
     </div>
   </div>
 
+  {{!-- SLIDE SHOW ENROL --}}
+
+  {{> slideshow parameter=this.mostViewedCourse name="Những khóa học được xem nhiều nhất" index=1}}
+  {{> slideshow parameter=this.latestCourse name="Những khóa học mới nhất" index=2}}
+  {{!-- SLIDE SHOW NEW --}}
+  {{!-- SLIDE SHOW SEEN --}}
   {{> footer}}
 
 

@@ -7,6 +7,16 @@ module.exports = {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
 
+  mostRegistered() {
+    const sql = `
+    SELECT sum(courses.courseRegistered) AS RES, cat.catName, cat.catID
+    FROM categoriesLevel2 cat left join courses courses on cat.catID = courses.courseCatLevel2ID
+    group by catID 
+    ORDER BY RES DESC LIMIT 4
+    `;
+    return db.load(sql);
+  },
+
   allWithDetails(cat1) {
     const sql = `
     select c2.*, count(p.courseID) as ProductCount

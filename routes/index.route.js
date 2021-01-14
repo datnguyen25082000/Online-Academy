@@ -1,14 +1,21 @@
 const express = require('express');
 const courseModel = require('../models/course.model');
+const categoriesModel = require('../models/category.model');
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated } = require('./controllers/auth');
 
 // Welcome Page
 router.get('/', forwardAuthenticated, async (req, res) => {
   try {
-    const rows = await courseModel.all();
+    const catMostRegistered = await categoriesModel.mostRegistered();
+    const outStandingCourse = await courseModel.outStandingCourse();
+    const mostViewedCourse = await courseModel.mostViewedCourse();
+    const latestCourse = await courseModel.latestCourse();
     res.render('home', {
-      topTrending: rows.slice(0, 4),
+      catMostRegistered,
+      mostViewedCourse,
+      outStandingCourse,
+      latestCourse,
       empty: rows.length === 0
     });
   } catch (err) {
@@ -23,9 +30,16 @@ router.post('/updateSidebar', (req, res) => {
 
 // Dashboard
 router.get('/dashboard', typeAuthenticated, async (req, res) => {
-  const rows = await courseModel.all();
+  const catMostRegistered = await categoriesModel.mostRegistered();
+  const outStandingCourse = await courseModel.outStandingCourse();
+  const mostViewedCourse = await courseModel.mostViewedCourse();
+  const latestCourse = await courseModel.latestCourse();
+
   res.render('home', {
-    topTrending: rows.slice(0, 4),
+    catMostRegistered,
+    outStandingCourse,
+    mostViewedCourse,
+    latestCourse,
     empty: rows.length === 0,
     user: req.user,
   })

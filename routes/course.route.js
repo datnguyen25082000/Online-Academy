@@ -3,12 +3,13 @@ const courseModel = require('../models/course.model');
 const categoriesLevelModel = require('../models/category.model');
 const registedCourseModel = require('../models/registedCourse.model');
 const watchListModel = require('../models/watchList.model');
+const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
 const multer = require('multer');
 const router = express.Router();
 const limitPage = process.env.LIMIT_PAGE;
 
 
-router.get('/', async function (req, res) {
+router.get('/', adminAuthenticated, async function (req, res) {
     try {
         const rows = await courseModel.all();
         res.render('vwCourses/index', {
@@ -229,7 +230,7 @@ router.get('/search/', async function (req, res) {
 })
 
 //Adding an Course Pages
-router.get('/add', function (req, res) {
+router.get('/add', ensureAuthenticated, function (req, res) {
     res.render('vwCourses/add');
 })
 
@@ -243,7 +244,7 @@ router.get('/registed', async function (req, res) {
     })
 })
 
-router.get('/watchList', async function (req, res) {
+router.get('/watchList', ensureAuthenticated, async function (req, res) {
     const rows = await watchListModel.byUsername(req.session.passport.user.userUsername);
 
     // const courses = await courseModel.byID(rows.courseID);
@@ -322,11 +323,11 @@ router.post('/add', function (req, res) {
     */
 })
 
-router.post('/del', async function (req, res) {
+router.post('/del', ensureAuthenticated, async function (req, res) {
     const ret = await courseModel.del(req.body);
 })
 
-router.post('/patch', async function (req, res) {
+router.post('/patch', ensureAuthenticated, async function (req, res) {
     const ret = await courseModel.patch(req.body);
     res.redirect('/courses');
 })

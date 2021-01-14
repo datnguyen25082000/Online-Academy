@@ -17,7 +17,7 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        {{#each parameter}}
+                        {{#each (subArray parameter 0)}}
                         <div class="col-md-3 mb-5">
                             <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                                 <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
@@ -28,8 +28,8 @@
                                     </span>
                                     <div class="mt-auto d-flex justify-content-between">
                                         <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if
-                                                (isZero coursePrice)}}Miễn
-                                                Phí {{else}}{{coursePrice}}{{/if}}</span>
+                                                (isZero format coursePrice)}}Miễn
+                                                Phí {{else}}{{format coursePrice}}{{/if}}</span>
                                         </span>
                                         <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
                                     </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="carousel-item ">
                     <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        {{#each parameter}}
+                        {{#each (subArray parameter 1)}}
                         <div class="col-md-3 mb-5">
                             <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                                 <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
@@ -65,8 +65,8 @@
                                     </span>
                                     <div class="mt-auto d-flex justify-content-between">
                                         <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if
-                                                (isZero coursePrice)}}Miễn
-                                                Phí {{else}}{{coursePrice}}{{/if}}</span>
+                                                (isZero format coursePrice)}}Miễn
+                                                Phí {{else}}{{format coursePrice}}{{/if}}</span>
                                         </span>
                                         <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
                                     </div>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="carousel-item ">
                     <ul style="margin: 0px !important" id="autoWidth" class="cs-hidden slide-show row mx-5">
-                        {{#each parameter}}
+                        {{#each (subArray parameter 2)}}
                         <div class="col-md-3 mb-5">
                             <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                                 <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
@@ -102,8 +102,8 @@
                                     </span>
                                     <div class="mt-auto d-flex justify-content-between">
                                         <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if
-                                                (isZero coursePrice)}}Miễn
-                                                Phí {{else}}{{coursePrice}}{{/if}}</span>
+                                                (isZero format coursePrice)}}Miễn
+                                                Phí {{else}}{{format coursePrice}}{{/if}}</span>
                                         </span>
                                         <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
                                     </div>

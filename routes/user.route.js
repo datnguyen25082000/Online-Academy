@@ -1,14 +1,14 @@
 const express = require("express");
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
-
-const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated } = require("./controllers/auth");
+const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
 const UserModel = require("../models/user.model");
 const registedCourseModel = require("../models/registedCourse.model");
 const watchListModel = require("../models/watchList.model");
 const multer = require("multer");
 
-router.get("/", async function (req, res) {
+router.get("/", adminAuthenticated, async function (req, res) {
   const rows = await UserModel.all();
   res.render("vwUsers/index", {
     users: rows,
@@ -16,20 +16,28 @@ router.get("/", async function (req, res) {
   });
 });
 
-router.get("/add", function (req, res) {
+router.get("/add", adminAuthenticated, function (req, res) {
   res.render("vwUsers/add");
 });
 
-router.post('/add', async function (req, res) {
+router.post('/add',adminAuthenticated, async function (req, res) {
   try {
-    const ret = await UserModel.add(req.body);
+    console.log(req.body)
+    const {userUsername, userPassword, userDisplayName, userEmail, userType} = req.body;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(userPassword, salt, (err, hash) => {
+        if (err) throw err;
+        UserModel.add({userUsername, userPassword: hash, userDisplayName, userEmail, userType});
+      })
+    });
+
     res.status(200).send({ 'added': true });
   } catch (error) {
     res.status(200).send({ 'added': false })
   }
 })
 
-router.post("/del", async function (req, res) {
+router.post("/del", adminAuthenticated, async function (req, res) {
   const ret = await UserModel.del(req.body);
 });
 
@@ -47,14 +55,14 @@ router.post("/registerCourse", async function (req, res) {
     };
 
     const ret = await registedCourseModel.add(data);
-    res.status(200).send({enrol: true});
+    res.status(200).send({ enrol: true });
   } catch (error) {
-    res.status(200).send({enrol: false})
+    res.status(200).send({ enrol: false })
   }
 });
 
 //add a course to watch list
-router.post("/addFavorite", async function (req, res) {
+router.post("/addFavorite",  async function (req, res) {
   let data = {
     username: req.session.passport.user.userUsername,
     courseID: req.body.courseID,

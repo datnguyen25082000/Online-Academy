@@ -1,9 +1,11 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
 const categoryModel1 = require('../models/category1.model')
+const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
+
 const router = express.Router();
 
-router.get('/', async function (req, res) {
+router.get('/', adminAuthenticated, async function (req, res) {
   const rows = await categoryModel.all();
   try {
     rows.forEach(async element => {
@@ -19,14 +21,14 @@ router.get('/', async function (req, res) {
   });
 })
 
-router.get('/add',async function (req, res) {
+router.get('/add', adminAuthenticated, async function (req, res) {
   const catLevel1 = await categoryModel1.all();
   res.render('vwCategories/add', {
     catLevel1: catLevel1,
   });
 })
 
-router.post('/add', async function (req, res) {
+router.post('/add', adminAuthenticated, async function (req, res) {
   try {
     const ret = await categoryModel.add(req.body);
     res.status(200).send({ 'added': true });
@@ -35,11 +37,11 @@ router.post('/add', async function (req, res) {
   }
 })
 
-router.post('/del', async function (req, res) {
+router.post('/del', adminAuthenticated, async function (req, res) {
   const ret = await categoryModel.del(req.body);
 })
 
-router.post('/patch', async function (req, res) {
+router.post('/patch', adminAuthenticated, async function (req, res) {
   try {
     const ret = await categoryModel.patch(req.body);
     res.status(200).send({ 'saved': true });
