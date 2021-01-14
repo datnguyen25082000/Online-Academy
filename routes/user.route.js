@@ -7,6 +7,8 @@ const UserModel = require("../models/user.model");
 const registedCourseModel = require("../models/registedCourse.model");
 const watchListModel = require("../models/watchList.model");
 const multer = require("multer");
+const reviewModel = require("../models/review.model");
+const learnModel = require("../models/learn.model");
 
 router.get("/", adminAuthenticated, async function (req, res) {
   const rows = await UserModel.all();
@@ -46,6 +48,23 @@ router.post("/patch", async function (req, res) {
   res.redirect("/users");
 });
 
+//send comment
+router.post("/sendComment", async function (req, res) {
+  let data = {
+    username: req.session.passport.user.userUsername,
+    courseID: req.body.courseID,
+    content: req.body.content,
+    vote: req.body.vote,
+    dateReview: new Date().toISOString().slice(0, 19).replace('T', ' ')
+  };
+
+  console.log(data);
+
+  const ret = await reviewModel.add(data);
+
+  res.redirect(`/courses/${data.courseID}`);
+});
+
 //register a course
 router.post("/registerCourse", async function (req, res) {
   try {
@@ -55,9 +74,9 @@ router.post("/registerCourse", async function (req, res) {
     };
 
     const ret = await registedCourseModel.add(data);
-    res.status(200).send({ enrol: true });
+    res.redirect(`/courses/${data.courseID}`);
   } catch (error) {
-    res.status(200).send({ enrol: false })
+    res.redirect(`/courses/${data.courseID}`);
   }
 });
 
@@ -123,7 +142,7 @@ router.post("/profile", function (req, res) {
   const upload = multer({ storage });
   // upload.single('fuMain')(req, res, function (err) {
 
-  upload.array("fuMain", 3)(req, res, function (err) {
+  upload.array("fuMain", 1)(req, res, function (err) {
     if (err) {
       console.log(err);
     } else {
@@ -137,6 +156,20 @@ router.post("/profile/save", async function (req, res) {
   const ret = await UserModel.patch(req.body);
   res.redirect("/users/profile");
 });
+
+//learning process
+router.post("/saveState", async function (req, res) {
+  const data = req.body;
+  data.learnUser = req.session.passport.user.userUsername;
+  try {
+    const ret = await learnModel.add(data);
+  } catch (error) {
+    console.log(error);
+  }
+  let link = "/courses/learn?courseID=" + data.learnCourse + "&lessonID=" + data.learnLesson + "&unit=" + data.learnUnit;
+  console.log(link);
+  res.redirect(link);
+})
 
 router.get("/:id", async function (req, res) {
   const id = req.params.id;

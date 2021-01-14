@@ -14,6 +14,31 @@
     strokeWidth: 10,
     starSize: 18
   });
+  $(".my-vote").starRating({
+    strokeColor: '#EB8A2F',
+    readonly: false,
+    strokeWidth: 10,
+    starSize: 25
+  });
+  $(".btnSend").click(function() {
+    $("#inputVote").val($('.my-vote').starRating('getRating'));
+  })
+</script>
+
+<script>
+  $(".formSubmit").on('submit', function (event) {
+    event.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: form.serialize(),
+      success: function (data) {
+        location.reload();
+      }
+    })
+  })
 </script>
 
 {{/section}}
@@ -141,7 +166,7 @@
           <div class="comment_comment  px-3 py-2" style="background-color: #d1cece; border-radius: 20px;">
             <span class="comment_comment font-weight-bold">dang thuyen Vuong</span>
             <div class="d-flex">
-              <div class="my-rating " data-rating="4"></div>
+              <div class="my-rating" data-rating="4"></div>
             </div>
             <div class="comment_comment"><span>Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</span></div>
           </div>
@@ -157,7 +182,7 @@
           <div class="comment_comment  px-3 py-2" style="background-color: #d1cece; border-radius: 20px;">
             <span class="comment_comment font-weight-bold">dang thuyen Vuong</span>
             <div class="d-flex">
-              <div class="my-rating  " data-rating="4"></div>
+              <div class="my-rating  " data-rating="3"></div>
             </div>
             <div class="comment_comment"><span>Quisque velit nisi, pretium ut lacinia in, elementum id enim.</span>
             </div>
@@ -172,14 +197,26 @@
 
     </div>
 
+    {{!-- comment --}}
+    {{#if ../this.isRegistered}}
     <div class="comment-form d-flex">
       <div class="user-avatar rounded-circle p-3 mr-3">
-        <img class="rounded-circle" src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400" style="width: 50px" alt="">
+        <img class="rounded-circle" src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400"
+          style="width: 50px" alt="">
       </div>
-      <div class="form-group flex-grow-1">
-        <textarea class="form-control" name="" id="" rows="3"></textarea>
-      </div>
+      <form class="form-group flex-grow-1 text-right" action="/users/sendComment" method="POST">
+        <textarea class="form-control" name="content" id="" rows="3" cols="50"
+          placeholder="Viết bình luận của bạn ..." required></textarea>
+        <div class="my-vote my-2"></div>
+        <input type="text" name="vote" class="d-none getVote" id="inputVote" value="">
+        <input type="text" name="courseID" class="d-none"  value="{{courseID}}">
+        <button class="btn btn-primary btnSend" type="submit">
+          <i class="fa fa-send" aria-hidden="true"></i>
+          Gửi
+        </button>
+      </form>
     </div>
+    {{/if}}
 
   </div>
 
@@ -190,14 +227,25 @@
       <div class="p-2 d-flex flex-column flex-grow-1">
 
         <div class="mt-auto d-flex flex-column p-3 mx-auto">
-          <form action="/users/addFavorite" method="POST">
+          {{#if ../this.isFavorite}}
+          <button type="button" class="btn btn-sm btn-outline-primary p-2 m-1" disabled> KHÓA HỌC YÊU THÍCH</button>
+          {{else}}
+          <form action="/users/addFavorite" method="POST" class="formSubmit">
             <input type="text" value="{{courseID}}" name="courseID" class="d-none">
             <button type="submit" class="btn btn-sm btn-outline-primary p-2 m-1 w-100"> THÊM VÀO KHÓA HỌC YÊU THÍCH</button>
           </form>
-          <form action="/users/registerCourse" method="POST" class="text-center">
+          {{/if}}
+          {{#if ../this.isRegistered}}
+            <form action="/users/registerCourse" method="POST" class="d-flex flex-column">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button class="btn btn-sm btn-outline-success py-2 m-1" type="submit" disabled> ĐÃ ĐĂNG KÝ </button>
+          </form>
+          {{else}}
+          <form action="/users/registerCourse" method="POST" class="d-flex flex-column">
             <input type="text" value="{{courseID}}" name="courseID" class="d-none">
             <button class="btn btn-sm btn-outline-success py-2 m-1 w-100" type="submit"> ĐĂNG KÝ KHÓA HỌC </button>
           </form>
+          {{/if}}
           <h5 class="my-3">Miêu tả về khóa học:</h5>
           <div class="ml-4">
             <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 " style="width: 20px"></i> Giá: <span
@@ -250,14 +298,27 @@
           </div>
 
           <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
-            <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}" role="button">
+            <a class="btn btn-sm btn-outline-primary py-2 mx-2" href="/courses/{{courseID}}" role="button">
               <i class="fa fa-eye" aria-hidden="true"></i>
               Chi tiết
             </a>
-            <a class="btn btn-sm btn-outline-success py-2 w-60" href="#" role="button">
-              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-              Thêm vào giỏ
-            </a>
+            {{#if isFavorite}}
+            <form action="/users/removeFavorite" method="POST" class="formSubmit">
+              <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+              <button type="submit" class="btn btn-sm py-2 btn-success"
+                title="Xóa khỏi danh sách khóa học yêu thích">
+                <i class="fa fa-heart" aria-hidden="true"></i>
+              </button>
+            </form>
+            {{else}}
+            <form action="/users/addFavorite" method="POST" class="formSubmit">
+              <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+              <button type="submit" class="btn btn-sm py-2 btn-outline-success"
+                title="Thêm vào danh sách khóa học yêu thích">
+                <i class="fa fa-heart" aria-hidden="true"></i>
+              </button>
+            </form>
+            {{/if}}
           </div>
         </div>
       </div>

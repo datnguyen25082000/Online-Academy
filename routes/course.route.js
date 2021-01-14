@@ -3,6 +3,8 @@ const courseModel = require('../models/course.model');
 const categoriesLevelModel = require('../models/category.model');
 const registedCourseModel = require('../models/registedCourse.model');
 const watchListModel = require('../models/watchList.model');
+const lessonModel = require('../models/lesson.model')
+const learnModel = require('../models/learn.model')
 const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
 const multer = require('multer');
 const router = express.Router();
@@ -73,7 +75,7 @@ router.get('/listCourse/', async function (req, res) {
     res.render('vwCourses/listCourseIndex', {
         listCourse,
         price,
-        nPage, 
+        nPage,
         prev_value: parseInt(pageNumber) - 1,
         next_value: parseInt(pageNumber) + 1,
         can_go_prev: pageNumber > 1,
@@ -83,6 +85,9 @@ router.get('/listCourse/', async function (req, res) {
     });
 })
 
+router.get("/add", function (req, res) {
+    res.render("vwCourses/add");
+});
 
 router.get('/listCourse/:id', async function (req, res) {
     const pageNumber = req.query.page || 1;
@@ -234,16 +239,6 @@ router.get('/add', ensureAuthenticated, function (req, res) {
     res.render('vwCourses/add');
 })
 
-router.get('/registed', async function (req, res) {
-    const rows = await registedCourseModel.byUsername(req.session.passport.user.userUsername);
-
-    // const courses = await courseModel.byID(rows.courseID);
-    res.render('vwCourses/registed', {
-        courses: rows,
-        empty: rows.length === 0
-    })
-})
-
 router.get('/watchList', ensureAuthenticated, async function (req, res) {
     const rows = await watchListModel.byUsername(req.session.passport.user.userUsername);
 
@@ -332,19 +327,101 @@ router.post('/patch', ensureAuthenticated, async function (req, res) {
     res.redirect('/courses');
 })
 
-router.get('/:id', async function (req, res) {
-    const id = req.params.id;
-    const course = await courseModel.single(id);
-    const rows = await courseModel.all();
-    if (course === null) {
-        return res.redirect('/courses');
+router.get("/registed", async function (req, res) {
+    let rows = await registedCourseModel.byUsername(
+        req.session.passport.user.userUsername
+    );
+    const favorites = await watchListModel.byUsername(
+        req.session.passport.user.userUsername
+    );
+
+    for (let i = 0; i < rows.length; i++) {
+        rows[i].isFavorite = false;
+        for (let j = 0; j < favorites.length; j++) {
+            if (rows[i].courseID == favorites[j].courseID) {
+                rows[i].isFavorite = true;
+            }
+        }
     }
 
-    res.render('vwCourses/detail', {
+    res.render("vwCourses/registed", {
+        courses: rows,
+        empty: rows.length === 0,
+    });
+});
+
+//learn
+router.get("/learn", async function (req, res) {
+    let id = +req.query.courseID;
+    const lessons = await lessonModel.byCourse(id);
+    const learns = await learnModel.byUsernameAndCourseID(req.session.passport.user.userUsername, id);
+    console.log(learns);
+
+    let lesson = +req.query.lessonID || 1;
+    let unit = +req.query.unit || 1;
+
+    for (let i = 0; i < lessons.length; i++) {
+        let obj = [];
+        for (let j = 0; j < lessons[i].lessonNumberUnit; j++) {
+            obj[j] = {};
+            obj[j].name = j + 1;
+            obj[j].isLearn = false;
+        }
+        lessons[i].units = obj;
+    }
+
+    learns.forEach((learn) => {
+        lessons[learn.learnLesson - 1].units[learn.learnUnit - 1].isLearn = true;
+    })
+
+    console.log(lessons[0].units);
+    console.log(lessons[1].units);
+
+    res.render("vwCourses/learn", {
+        lessons,
+        id,
+        lesson,
+        unit,
+        empty: lessons.length === 0
+    });
+});
+
+router.get("/:id", async function (req, res) {
+    const id = req.params.id;
+    let favorite = null;
+    let registed = null;
+    const course = await courseModel.single(id);
+    let rows = await courseModel.all();
+
+    if (req.session.passport != undefined) {
+        favorite = await watchListModel.single(req.session.passport.user.userUsername, id);
+        registed = await registedCourseModel.single(req.session.passport.user.userUsername, id);
+
+        const favorites = await watchListModel.byUsername(
+            req.session.passport.user.userUsername
+        );
+
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].isFavorite = false;
+            for (let j = 0; j < favorites.length; j++) {
+                if (rows[i].courseID == favorites[j].courseID) {
+                    rows[i].isFavorite = true;
+                }
+            }
+        }
+    }
+
+    if (course === null) {
+        return res.redirect("/courses");
+    }
+
+    res.render("vwCourses/detail", {
         course,
+        isFavorite: favorite != null,
+        isRegistered: registed != null,
         topTrending: rows.slice(0, 5),
     });
-})
+});
 
 
 module.exports = router;
