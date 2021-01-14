@@ -13,6 +13,6 @@ module.exports = function (app) {
     app.use('/categories1/',authMiddleware.adminAuthenticated, require('../routes/category1.route'));
     app.use('/courses/', require('../routes/course.route'));
     app.use('/users/', authMiddleware.ensureAuthenticated, require('../routes/user.route'));
-    app.use('/lecturer/', authMiddleware.authorAuthenticated, require('../routes/lecturer.route'));
+    app.use('/lecturer/', require('../routes/lecturer.route'));
 
 }

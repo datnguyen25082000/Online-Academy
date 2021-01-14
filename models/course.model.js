@@ -66,6 +66,16 @@ module.exports = {
     return rows = db.load(`select * from ${TBL_COURSES} ORDER BY courseUpdatedAt DESC LIMIT ${maxCourseHomepage}`);
   },
 
+  async all_lecturer(lecturerName) {
+    const rows = await db.load(`select * from ${TBL_COURSES} where courseLecturer ='${lecturerName}'`);
+    return rows;
+  },
+
+  async chooseID() {
+    const ID = await db.load(`SELECT MAX(courseID) as max FROM ${TBL_COURSES}`);
+    return ID[0];
+  },
+
   add(entity) {
     return db.add(entity, TBL_COURSES)
   },
