@@ -89,4 +89,18 @@ router.get('/is-available', async function (req, res) {
   res.json(false);
 })
 
+// check password
+router.post('/checkPass', async function (req, res) {
+  const password = req.body.password;
+
+  bcrypt.compare(password, req.session.passport.user.userPassword, (err, isMatch) => {
+    if (err) throw err;
+    if (isMatch) {
+      return res.json(true);
+    } 
+    return res.json(false);
+  });
+})
+
+
 module.exports = router;

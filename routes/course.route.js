@@ -3,6 +3,9 @@ const courseModel = require("../models/course.model");
 const learnModel = require("../models/learn.model");
 const lessonModel = require("../models/lesson.model");
 const registedCourseModel = require("../models/registedCourse.model");
+const reviewModel = require("../models/review.model");
+const userModel = require("../models/user.model");
+const voteModel = require("../models/vote.model");
 const watchListModel = require("../models/watchList.model");
 const { route } = require("./user.route");
 
@@ -76,34 +79,20 @@ router.get("/learn", async function (req, res) {
   let id = +req.query.courseID;
   const lessons = await lessonModel.byCourse(id);
   const learns = await learnModel.byUsernameAndCourseID(req.session.passport.user.userUsername, id);
-  console.log(learns);
 
   let lesson = +req.query.lessonID || 1;
-  let unit = +req.query.unit || 1;
 
-  for (let i = 0; i < lessons.length; i++)
-  {
-    let obj = [];
-    for (let j = 0; j < lessons[i].lessonNumberUnit; j++) {
-      obj[j] = {};
-      obj[j].name = j + 1;
-      obj[j].isLearn = false;
-    }
-    lessons[i].units = obj;
-  }
+  lessons[lesson - 1].isActive = true;
 
   learns.forEach((learn) => {
-    lessons[learn.learnLesson - 1].units[learn.learnUnit - 1].isLearn = true;
+    lessons[learn.learnLesson - 1].isLearn = true;
   })
+  console.log(lessons);
 
-  console.log(lessons[0].units);
-  console.log(lessons[1].units);
-  
   res.render("vwCourses/learn", {
     lessons,
     id,
     lesson,
-    unit,
     empty: lessons.length === 0
   });
 });
@@ -112,22 +101,35 @@ router.get("/:id", async function (req, res) {
   const id = req.params.id;
   let favorite = null;
   let registed = null;
+  let vote = null;
+
+  //course info
   const course = await courseModel.single(id);
+
+  //lecture info
+  const lecturer = await userModel.single(course.courseLecturer);
+
   let rows = await courseModel.all();
 
-  if (req.session.passport != undefined) {
-      favorite = await watchListModel.single(req.session.passport.user.userUsername,id);
-    registed = await registedCourseModel.single(req.session.passport.user.userUsername,id);
-    
-    const favorites = await watchListModel.byUsername(
-      req.session.passport.user.userUsername
-    );
+  const courseID = id;
+  let reviews = await reviewModel.single(courseID);
 
-    for (let i = 0; i < rows.length; i++) {
-      rows[i].isFavorite = false;
-      for (let j = 0; j < favorites.length; j++) {
-        if (rows[i].courseID == favorites[j].courseID) {
-          rows[i].isFavorite = true;
+  if (req.session.passport != undefined) {
+    if (req.session.passport.user != undefined) {
+      favorite = await watchListModel.single(req.session.passport.user.userUsername,id);
+      registed = await registedCourseModel.single(req.session.passport.user.userUsername,id);
+      vote = await voteModel.single(req.session.passport.user.userUsername,id);
+      
+      const favorites = await watchListModel.byUsername(
+        req.session.passport.user.userUsername
+      );
+  
+      for (let i = 0; i < rows.length; i++) {
+        rows[i].isFavorite = false;
+        for (let j = 0; j < favorites.length; j++) {
+          if (rows[i].courseID == favorites[j].courseID) {
+            rows[i].isFavorite = true;
+          }
         }
       }
     }
@@ -139,6 +141,11 @@ router.get("/:id", async function (req, res) {
 
   res.render("vwCourses/detail", {
     course,
+    lecturer,
+    reviews,
+    vote,
+    isVote: vote != null,
+    isEmptyComment: reviews === null,
     isFavorite: favorite != null,
     isRegistered: registed != null,
     topTrending: rows.slice(0, 5),

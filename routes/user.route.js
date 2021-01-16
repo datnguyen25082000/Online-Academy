@@ -9,6 +9,7 @@ const watchListModel = require("../models/watchList.model");
 const multer = require("multer");
 const reviewModel = require("../models/review.model");
 const learnModel = require("../models/learn.model");
+const voteModel = require("../models/vote.model");
 
 router.get("/", async function (req, res) {
   const rows = await UserModel.all();
@@ -33,6 +34,35 @@ router.post("/del", async function (req, res) {
 router.post("/patch", async function (req, res) {
   const ret = await UserModel.patch(req.body);
   res.redirect("/users");
+});
+
+//send vote
+router.post("/vote", async function(req, res) {
+  let data = {
+    voteUser: req.session.passport.user.userUsername,
+    voteCourse: req.body.courseID,
+    voteValue: req.body.vote
+  }
+  const rows = await voteModel.add(data);
+  res.redirect(`/courses/${req.body.courseID}`);
+});
+
+//edit vote
+router.post("/editVote", async function(req, res) {
+  let data = {
+    voteUser: req.session.passport.user.userUsername,
+    voteCourse: req.body.courseID,
+    voteValue: req.body.vote
+  }
+  const rows = await voteModel.patch(data);
+
+  let data2 = {
+    username: req.session.passport.user.userUsername,
+    courseID: req.body.courseID,
+    vote: req.body.vote
+  }
+  const updateReview = await reviewModel.patch(data2);
+  res.redirect(`/courses/${req.body.courseID}`);
 });
 
 //send comment
