@@ -24,9 +24,9 @@ module.exports = {
   },
 
   del(entity) {
-    const condition = { 
-        userUsername: entity.userUsername,
-        courseID: entity.courseID
+    const condition = {
+      userUsername: entity.userUsername,
+      courseID: entity.courseID
     };
     return db.del(condition, TBL_REGISTED);
   },

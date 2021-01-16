@@ -1,5 +1,6 @@
 const express = require('express');
 const courseModel = require('../models/course.model');
+const categoriesModel = require('../models/category.model');
 const watchListModel = require('../models/watchList.model');
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated } = require('./controllers/auth');
@@ -7,9 +8,15 @@ const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated } = require
 // Welcome Page
 router.get('/', forwardAuthenticated, async (req, res) => {
   try {
-    const rows = await courseModel.all();
+    const catMostRegistered = await categoriesModel.mostRegistered();
+    const outStandingCourse = await courseModel.outStandingCourse();
+    const mostViewedCourse = await courseModel.mostViewedCourse();
+    const latestCourse = await courseModel.latestCourse();
     res.render('home', {
-      topTrending: rows.slice(0,4),
+      catMostRegistered,
+      mostViewedCourse,
+      outStandingCourse,
+      latestCourse,
       empty: rows.length === 0
     });
   } catch (err) {
@@ -24,21 +31,27 @@ router.post('/updateSidebar', (req, res) => {
 
 // Dashboard
 router.get('/dashboard', typeAuthenticated, async (req, res) => {
-  let rows = await courseModel.all();
+  const catMostRegistered = await categoriesModel.mostRegistered();
+  const outStandingCourse = await courseModel.outStandingCourse();
+  const mostViewedCourse = await courseModel.mostViewedCourse();
+  const latestCourse = await courseModel.latestCourse();
   const favorites = await watchListModel.byUsername(req.session.passport.user.userUsername);
 
-  for (let i = 0; i < rows.length; i++) {
-    rows[i].isFavorite = false;
-    for(let j = 0; j < favorites.length; j++) {
-      if (rows[i].courseID == favorites[j].courseID) {
-        rows[i].isFavorite = true;
+  for (let i = 0; i < outStandingCourse.length; i++) {
+    outStandingCourse[i].isFavorite = false;
+    for (let j = 0; j < favorites.length; j++) {
+      if (outStandingCourse[i].courseID == favorites[j].courseID) {
+        outStandingCourse[i].isFavorite = true;
       }
     }
   }
 
   res.render('home', {
-    topTrending: rows.slice(0,4),
-    empty: rows.length === 0,
+    catMostRegistered,
+    outStandingCourse,
+    mostViewedCourse,
+    latestCourse,
+    empty: outStandingCourse.length === 0,
     user: req.user,
   })
 }

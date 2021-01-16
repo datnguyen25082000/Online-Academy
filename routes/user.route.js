@@ -1,8 +1,8 @@
 const express = require("express");
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
-
-const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated } = require("./controllers/auth");
+const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
 const UserModel = require("../models/user.model");
 const registedCourseModel = require("../models/registedCourse.model");
 const watchListModel = require("../models/watchList.model");
@@ -11,7 +11,7 @@ const reviewModel = require("../models/review.model");
 const learnModel = require("../models/learn.model");
 const voteModel = require("../models/vote.model");
 
-router.get("/", async function (req, res) {
+router.get("/", adminAuthenticated, async function (req, res) {
   const rows = await UserModel.all();
   res.render("vwUsers/index", {
     users: rows,
@@ -19,21 +19,59 @@ router.get("/", async function (req, res) {
   });
 });
 
-router.get("/add", function (req, res) {
+router.get("/registerLecturer", adminAuthenticated, async function (req, res) {
+  const rows = await UserModel.allRegister();
+
+  res.render("vwUsers/indexRegister", {
+    users: rows,
+    empty: rows.length === 0,
+  });
+});
+
+
+
+router.get("/add", adminAuthenticated, function (req, res) {
   res.render("vwUsers/add");
 });
 
-router.post("/add", async function (req, res) {
-  const ret = await UserModel.add(req.body);
-});
+router.post('/add',adminAuthenticated, async function (req, res) {
+  try {
+    console.log(req.body)
+    const {userUsername, userPassword, userDisplayName, userEmail, userType} = req.body;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(userPassword, salt, (err, hash) => {
+        if (err) throw err;
+        UserModel.add({userUsername, userPassword: hash, userDisplayName, userEmail, userType});
+      })
+    });
 
-router.post("/del", async function (req, res) {
+    res.status(200).send({ 'added': true });
+  } catch (error) {
+    res.status(200).send({ 'added': false })
+  }
+})
+
+router.post('/addLecturer',adminAuthenticated, async function (req, res) {
+  try {
+    const username = Object.keys(req.body)[0];
+    await UserModel.addLecturer(username);
+    res.status(200).send({ 'added': true });
+  } catch (error) {
+    res.status(200).send({ 'added': false })
+  }
+})
+
+router.post("/del", adminAuthenticated, async function (req, res) {
   const ret = await UserModel.del(req.body);
 });
 
 router.post("/patch", async function (req, res) {
-  const ret = await UserModel.patch(req.body);
-  res.redirect("/users");
+  try {
+    const ret = await UserModel.patch(req.body);
+    res.status(200).send({ 'saved': true });
+  } catch (error) {
+    res.status(200).send({ 'saved': false })
+  }
 });
 
 //send vote
@@ -84,17 +122,21 @@ router.post("/sendComment", async function (req, res) {
 
 //register a course
 router.post("/registerCourse", async function (req, res) {
-  let data = {
-    username: req.session.passport.user.userUsername,
-    courseID: req.body.courseID,
-  };
-  const ret = await registedCourseModel.add(data);
+  try {
+    let data = {
+      username: req.session.passport.user.userUsername,
+      courseID: req.body.courseID,
+    };
 
-  res.redirect(`/courses/${data.courseID}`);
+    const ret = await registedCourseModel.add(data);
+    res.redirect(`/courses/${data.courseID}`);
+  } catch (error) {
+    res.redirect(`/courses/${data.courseID}`);
+  }
 });
 
 //add a course to watch list
-router.post("/addFavorite", async function (req, res) {
+router.post("/addFavorite",  async function (req, res) {
   let data = {
     username: req.session.passport.user.userUsername,
     courseID: req.body.courseID,
@@ -115,10 +157,19 @@ router.post("/removeFavorite", async function (req, res) {
   res.redirect("/courses/watchList");
 });
 
+
+router.post('/patch', async function (req, res) {
+  try {
+    const ret = await UserModel.patch(req.body);
+    res.status(200).send({ 'saved': true });
+  } catch (error) {
+    res.status(200).send({ 'saved': false })
+  }
+})
+
 // Profile
 router.get("/profile", async function (req, res) {
   const info = await UserModel.single(req.session.passport.user.userUsername);
-
   if (info === null) {
     return res.redirect("/");
   }
@@ -157,7 +208,6 @@ router.post("/profile", function (req, res) {
 
 //save info
 router.post("/profile/save", async function (req, res) {
-  console.log(req.body);
   const ret = await UserModel.patch(req.body);
   res.redirect("/users/profile");
 });
