@@ -32,12 +32,12 @@
 <div class="card m-5 mt-5">
   <h5 class="card-header d-flex justify-content-between">
     <div>
-      <i class="fa fa-books mr-2" aria-hidden="true"></i> My Learning
+      <i class="fa fa-books mr-2" aria-hidden="true"></i> Khóa học đã đăng ký
     </div>
   </h5>
   {{#if this.empty}}
   <div class="card-body">
-    <p class="card-text">No data.</p>
+    <p class="card-text">Không có dữ liệu.</p>
   </div>
   {{else}}
   <div class="card-body">
@@ -54,7 +54,7 @@
             </span>
             <div class="mt-auto">
               <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn
-                  Phí {{else}}{{coursePrice}}{{/if}}</span>
+                  Phí {{else}}{{format coursePrice}}{{/if}}</span>
               </span>
               <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
             </div>
@@ -66,8 +66,8 @@
 
           <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
             <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/learn?courseID={{courseID}}" role="button">
-              <i class="fa fa-book" aria-hidden="true"></i>
-              Learn
+              <i class="fa fa-book mr-2" aria-hidden="true"></i>
+              Vào học
             </a>
             {{#if isFavorite}}
             <form action="/users/removeFavorite" method="POST" class="formSubmit">
@@ -94,7 +94,5 @@
     </div>
   </div>
   {{/if}}
-  <div class="card-footer text-muted">
 
-  </div>
 </div>

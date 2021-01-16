@@ -8,8 +8,20 @@
 <!--Int fiel quilljf-->
 <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/jquery.star-rating-svg.min.js"></script>
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/css/star-rating-svg.min.css">
 
-
+<script>
+    $(".my-rating").starRating({
+        readOnly: true,
+        strokeColor: '#EB8A2F',
+        strokeWidth: 10,
+        totalStars: 5,
+        starSize: 18
+    });
+</script>
 {{/section}}
 
 {{#section 'css'}}
@@ -22,8 +34,8 @@
     <div class="list-1 container w-100" style="padding-top: 100px!important" id='list-1'>
         <h3 class="" style="">
             <div class="d-flex justify-content-between">
-                 <span class=''>Các khóa học của bạn</span>
-                 <a type="button" class="btn btn-outline-primary" href="/courses/add">Thêm khóa học</a>
+                <span class=''>Các khóa học của bạn</span>
+                <a type="button" class="btn btn-outline-primary" href="/courses/add">Thêm khóa học</a>
             </div>
             <hr>
         </h3>
@@ -33,30 +45,32 @@
             <div class="col-md-3 mb-5">
                 <div class="card h-100 shadow d-flex m-auto" style="max-width: 250px">
                     <img src="{{thumbImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
-                    <div class="p-2 d-flex flex-column flex-grow-1">
-                        <h5 class="font-weight-bold">{{courseName}}</h5>
-                        <span class="mb-2">
-                            {{{courseDes}}}
-                        </span>
-                        <div class="mt-auto">
+                    <h5 class="font-weight-bold pt-2 px-2 m-0">{{courseName}}</h5>
+                    <div class="p-2 d-flex flex-column mt-auto">
+
+
+                        <div class="">
                             <span class="card-text">Ngày cập nhật: {{dateupdate}}
                         </div>
-                        <div class="mt-auto">
+                        <div class="">
                             <span class="card-text">Trạng thái: <span class="text-danger font-weight-bold">{{#if (isZero
                                     done)}}Chưa hoàn thành{{else}}Hoàn thành{{/if}}</span>
                             </span>
                         </div>
-                        <div class="mt-auto">
-                            <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{#if (isZero
-                                     coursePrice)}}Miễn Phí {{else}}{{format coursePrice}}{{/if}}</span>
+                        <div class="">
+                            <span class="card-text">Giá: <span style="color: black" class=" font-weight-bold">{{#if
+                                    (isZero
+                                    coursePrice)}}Miễn Phí {{else}}{{format coursePrice}}{{/if}}</span>
                             </span>
                             <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
                         </div>
+                        <div class="d-flex">
+                             <div class=" mt-1 mr-1 text-danger font-weight-bold">{{coursePointEval}}</div>
+                            <div class="my-rating " data-rating="{{coursePointEval}}"></div>
+                           
+                        </div>
                     </div>
-                    <div class="d-flex">
-                        <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
-                        <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
-                    </div>
+
 
                     <div class="card-footer d-flex justify-content-between" style="padding:1rem!important">
                         <a class="btn btn-sm btn-outline-primary py-2 w-35" href="/courses/{{courseID}}" role="button">

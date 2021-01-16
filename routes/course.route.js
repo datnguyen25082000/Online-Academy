@@ -1,17 +1,18 @@
 const express = require('express');
+const sharp = require('sharp')
+const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, authorAuthenticated, adminAuthenticated } = require("./controllers/auth");
+const multer = require('multer');
+var mkdirp = require('mkdirp');
+
 const courseModel = require('../models/course.model');
 const categoriesLevelModel = require('../models/category.model');
 const registedCourseModel = require('../models/registedCourse.model');
 const watchListModel = require('../models/watchList.model');
-const lessonModel = require('../models/lesson.model')
-const sharp = require('sharp')
 const learnModel = require('../models/learn.model')
-const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
-const multer = require('multer');
 const lessonsModel = require('../models/lessons.model');
-var mkdirp = require('mkdirp');
-const { route } = require('./lecturer.route');
 
+const { route } = require('./lecturer.route');
+const userModel = require('../models/user.model');
 
 const router = express.Router();
 const limitPage = process.env.LIMIT_PAGE;
@@ -256,7 +257,7 @@ router.get('/watchList', ensureAuthenticated, async function (req, res) {
 })
 
 //Adding an Course -- post
-router.post('/add', async function (req, res) {
+router.post('/add', authorAuthenticated, async function (req, res) {
     let errors = [];
     let thiscourseID = await courseModel.chooseID();
     var courseID = Object.values(JSON.parse(JSON.stringify(thiscourseID)));
@@ -359,7 +360,6 @@ router.post('/add', async function (req, res) {
                         });
 
                         if (!(lesson === undefined)) {
-                            console.log('vào lesson')
                             for (i = 0; i < lesson.length - 1; i++) {
                                 lessonsModel.add({
                                     courseID: courseID,
@@ -382,24 +382,31 @@ router.post('/add', async function (req, res) {
 })
 
 //Manage an course lesson -- get
-router.get('/upload_course/:courseID', async function (req, res) {
+router.get('/upload_course/:courseID', authorAuthenticated, async function (req, res) {
     const courseID = req.params.courseID;
     const details = await courseModel.single(courseID);
     const lesson = await lessonsModel.all(courseID);
 
-    lesson.forEach(item => {
-        item.stt = item.lessonID + 1;
-    });
+    if (res.locals.user.userUsername !== details.courseLecturer) {
+        res.redirect('/');
+    }
+    else {
+        lesson.forEach(item => {
+            item.stt = item.lessonID + 1;
+        });
 
-    res.render('vwCourses/upload_file', {
-        course: details,
-        lesson_items: lesson,
-        empty: lesson.length === 0
-    });
+        res.render('vwCourses/upload_file', {
+            course: details,
+            lesson_items: lesson,
+            empty: lesson.length === 0
+        });
+    }
+
+
 })
 
 //Adding an Lessons -- post
-router.post('/upload_course/:courseID/:lessonID', async function (req, res) {
+router.post('/upload_course/:courseID/:lessonID', authorAuthenticated, async function (req, res) {
 
     var filename = "";
     const courseID = req.params.courseID;
@@ -422,20 +429,19 @@ router.post('/upload_course/:courseID/:lessonID', async function (req, res) {
             cb(null, des_file)
         },
         filename: function (req, file, cb) {
-            filename = file.originalname;
-            cb(null, file.originalname)
+            filename = 'video.mp4';
+            cb(null, filename)
         }
     });
     const upload = multer({ storage: storage });
-    upload.array('dom_' + lessonID, 2)(req, res, async function (err) {
+    upload.array('dom_' + lessonID, 1)(req, res, async function (err) {
         if (err) {
             // An error occurred when uploading
-            console.log(err);
+            console.log("err");
             res.render({
                 done: 0
             });
         } else {
-            console.log("success");
             //const ret = await lessonsModel.patch(req.body);
             const { courseID, lessonID, lessonName } = req.body;
 
@@ -451,19 +457,13 @@ router.post('/upload_course/:courseID/:lessonID', async function (req, res) {
 
             lessonsModel.check_Done(courseID).then(check => {
                 if (check) {
-                    console.log(check);
-
-                    console.log('this is exits');
                 } else {
-                    console.log('not exits');
-
                     courseModel.patch({
                         courseID: courseID,
                         done: 1
                     });
                 }
             });
-
 
             res.redirect('../../upload_course/' + courseID);
 
@@ -474,11 +474,15 @@ router.post('/upload_course/:courseID/:lessonID', async function (req, res) {
 })
 
 //Edit course info -- get
-router.get('/edit_course/:courseID', async function (req, res) {
+router.get('/edit_course/:courseID', authorAuthenticated, async function (req, res) {
     const courseID = req.params.courseID;
     const details = await courseModel.single(courseID);
     const lesson = await lessonsModel.all(courseID);
 
+    if (res.locals.user.userUsername !== details.courseLecturer) {
+        res.redirect('/');
+    }
+    
     lesson.forEach(item => {
         item.stt = item.lessonID + 1;
     });
@@ -491,7 +495,7 @@ router.get('/edit_course/:courseID', async function (req, res) {
 })
 
 //Edit course info -- post
-router.post('/edit_course/:courseID', async function (req, res) {
+router.post('/edit_course/:courseID', authorAuthenticated, async function (req, res) {
     let errors = [];
     const courseID = req.params.courseID;
 
@@ -527,13 +531,13 @@ router.post('/edit_course/:courseID', async function (req, res) {
             console.log(string);
             var filetype = string.slice(string.indexOf("."), string.length);
             console.log(filetype);
-            sharp(req.file.path).resize(250, 140).toFile(des_file + filename + "-thumbs" + '.png', function(err) {
+            sharp(req.file.path).resize(250, 140).toFile(des_file + filename + "-thumbs" + '.png', function (err) {
                 if (err) {
                     console.error('sharp>>>', err)
                 }
             })
 
-            sharp(req.file.path).resize(500, 300).toFile(des_file + filename + '.png', function(err) {
+            sharp(req.file.path).resize(500, 300).toFile(des_file + filename + '.png', function (err) {
                 if (err) {
                     console.error('sharp>>>', err)
                 }
@@ -583,16 +587,48 @@ router.post('/edit_course/:courseID', async function (req, res) {
     });
 })
 
-router.post('/del', ensureAuthenticated, async function (req, res) {
-    const ret = await courseModel.del(req.body);
+// del route of admin
+router.post('/del', adminAuthenticated, async function (req, res) {
+    const courseID = req.body.courseID;
+    console.log(courseID)
+
+    try {
+        await lessonsModel.delLessonByCourse(
+            courseID
+        );
+        await courseModel.del(
+            courseID
+        );
+
+    } catch (error) {
+    }
 })
 
-router.post('/patch', ensureAuthenticated, async function (req, res) {
+// del route of lecturer
+router.post('/del_course/:courseID', authorAuthenticated, async function (req, res) {
+    const courseID = req.params.courseID;
+    console.log(courseID)
+
+    try {
+        await lessonsModel.delLessonByCourse(
+            courseID
+        );
+        await courseModel.del(
+            courseID
+        );
+        res.status(200).send({ del: true })
+    } catch (error) {
+        res.status(200).send({ del: false })
+    }
+})
+
+router.post('/patch', authorAuthenticated, async function (req, res) {
     const ret = await courseModel.patch(req.body);
     res.redirect('/courses');
 })
 
-router.get("/registed", async function (req, res) {
+// registered of user
+router.get("/registed", ensureAuthenticated, async function (req, res) {
     let rows = await registedCourseModel.byUsername(
         req.session.passport.user.userUsername
     );
@@ -616,65 +652,63 @@ router.get("/registed", async function (req, res) {
 });
 
 //learn
-router.get("/learn", async function (req, res) {
+router.get("/learn", ensureAuthenticated, async function (req, res) {
     let id = +req.query.courseID;
-    const lessons = await lessonModel.byCourse(id);
+    const lessons = await lessonsModel.byCourse(id);
     const learns = await learnModel.byUsernameAndCourseID(req.session.passport.user.userUsername, id);
-    console.log(learns);
+    const course = await courseModel.single(id);
 
-    let lesson = +req.query.lessonID || 1;
-    let unit = +req.query.unit || 1;
-
-    for (let i = 0; i < lessons.length; i++) {
-        let obj = [];
-        for (let j = 0; j < lessons[i].lessonNumberUnit; j++) {
-            obj[j] = {};
-            obj[j].name = j + 1;
-            obj[j].isLearn = false;
-        }
-        lessons[i].units = obj;
-    }
+    let lesson = +req.query.lessonID || 0;
 
     learns.forEach((learn) => {
-        lessons[learn.learnLesson - 1].units[learn.learnUnit - 1].isLearn = true;
+        lessons[learn.learnLesson - 1].isLearn = true;
     })
-
-    console.log(lessons[0].units);
-    console.log(lessons[1].units);
 
     res.render("vwCourses/learn", {
         lessons,
         id,
+        course,
+        contentLesson: lessons[lesson],
         lesson,
-        unit,
         empty: lessons.length === 0
     });
 });
 
-router.post('/add_lesson/:courseID', async function (req, res) {
+router.post('/add_lesson/:courseID', authorAuthenticated, async function (req, res) {
     const courseID = req.params.courseID;
+    const courseName = Object.keys(req.body)[0];
 
-    await lessonsModel.add({
-        courseID: courseID,
-        lessonID: lessonID,
-        done: 0
-    });
+    const maxLesson = await lessonsModel.getMaxIndex(courseID);
+    var lessonID = 0;
+    if (maxLesson.maxLesson !== null)
+        lessonID = maxLesson.maxLesson + 1;
 
-    // const details = await courseModel.single(courseID);
-    // const lesson = await lessonsModel.all(courseID);
+    try {
+        await lessonsModel.add({
+            courseID: courseID,
+            lessonName: courseName,
+            lessonID: lessonID,
+            done: 0
+        });
+        res.status(200).send({ added: true })
+    } catch (error) {
+        res.status(200).send({ added: false })
+    }
+})
 
-    // lesson.forEach(item => {
-    //     item.stt = item.lessonID + 1;
-    // });
+router.post('/del_lesson/:courseID', authorAuthenticated, async function (req, res) {
+    const courseID = req.params.courseID;
+    const lessonID = Object.keys(req.body)[0];
 
-    // res.render('vwCourses/upload_file', {
-    //     course: details,
-    //     lesson_items: lesson,
-    //     empty: lesson.length === 0
-    // });
-
-    res.redirect('upload_course/' + courseID);
-
+    try {
+        await lessonsModel.del({
+            courseID: courseID,
+            lessonID: lessonID
+        });
+        res.status(200).send({ del: true })
+    } catch (error) {
+        res.status(200).send({ del: false })
+    }
 })
 
 router.get("/:id", async function (req, res) {
@@ -683,8 +717,14 @@ router.get("/:id", async function (req, res) {
     let registed = null;
     const course = await courseModel.single(id);
     let rows = await courseModel.all();
+    const lessons = await lessonsModel.byCourse(id);
+    const relatedCourse = await courseModel.byCatPage(course.courseCatLevel2ID, 0);
+    const lecturer  = await userModel.lecturerByCourse(course.courseID)
+    console.log(lecturer.userUsername);
+    const lecturerInfo = await userModel.lecturerInfo(course.courseLecturer)
 
     if (req.session.passport != undefined) {
+        if (req.session.passport.user != undefined) {
         favorite = await watchListModel.single(req.session.passport.user.userUsername, id);
         registed = await registedCourseModel.single(req.session.passport.user.userUsername, id);
 
@@ -701,16 +741,23 @@ router.get("/:id", async function (req, res) {
             }
         }
     }
+    }
 
     if (course === null) {
         return res.redirect("/courses");
     }
 
+    lecturer.forEach(element => {
+        element['sum'] = lecturerInfo.sum;
+    });
     res.render("vwCourses/detail", {
         course,
+        lessons,
+        lecturer,
+        lecturerInfo,
         isFavorite: favorite != null,
         isRegistered: registed != null,
-        topTrending: rows.slice(0, 5),
+        relatedCourse: relatedCourse.slice(0, 5),
     });
 });
 

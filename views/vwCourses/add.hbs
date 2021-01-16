@@ -28,7 +28,7 @@
         removeTitle: 'Cancel or reset changes',
         elErrorContainer: '#kv-avatar-errors-2',
         msgErrorClass: 'alert alert-block alert-danger',
-        defaultPreviewContent: '<h6 class="text-muted">Click to select</h6>',
+        defaultPreviewContent: '<h6 class="text-muted">Chọn ảnh</h6>',
         layoutTemplates: {
             main2: '{preview} ' + ' {remove} {browse}'
         },
@@ -98,6 +98,8 @@
 
         node.style.width = "100%";
         node.style.padding = "10px";
+        node.style.marginTop = "10px";
+        node.style.border = "1px solid #ced4da";
 
 
 
@@ -127,8 +129,9 @@
                         <div class="file-loading">
                             <input id="avatar-2" name="avatar-2" type="file">
                         </div>
-                        <p>Anh khoa hoc</p>
+                     
                     </div>
+                       <p>Ảnh khóa học</p>
                 </div>
                 <div class="col-sm-8">
                     <div class="card">
@@ -189,7 +192,7 @@
                             <div class="">
                                 <label for="lesson">Danh sách bài học</label>
                                 <div id="lesson"></div>
-                                <input type="text" name="lesson" id="lesson" style="visibility: hidden">
+                                <input type="text" name="lesson" id="lesson" style="visibility: hidden; display: none">
                                 <button type="button" class="btn btn-info mt-3" onclick="addanlesson()">Thêm bài học</button>
                             </div>
                         </div>

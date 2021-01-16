@@ -9,17 +9,17 @@ module.exports = {
 
   // phân trang tất cả các khóa học
   allPage(page) {
-    return db.load(`select * from courses limit ${limitPage} offset ${page}`);
+    return db.load(`select * from courses left join users on users.userUsername = courses.courseLecturer limit ${limitPage} offset ${page}`);
   },
 
   // phân trang khóa học theo lĩnh vực
   byCatPage(catId, page) {
-    return db.load(`select * from ${TBL_COURSES} where courseCatLevel2ID = ${catId} limit ${limitPage} offset ${page}`);
+    return db.load(`select * from ${TBL_COURSES} left join users on users.userUsername = courses.courseLecturer where courseCatLevel2ID = ${catId} limit ${limitPage} offset ${page}`);
   },
 
   // phân trang tìm kiếm FTS
   fullTextSearchPage(text, page) {
-    return db.load(`select * from ${TBL_COURSES} where match(courseName) AGAINST('${text}') limit ${limitPage} offset ${page}`);
+    return db.load(`select * from ${TBL_COURSES} left join users on users.userUsername = courses.courseLecturer where match(courseName) AGAINST('${text}') limit ${limitPage} offset ${page}`);
   },
 
   // tất cả các khóa học
@@ -53,17 +53,44 @@ module.exports = {
 
   // khóa học nổi bật
   outStandingCourse() {
-    return rows = db.load(`select * from ${TBL_COURSES} ORDER BY coursePointEval DESC LIMIT 4 `);
+    return rows = db.load(`
+    select courses.*, users.userDisplayName, categorieslevel2.catName, c.sum
+    from courses
+    left join users on courses.courseLecturer = users.userUsername
+    left join categorieslevel2 on courses.courseCatLevel2ID = categorieslevel2.catID
+    left join (
+	  select count(*) as sum, courseID
+	  from reviews 
+	  group by reviews.courseID) as c on c.courseID = courses.courseID
+    ORDER BY coursePointEval DESC LIMIT 4 `);
   },
 
   // khóa học được xem nhiều nhất
   mostViewedCourse() {
-    return rows = db.load(`select * from ${TBL_COURSES} ORDER BY courseRegistered DESC LIMIT ${maxCourseHomepage}`);
+    return rows = db.load(`
+    select courses.*, users.userDisplayName, categorieslevel2.catName, c.sum
+    from courses
+    left join users on courses.courseLecturer = users.userUsername
+    left join categorieslevel2 on courses.courseCatLevel2ID = categorieslevel2.catID
+    left join (
+	  select count(*) as sum, courseID
+	  from reviews 
+	  group by reviews.courseID) as c on c.courseID = courses.courseID
+    ORDER BY courseRegistered DESC LIMIT ${maxCourseHomepage}`);
   },
 
   // khóa học mới nhất
   latestCourse() {
-    return rows = db.load(`select * from ${TBL_COURSES} ORDER BY courseUpdatedAt DESC LIMIT ${maxCourseHomepage}`);
+    return rows = db.load(`
+    select courses.*, users.userDisplayName, categorieslevel2.catName, c.sum
+    from courses
+    left join users on courses.courseLecturer = users.userUsername
+    left join categorieslevel2 on courses.courseCatLevel2ID = categorieslevel2.catID
+    left join (
+	  select count(*) as sum, courseID
+	  from reviews 
+	  group by reviews.courseID) as c on c.courseID = courses.courseID
+    ORDER BY courseUpdatedAt DESC LIMIT ${maxCourseHomepage}`);
   },
 
   async all_lecturer(lecturerName) {
@@ -80,9 +107,10 @@ module.exports = {
     return db.add(entity, TBL_COURSES)
   },
 
-  del(entity) {
-    const condition = { courseID: entity.courseID };
-    return db.del(condition, TBL_COURSES);
+  del(courseID) {
+    db.load(`SET FOREIGN_KEY_CHECKS=0`);
+    db.load(`delete from courses where courseID = '${courseID}'`);
+    return db.load(`SET FOREIGN_KEY_CHECKS=1`);
   },
 
   patch(entity) {

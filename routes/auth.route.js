@@ -111,16 +111,16 @@ router.post('/register', (req, res) => {
                 transporter.sendMail(mainOptions, function (err, info) {
                   if (err) {
                     console.log(err);
-                     res.status(200).send('confirm', {
-                       step: 1,
-                       sendMail: false
-                     })
+                    res.status(200).send('confirm', {
+                      step: 1,
+                      sendMail: false
+                    })
                   } else {
                     console.log('Message sent: ' + info.response);
-                     res.render('confirm', {
-                       step: 1, 
-                       sendMail: true
-                     })
+                    res.render('confirm', {
+                      step: 1,
+                      sendMail: true
+                    })
                   }
                 });
               });
@@ -142,8 +142,11 @@ router.get('/confirm', (req, res) => {
           errors: 'Expired link. Signup again'
         });
       } else {
-        const { userUsername, userPassword, userEmail, userDisplayName } = jwt.decode(token);
-        User.add({ userUsername, userPassword, userType: 1, userEmail, userDisplayName })
+        const { userUsername, userPassword, userEmail, userDisplayName, unchecked, userType } = jwt.decode(token);
+        if (unchecked == undefined)
+          User.add({ userUsername, userPassword, userType: 1, userEmail, userDisplayName })
+        else
+          User.add({ userUsername, userPassword, userType: 1, userEmail, userDisplayName, unchecked, userType })
         res.render('confirm')
       }
     });
@@ -177,5 +180,124 @@ router.get('/is-available', async function (req, res) {
   }
   res.json(false);
 });
+
+// Register lecturer Page
+router.get('/register/registerLecturer', forwardAuthenticated, (req, res) => res.render('registerLecturer', {
+  layout: false
+}));
+
+// Register lecturer
+router.post('/registerLecturer', (req, res) => {
+  const { name, email, username, password, password2 } = req.body;
+  let errors = [];
+
+  if (!name || !email || !password || !password2 || !username) {
+    errors.push({ msg: 'Please enter all fields' });
+  }
+
+  if (password != password2) {
+    errors.push({ msg: 'Passwords do not match' });
+  }
+
+  if (password.length < 6) {
+    errors.push({ msg: 'Password must be at least 6 characters' });
+  }
+
+  if (errors.length > 0) {
+    res.render('register', {
+      err: true,
+      errorMsg: errors[0].msg,
+      layout: false
+    });
+  } else {
+    User.single(username).then(user => {
+      if (user) {
+        errors.push({ msg: 'Username already exists' });
+        res.render('register', {
+          err: true,
+          errorMsg: errors[0].msg,
+          layout: false
+        });
+      } else {
+        User.singleEmail(email).then(user => {
+          if (user) {
+            errors.push({ msg: 'Email already exists' });
+            res.render('register', {
+              err: true,
+              errorMsg: errors[0].msg,
+              layout: false
+            });
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(password, salt, (err, hash) => {
+                if (err) throw err;
+
+                // User.add({ userUsername: username, userPassword: hash, userType: 1, userEmail: email, userDisplayName: name, isConfirm: false })
+
+                var transporter = nodemailer.createTransport({ // config mail server
+                  host: 'smtp.gmail.com',
+                  port: 465,
+                  secure: true,
+                  auth: {
+                    user: 'onlineacademysystem@gmail.com',
+                    pass: 'datquadeptrai123'
+                  },
+                  tls: {
+                    rejectUnauthorized: false
+                  }
+                });
+
+                const token = jwt.sign(
+                  { userUsername: username, userPassword: hash, userEmail: email, userDisplayName: name, unchecked: 1, userType: 2 },
+                  process.env.JWT_ACCOUNT_ACTIVATION,
+                  {
+                    expiresIn: '5m'
+                  }
+                );
+
+                // content of confirm mail
+                var content = '';
+                content += `
+                    <div style="padding: 10px; background-color: #003375">
+                        <div style="padding: 10px; background-color: white;">
+                            <h1 style="text-align: center">Online Academy</h1>
+                            <h3 style="color: #0085ff">Chào mừng bạn đến với hệ thống học trực tuyến Online Academy</h3>
+                            <span style="color: black">Click vào link để xác nhận đăng ký tài khoản:</span>
+                            http://localhost:3000/auth/confirm?data=` + token + `
+                        </div>
+                    </div>
+                `;
+
+                var mainOptions = {
+                  from: 'onlineacademysystem@gmail.com',
+                  to: email,
+                  subject: 'Test Nodemailer',
+                  text: 'Your text is here',
+                  html: content
+                }
+
+                transporter.sendMail(mainOptions, function (err, info) {
+                  if (err) {
+                    console.log(err);
+                    res.status(200).send('confirm', {
+                      step: 1,
+                      sendMail: false
+                    })
+                  } else {
+                    console.log('Message sent: ' + info.response);
+                    res.render('confirm', {
+                      step: 1,
+                      sendMail: true
+                    })
+                  }
+                });
+              });
+            });
+          }
+        });
+      }
+    });
+  }
+})
 
 module.exports = router;

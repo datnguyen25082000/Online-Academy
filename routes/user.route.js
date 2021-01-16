@@ -18,6 +18,17 @@ router.get("/", adminAuthenticated, async function (req, res) {
   });
 });
 
+router.get("/registerLecturer", adminAuthenticated, async function (req, res) {
+  const rows = await UserModel.allRegister();
+
+  res.render("vwUsers/indexRegister", {
+    users: rows,
+    empty: rows.length === 0,
+  });
+});
+
+
+
 router.get("/add", adminAuthenticated, function (req, res) {
   res.render("vwUsers/add");
 });
@@ -39,13 +50,27 @@ router.post('/add',adminAuthenticated, async function (req, res) {
   }
 })
 
+router.post('/addLecturer',adminAuthenticated, async function (req, res) {
+  try {
+    const username = Object.keys(req.body)[0];
+    await UserModel.addLecturer(username);
+    res.status(200).send({ 'added': true });
+  } catch (error) {
+    res.status(200).send({ 'added': false })
+  }
+})
+
 router.post("/del", adminAuthenticated, async function (req, res) {
   const ret = await UserModel.del(req.body);
 });
 
 router.post("/patch", async function (req, res) {
-  const ret = await UserModel.patch(req.body);
-  res.redirect("/users");
+  try {
+    const ret = await UserModel.patch(req.body);
+    res.status(200).send({ 'saved': true });
+  } catch (error) {
+    res.status(200).send({ 'saved': false })
+  }
 });
 
 //send comment
