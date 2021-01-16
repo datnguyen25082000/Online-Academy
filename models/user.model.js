@@ -44,6 +44,24 @@ module.exports = {
 
   addLecturer(userUsername) {
     return db.load(`update ${TBL_USERS} set unchecked = 0 where userUsername = '${userUsername}'`);
+  },
+
+  lecturerByCourse(courseID) {
+    return db.load(`select users.* from users join courses on users.userUsername = courses.courseLecturer where courses.courseID = '${courseID}'`);
+  },
+
+  async lecturerInfo(username) {
+    const rows = await db.load(`
+    select sum
+    from users
+    left join (
+	  select count(*) as sum, courseLecturer
+	  from courses 
+    group by courses.courseLecturer) as c on c.courseLecturer = users.userUsername
+    where users.userUsername = '${username}'
+    `);
+
+    return rows[0];
   }
 
 

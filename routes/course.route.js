@@ -12,6 +12,7 @@ const learnModel = require('../models/learn.model')
 const lessonsModel = require('../models/lessons.model');
 
 const { route } = require('./lecturer.route');
+const userModel = require('../models/user.model');
 
 const router = express.Router();
 const limitPage = process.env.LIMIT_PAGE;
@@ -717,7 +718,10 @@ router.get("/:id", async function (req, res) {
     const course = await courseModel.single(id);
     let rows = await courseModel.all();
     const lessons = await lessonsModel.byCourse(id);
-    const relatedCourse = await courseModel.byCatPage(course.courseCatLevel2ID, 0)
+    const relatedCourse = await courseModel.byCatPage(course.courseCatLevel2ID, 0);
+    const lecturer  = await userModel.lecturerByCourse(course.courseID)
+    console.log(lecturer.userUsername);
+    const lecturerInfo = await userModel.lecturerInfo(course.courseLecturer)
 
     if (req.session.passport != undefined) {
         if (req.session.passport.user != undefined) {
@@ -743,9 +747,14 @@ router.get("/:id", async function (req, res) {
         return res.redirect("/courses");
     }
 
+    lecturer.forEach(element => {
+        element['sum'] = lecturerInfo.sum;
+    });
     res.render("vwCourses/detail", {
         course,
         lessons,
+        lecturer,
+        lecturerInfo,
         isFavorite: favorite != null,
         isRegistered: registed != null,
         relatedCourse: relatedCourse.slice(0, 5),

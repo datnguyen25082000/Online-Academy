@@ -152,6 +152,7 @@
       </div>
     </div>
 
+    {{#each ../lecturer}}
     <div class="course-instructor mt-5">
       <div class="styles--instructors--2JsS3">
         <h4 class="font-weight-bold pb-2" style="border-bottom: 1px rgb(151, 144, 144) solid">Giảng viên</h4>
@@ -159,26 +160,19 @@
         <div class="instructor--instructor--1wSOF" data-purpose="instructor-bio"><span
             class="in-page-offset-anchor"></span>
           <div>
-            <div class="udlite-heading-lg instructor--instructor__title--34ItB"><a href="/user/abc">Dr. Angela Yu</a>
+            <div class="udlite-heading-lg instructor--instructor__title--34ItB"><a
+                href="/user/abc">{{userDisplayName}}</a>
             </div>
-            <div class="udlite-text-md instructor--instructor__job-title--1HUmd">Developer and Lead Instructor</div>
           </div>
           <div class="instructor-intro d-flex my-3">
-            <a class="instructor-image" href="/user/4b4368a3-b5c8-4529-aa65-2056ec31f37e/"><img class="rounded-circle"
+            <a class="instructor-image" href="/public/imagesAvatar/{{userUsername}}.png"><img class="rounded-circle"
                 width="64" height="64" style="width:6.4rem;height:6.4rem"
-                src="https://img-b.udemycdn.com/user/75x75/31334738_a13c_2.jpg?secure=FNcWRT6-QGYEdB10-nggaA%3D%3D%2C1609457290"></a>
-            <ul class=" ml-3">
+                src="/public/imagesAvatar/{{userUsername}}.png"></a>
+            <ul class="my-auto ml-3">
+
+            
               <li>
-                <div class="udlite-block-list-item-content">4.7 Instructor Rating</div>
-              </li>
-              <li>
-                <div class="udlite-block-list-item-content">232,716 Reviews</div>
-              </li>
-              <li>
-                <div class="udlite-block-list-item-content">678,727 Students</div>
-              </li>
-              <li>
-                <div class="udlite-block-list-item-content">8 Courses</div>
+                <div class="udlite-block-list-item-content">Số khóa học đã đăng: {{sum}} Khóa học</div>
               </li>
             </ul>
           </div>
@@ -186,17 +180,7 @@
             <div class="show-more--content">
               <div>
                 <div class="udlite-text-sm instructor--instructor__description--1dHxF">
-                  <p>I'm Angela, I'm a developer with a passion for teaching. I'm the <strong>lead instructor</strong>
-                    at the London App Brewery, London's leading <strong>Programming Bootcamp</strong>. I've helped
-                    hundreds of thousands of students learn to code and change their lives by becoming a developer. I've
-                    been invited by companies such as Twitter, Facebook and Google to teach their employees.</p>
-
-                  <p>I spend most of my time researching how to make <strong>learning to code fun</strong> and make
-                    <strong>hard concepts easy to understand</strong>. I apply everything I discover into my bootcamp
-                    courses. In my courses, you'll find lots of geeky humour but also lots of <strong>explanations and
-                      animations</strong> to make sure everything is easy to understand.
-                  </p>
-                  <p><strong>I'll be there for you every step of the way.</strong></p>
+                  {{userIntro}}
                 </div>
               </div>
             </div>
@@ -204,6 +188,8 @@
         </div>
       </div>
     </div>
+    {{/each}}
+
 
     <div class="mt-5 comment-list">
       <h4 class="font-weight-bold pb-2" style="border-bottom: 1px rgb(151, 144, 144) solid">Bình luận về khóa học</h4>
@@ -388,8 +374,6 @@
                   </span>
                 </div>
               </div>
-
-
             </div>
           </div>
         </a>
