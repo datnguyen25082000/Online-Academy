@@ -43,7 +43,7 @@
 /* Add padding and center-align text to the container */
 
 .formcontainer {
-    padding: 5%;
+    padding: 20px;
     text-align: center;
 }
 

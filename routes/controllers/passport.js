@@ -15,6 +15,9 @@ module.exports = function (passport) {
             return done(null, false, { message: 'That account is not registered' });
           }
 
+          if(user.unchecked === 1) {
+            return done(null, false, { message: 'That account is not registered' });
+          }
           // if (password == user.userPassword)
           //   return done(null, user);
           // else

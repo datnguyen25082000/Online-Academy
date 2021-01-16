@@ -88,3 +88,7 @@ a.list-group-item:hover {
 .select-box .option .radio {
     display: none;
 }
+
+a.login-btn:hover {
+    color: white!important;
+}

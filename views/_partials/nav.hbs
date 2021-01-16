@@ -17,12 +17,12 @@
         <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" id="searchInput" name="dataSearch" type="search"
           placeholder="Tìm kiếm khóa học" aria-label="Search">
         <div class="ml-3">
-          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/login">
+          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/register/registerLecturer">
             Giảng dạy với OA
           </a>
        
           <div class="d-lg-inline d-none">
-            <a class="btn btn-outline-primary my-2 my-sm-0 m-1 text-primary" style="width: 8rem!important;"
+            <a class="btn btn-outline-primary my-2 my-sm-0 m-1 text-primary login-btn" style="width: 8rem!important;"
               href="/auth/login">
               Đăng nhập
             </a>
@@ -34,12 +34,10 @@
         </div>
         {{else}}
         {{#if (isUser user.userType)}}
-        <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" type="search" placeholder="Tìm kiếm khóa học"
+        <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" id="searchInput" type="search" placeholder="Tìm kiếm khóa học"
           aria-label="Search">
         <div class="ml-3 d-flex">
-          <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/auth/login">
-            Giảng dạy với OA
-          </a>
+        
           <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/courses/registed">
             Khóa học của tôi
           </a>
@@ -72,11 +70,11 @@
         </div>
         {{else}}
         {{#if (isLecturer user.userType)}}
-        <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" type="search" placeholder="Tìm kiếm khóa học"
+        <input class="form-control mr-sm-2 flex-grow-1 mx-3 mr-2" id="searchInput" type="search" placeholder="Tìm kiếm khóa học"
           aria-label="Search">
         <div class="ml-3 d-flex">
           <a class="btn my-2 my-sm-0 m-1 flex-grow-1 d-lg-inline d-none" href="/lecturer/courses">
-            Khóa học của tôi
+            Khóa học đã đăng 
           </a>
           <div class="nav-item dropdown d-lg-inline d-none">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

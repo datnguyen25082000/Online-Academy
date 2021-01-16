@@ -12,7 +12,7 @@ module.exports = {
     SELECT sum(courses.courseRegistered) AS RES, cat.catName, cat.catID
     FROM categoriesLevel2 cat left join courses courses on cat.catID = courses.courseCatLevel2ID
     group by catID 
-    ORDER BY RES DESC LIMIT 4
+    ORDER BY RES DESC LIMIT 5
     `;
     return db.load(sql);
   },
