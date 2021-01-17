@@ -1,4 +1,4 @@
-## Online-Academy
+# Online-Academy
 
 Online-Academy is a simple academy web application with some features:
   #Homepage: courses top trending, lastestCourse, courses with most view
@@ -11,12 +11,16 @@ Online-Academy is a simple academy web application with some features:
   
 ## Installation
 Use the package manager [npm](https://www.npmjs.com/) to install Online-Academy.
-You can clone this category and run with command:
-  #npm start
+You can clone this category and install package of project:
+```
+npm install
+```
 
 ## Usage
 
-...
+```
+npm start
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
