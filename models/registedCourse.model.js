@@ -8,6 +8,11 @@ module.exports = {
     return db.load(`select * from ${TBL_REGISTED}`);
   },
 
+  async countStudents(courseID) {
+    const row = await db.load(`select count(courseID) as amount from ${TBL_REGISTED} where courseID = '${courseID}'`);
+    return row[0].amount;
+  },
+
   byUsername(username) {
     return db.load(`select * 
                     from ${TBL_REGISTED} r join ${TBL_COURSES} c on c.courseID = r.courseID

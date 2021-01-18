@@ -239,7 +239,7 @@
                         {{/each}} --}}
                     </div>
                     <a href="/courses/learn?courseID={{courseID}}&lessonID={{lessonID}}"
-                        class="selected list-group-item list-group-item-action bg-light border-0 {{#if done}} {{else}} disabled {{/if}}"
+                        class="selected list-group-item list-group-item-action border-0 {{#if done}} {{else}} disabled {{/if}} {{#if isActive}} active {{/if}}"
                         style="border-bottom: 1px rgba(0,0,0,.125) solid !important">
                         <span class="">{{lessonName}}</span>
                         {{#if isLearn}}

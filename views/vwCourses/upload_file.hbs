@@ -221,10 +221,7 @@
                             <span class="card-text d-block">Số lượng học viên: {{course.courseRegistered}}</span>
                         </div>
                     </div>
-                    <div class="d-flex">
-                        <div class="my-rating pl-2 pb-2 " data-rating="{{course.coursePointEval}}"></div>
-                        <div class=" mt-1 text-danger ml-2 font-weight-bold">{{course.coursePointEval}}</div>
-                    </div>
+                   
 
                 </div>
                 <div class="">
@@ -245,9 +242,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-4 mt-5 fixed-course-content" id="fixed-course-content" style="">
+            <div class="row col-4 fixed-course-content mt-5" id="fixed-course-content"
+               >
                 <div class="card shadow d-flex m-auto">
-
+                  
                     <div class="p-2 d-flex flex-column flex-grow-1">
 
                         <div class="mt-auto d-flex flex-column p-3">
@@ -269,9 +267,18 @@
                                     {{course.courseRegistered}}</li>
                                 <li class="card-text d-block"><i class="fa fa-list-ol mr-3" aria-hidden="true"
                                         style="width: 20px"></i> Lĩnh
-                                    vực: abc</li>
+                                    vực: {{course.catName}}</li>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="text-muted text-right" style="width: 100%;">
+                    <div class="mx-auto ">
+                      
+
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+
+                   
                     </div>
                 </div>
                 <div class="text-muted d-flex justify-content-between" style="width: 100%;">

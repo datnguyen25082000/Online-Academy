@@ -9,6 +9,7 @@ const watchListModel = require("../models/watchList.model");
 const multer = require("multer");
 const reviewModel = require("../models/review.model");
 const learnModel = require("../models/learn.model");
+const voteModel = require("../models/vote.model");
 
 router.get("/", adminAuthenticated, async function (req, res) {
   const rows = await UserModel.all();
@@ -73,6 +74,35 @@ router.post("/patch", async function (req, res) {
   }
 });
 
+//send vote
+router.post("/vote", async function(req, res) {
+  let data = {
+    voteUser: req.session.passport.user.userUsername,
+    voteCourse: req.body.courseID,
+    voteValue: req.body.vote
+  }
+  const rows = await voteModel.add(data);
+  res.redirect(`/courses/${req.body.courseID}`);
+});
+
+//edit vote
+router.post("/editVote", async function(req, res) {
+  let data = {
+    voteUser: req.session.passport.user.userUsername,
+    voteCourse: req.body.courseID,
+    voteValue: req.body.vote
+  }
+  const rows = await voteModel.patch(data);
+
+  let data2 = {
+    username: req.session.passport.user.userUsername,
+    courseID: req.body.courseID,
+    vote: req.body.vote
+  }
+  const updateReview = await reviewModel.patch(data2);
+  res.redirect(`/courses/${req.body.courseID}`);
+});
+
 //send comment
 router.post("/sendComment", async function (req, res) {
   let data = {
@@ -83,6 +113,7 @@ router.post("/sendComment", async function (req, res) {
     dateReview: new Date().toISOString().slice(0, 19).replace('T', ' ')
   };
 
+  console.log("abc");
   console.log(data);
 
   const ret = await reviewModel.add(data);
@@ -139,7 +170,7 @@ router.post('/patch', async function (req, res) {
 
 // Profile
 router.get("/profile", async function (req, res) {
-  const info = await UserModel.single(req.session.passport.user.userUsername);
+  const info = req.session.passport.user;
   if (info === null) {
     return res.redirect("/");
   }
@@ -178,7 +209,29 @@ router.post("/profile", function (req, res) {
 
 //save info
 router.post("/profile/save", async function (req, res) {
-  const ret = await UserModel.patch(req.body);
+  let info = req.body;
+
+  if (info.userPassword != undefined) {
+    const password = info.userPassword;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
+        if (err) throw err;
+        info.userPassword = hash;
+        info.userUsername = req.session.passport.user.userUsername;
+        req.session.passport.user.userPassword = hash;
+        req.session.save();
+        await UserModel.patch(info);
+      });
+    });
+  }
+  else
+    await UserModel.patch(info);
+
+  req.session.passport.user.userDisplayName = info.userDisplayName;
+  req.session.passport.user.userEmail = info.userEmail;
+  req.session.passport.user.userIntro = info.userIntro;
+  req.session.save();
+
   res.redirect("/users/profile");
 });
 

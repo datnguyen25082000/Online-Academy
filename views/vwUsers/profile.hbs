@@ -11,37 +11,49 @@
 <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 <script>
-  $("#passwordTab").on("click", function (e) {
-    e.preventDefault();
-    Swal.fire({
-      title: 'Hãy nhập mật khẩu của bạn',
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Kiểm tra',
-      showLoaderOnConfirm: true,
-      preConfirm: (input) => {
-        
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          icon: 'success',
-          title: 'OK..',
-          text: "Bạn đã nhập đúng mật khẩu",
-        })
-      }
-      else {
+  $(document).ready(function () {
+    if ($("#passwordTab").hasClass("active")) {
+      Swal.fire({
+        title: 'Hãy nhập mật khẩu của bạn',
+        input: 'password',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Kiểm tra',
+        showLoaderOnConfirm: true,
+        preConfirm: (input) => {
+          $.post("/auth/checkPass", { password: input },
+            function (data, status) {
+              if (data) {
+                Swal.fire(
+                  "Bạn đã nhập đúng mật khẩu",
+                  'OK..',
+                  'success'
+                )
+              }
+              else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Bạn đã nhập sai mật khẩu!!!',
+                }).then(function () {
+                  window.location = "/users/profile"
+                })
+              }
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: 'Bạn đã nhập sai mật khẩu!!!',
+        }).then(function () {
+          window.location = "/users/profile"
         })
-      }
-    })
+      })
+    }
   })
 </script>
 
@@ -126,11 +138,10 @@
             </textarea>
           </div>
           {{else}}
-          
+
           <div class="form-group">
             <label for="password">Mật khẩu</label>
-            <input type="password" class="form-control" id="password" name="userPassword"
-              value="{{this.info.userPassword}}" required>
+            <input type="password" class="form-control" id="password" name="userPassword">
           </div>
           {{/if}}
           <div class="text-right">

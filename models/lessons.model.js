@@ -53,6 +53,6 @@ module.exports = {
 
         delete entity.courseID;
         delete entity.lessonID;
-        return db.patchlesson(entity, condition1, condition2, TBL_LESSONS);
+        return db.patchWith2Condition(entity, condition1, condition2, TBL_LESSONS);
     }
 };
