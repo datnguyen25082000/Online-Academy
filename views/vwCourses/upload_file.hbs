@@ -245,8 +245,41 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-4 mt-5 fixed-course-content" id="fixed-course-content" style="">
+            <div class="row col-4 fixed-course-content" id="fixed-course-content"
+                style="z-index: 9; top: -250px ; right: 0; position: relative">
                 <div class="card shadow d-flex m-auto">
+                    <img src="{{largeImage course.courseImage}}" alt="{{course.courseName}}"
+                        title="{{course.courseName}}">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+
+                        <div class="mt-auto d-flex flex-column p-3">
+
+                            <h5 class="my-3">Miêu tả về khóa học:</h5>
+                            <div class="ml-4">
+                                <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 "
+                                        style="width: 20px"></i> Giá: <span class="text-danger font-weight-bold">{{#if
+                                        (isZero course.coursePrice)}}Miễn Phí
+                                        {{else}}{{course.coursePrice}}{{/if}}</span>
+                                </li>
+                                <li class="card-text d-block"><i class="fas fa-user-friends mr-3   "
+                                        style="width: 20px"></i> Số lượng học
+                                    viên: {{course.courseRegistered}}
+                                </li>
+                                <li class="card-text d-block"><i class="fa fa-clock-o mr-3" aria-hidden="true"
+                                        style="width: 20px"></i> Thời
+                                    gian khóa học:
+                                    {{course.courseRegistered}}</li>
+                                <li class="card-text d-block"><i class="fa fa-list-ol mr-3" aria-hidden="true"
+                                        style="width: 20px"></i> Lĩnh
+                                    vực: {{course.catName}}</li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-muted text-right" style="width: 100%;">
+                    <div class="mx-auto p-5">
+                        <a href="/courses/edit_course/{{course.courseID}}" type="button" onclick=""
+                            class="btn_save btn btn-outline-success">Chỉnh sửa</a>
 
                     <div class="p-2 d-flex flex-column flex-grow-1">
 
