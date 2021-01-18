@@ -70,18 +70,18 @@
         updateHtmlOutput()
     })
 
-        function updateHtmlOutput() {
-            let html = getQuillHtml();
-            console.log(html);
-            document.getElementById('full_des').value = html;
-        }
-    </script>
+    function getQuillHtml() {
+        return editor.root.innerHTML;
+    }
 
     function updateHtmlOutput() {
         let html = getQuillHtml();
+        console.log(html);
         document.getElementById('full_des').value = html;
-        document.getElementById('output-html').innerText = html;
     }
+</script>
+
+
 </script>
 
 <script>
@@ -112,49 +112,44 @@
 </script>
 
 <script>
-    function myValidate(){
-        var isValid=true;
+    function myValidate() {
+        var isValid = true;
 
 
         var name = document.forms["frmCourse"]["courseName"].value;
-        if (name == "")
-        {
-            isValid =false;
+        if (name == "") {
+            isValid = false;
             document.getElementById("txtCourseName").placeholder = "Nhập tên vào đây..";
-            document.getElementById("txtCourseName").style.borderColor  = "#cd353b";
+            document.getElementById("txtCourseName").style.borderColor = "#cd353b";
             document.getElementById("name-err").style.display = "block";
 
         }
 
         var short = document.forms["frmCourse"]["short_des"].value;
-        if (short == "")
-        {
+        if (short == "") {
 
-            isValid =false;
+            isValid = false;
             document.getElementById("short_des").placeholder = "Nhập mô tả ngắn vào đây..";
-            document.getElementById("short_des").style.borderColor  = "#cd353b";
+            document.getElementById("short_des").style.borderColor = "#cd353b";
             document.getElementById("short-err").style.display = "block";
         }
         var full = document.forms["frmCourse"]["full_des"].value;
-        if (full == "")
-        {
+        if (full == "") {
 
-            isValid =false;
-            document.getElementById("full_des").style.borderColor  = "#cd353b";
+            isValid = false;
+            document.getElementById("full_des").style.borderColor = "#cd353b";
             document.getElementById("full-err").style.display = "block";
         }
-        
-        var price = document.forms["frmCourse"]["price"].value;
-        if (price == "")
-        {
 
-            isValid =false;
+        var price = document.forms["frmCourse"]["price"].value;
+        if (price == "") {
+
+            isValid = false;
             document.getElementById("price").placeholder = "Nhập mức học phí vào đây";
-            document.getElementById("price").style.borderColor  = "#cd353b";
+            document.getElementById("price").style.borderColor = "#cd353b";
             document.getElementById("price-err").style.display = "block";
         }
-        if (isValid)
-        {
+        if (isValid) {
             document.getElementById("frmCourse").submit();
 
         }
@@ -181,9 +176,9 @@
                         <div class="file-loading">
                             <input id="avatar-2" name="avatar-2" type="file">
                         </div>
-                     
+
                     </div>
-                       <p>Ảnh khóa học</p>
+                    <p>Ảnh khóa học</p>
                 </div>
                 <div class="col-sm-8">
                     <div class="card">
@@ -203,9 +198,10 @@
                         <div class="mt-3 px-3">
                             <div class="">
                                 <label for="txtCourseName">Khóa học</label>
-                                <input type="text" class="form-control" id="txtCourseName" name="courseName" autofocus >
-                                <div id="name-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname" style="display: none;">
-                                   <label for="name-err" class="m-0">Vui lòng nhập dữ liệu</label>
+                                <input type="text" class="form-control" id="txtCourseName" name="courseName" autofocus>
+                                <div id="name-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname"
+                                    style="display: none;">
+                                    <label for="name-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
                             </div>
                         </div>
@@ -213,9 +209,10 @@
                         <div class="mt-3 px-3">
                             <div class="">
                                 <label for="short_des">Mô tả ngắn gọn</label>
-                                <input type="text" class="form-control" id="short_des" name="short_des" >
-                                <div id="short-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname" style="display: none;">
-                                   <label for="short-err" class="m-0">Vui lòng nhập dữ liệu</label>
+                                <input type="text" class="form-control" id="short_des" name="short_des">
+                                <div id="short-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname"
+                                    style="display: none;">
+                                    <label for="short-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
                             </div>
                         </div>
@@ -225,12 +222,13 @@
                             <div class="">
                                 <label for="full_des">Mô tả chi tiết</label>
                                 <div id="editor" style="height: 300px;"></div>
-                                <div id="full-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname" style="display: none;">
-                                   <label for="full-err" class="m-0">Vui lòng nhập dữ liệu</label>
+                                <div id="full-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname"
+                                    style="display: none;">
+                                    <label for="full-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
                                 <input type="text" class="form-control" id="full_des" name="full_des"
-                                    style="visibility: hidden; height: 0px;" >
-                                
+                                    style="visibility: hidden; height: 0px;">
+
                             </div>
                         </div>
 
@@ -248,36 +246,39 @@
                         </div>
 
                         <div class="row px-3">
-                               <div class="mt-3  col-6">
-                            <div class="">
-                                <label for="price">Học phí</label>
-                                <input type="number" class="form-control" id="price" name="price" value="0" >
-                                <div id="price-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname" style="display: none;">
-                                   <label for="price-err" class="m-0">Vui lòng nhập dữ liệu</label>
+                            <div class="mt-3  col-6">
+                                <div class="">
+                                    <label for="price">Học phí</label>
+                                    <input type="number" class="form-control" id="price" name="price" value="0">
+                                    <div id="price-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname"
+                                        style="display: none;">
+                                        <label for="price-err" class="m-0">Vui lòng nhập dữ liệu</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 px-3 col-6">
+                                <div class="">
+                                    <label for="discount">Thông tin khuyến mãi</label>
+                                    <input type="text" class="form-control" id="discount" name="discount" value="0">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mt-3 px-3 col-6">
-                            <div class="">
-                                <label for="discount">Thông tin khuyến mãi</label>
-                                <input type="text" class="form-control" id="discount" name="discount" value="0" >
-                            </div>
-                        </div>
-                        </div>
-                     
 
                         <div class="mt-3 mb-3 px-3">
                             <div class="">
                                 <label for="lesson">Danh sách bài học</label>
                                 <div id="lesson"></div>
                                 <input type="text" name="lesson" id="lesson" style="visibility: hidden; display: none">
-                                <button type="button" class="btn btn-info mt-3" onclick="addanlesson()">Thêm bài học</button>
+                                <button type="button" class="btn btn-info mt-3" onclick="addanlesson()">Thêm bài
+                                    học</button>
                             </div>
                         </div>
 
                         <div class="card-footer text-muted text-center">
-                            <button type="button" id="submitAddCourse" onclick="myValidate()" class="btn btn-outline-success px-3">
+                            <button type="button" id="submitAddCourse" onclick="myValidate()"
+                                class="btn btn-outline-success px-3">
                                 <i class="fas fa-save mr-3"></i>
                                 Lưu
                             </button>
