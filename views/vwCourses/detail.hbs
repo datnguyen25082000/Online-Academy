@@ -43,6 +43,7 @@
 
   $(".btnSend").click(function () {
     $(".inputVote").val($('.my-vote').starRating('getRating'));
+    alert("gửi");
   })
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -260,7 +261,7 @@
     </div>
       {{!-- vote --}}
       {{#if ../this.isRegistered}}
-      <div class="position-relative" style="top: -60px; left: 300px">
+      <div class="position-relative" style="width:250px; top: -60px; left: 300px">
         {{#if ../this.isVote}}
         <div class="my-vote my-2" data-rating="{{../this.vote.voteValue}}"></div>
         <form action="/users/editVote" method="post" class="formSubmit" id="formVote">

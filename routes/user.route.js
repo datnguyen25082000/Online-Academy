@@ -113,6 +113,7 @@ router.post("/sendComment", async function (req, res) {
     dateReview: new Date().toISOString().slice(0, 19).replace('T', ' ')
   };
 
+  console.log("abc");
   console.log(data);
 
   const ret = await reviewModel.add(data);
