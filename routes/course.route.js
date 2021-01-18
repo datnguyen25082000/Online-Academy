@@ -662,12 +662,13 @@ router.get("/learn", ensureAuthenticated, async function (req, res) {
 
     let lesson = +req.query.lessonID || 0;
 
-    if (lesson.type != undefined)
+    if (typeof(lessons[lesson]) != undefined)
         lessons[lesson].isActive = true;
 
     learns.forEach((learn) => {
         lessons[learn.learnLesson - 1].isLearn = true;
     })
+    console.log(lessons);
 
     res.render("vwCourses/learn", {
         lessons,
