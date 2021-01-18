@@ -12,7 +12,7 @@ module.exports = function (app) {
         helpers: {
             section: hbs_sections(),
             format(val) {
-                return numeral(val).format('0,0');
+                return numeral(val).format('0,0') + ' VND';
             },
             
             isUndefined(value) {
@@ -35,6 +35,10 @@ module.exports = function (app) {
             }, 
             isLecturer(value) {
                 return value === 2;
+            },
+
+            subArray(value, number) {
+                return value.slice(4 * number, 4 * number + 4);
             }
         }
     }));

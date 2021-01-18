@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
 
 //Nho xoa 
 router.get('/courses', async(req, res) => {
-    const lecturerName = 'user';
+    const lecturerName =   res.locals.user.userUsername;
     try {
         const rows = await courseModel.all_lecturer(lecturerName);
         rows.forEach(item => {

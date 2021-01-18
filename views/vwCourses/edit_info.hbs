@@ -81,7 +81,8 @@
         }
 
         function getfullDes(){
-            let des =  `{{{this.course.courseDetail}}}`;
+            let des =  $('#text_full_des').innerText;
+         
 
             console.log(des);
             document.getElementById('full_des').value = des;
@@ -215,19 +216,20 @@
                     <button onclick="document.getElementById('changeImg').style.display='block'"
                                 type="button" class="btn btn-primary">Thay đổi</button>
                 </div>
+
                 <div class="col-sm-8">
-                    <div class="card  m-5 mt-5">
+                    <div class="card">
                         <h5 class="card-header">
-                            New Course
+                            Thông tin khóa học
                         </h5>
                         {{#if err}}
                         <div class="p-2 alert-success mb-1 text-danger" role="alert">
-                            <span>Xin hayx nhap truong nay</span>
+                            <span>{{this.errorMsg}}</span>
 
                         </div>
                         {{else}}
                         <div class="p-2 mb-1 text-danger" style="visibility:hidden" role="alert">
-                        <span class="alert-heading">MESSAGE</span>
+                            <span class="alert-heading">Thông báo</span>
                         </div>
                         {{/if}}
                         
@@ -290,10 +292,10 @@
                             </div>
                         </div>
 
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="discount">Thong tin khuyen mai</label>
-                                <input type="text" class="form-control" id="discount" name="discount" value="{{this.course.courseDiscount}}">
+                        <div class="mt-3 px-3 col-6">
+                            <div class="">
+                                <label for="discount">Thông tin khuyến mãi</label>
+                                <input type="text" class="form-control" id="discount" value="{{this.course.courseDiscount}}" name="discount">
                             </div>
                         </div>
                         </div>
@@ -311,5 +313,5 @@
                     </div>
                 </div>
         </form>
-        </div>
     </div>
+</div>

@@ -6,7 +6,8 @@
 /* Set a style for all buttons */
 
 .cancelbtn,
-.save_btn {
+.save_btn ,
+.btn_save{
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -42,7 +43,7 @@
 /* Add padding and center-align text to the container */
 
 .formcontainer {
-    padding: 5%;
+    padding: 20px;
     text-align: center;
 }
 
