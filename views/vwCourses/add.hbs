@@ -75,45 +75,15 @@
             return editor.root.innerHTML;
         }
 
-<<<<<<< Updated upstream
         function updateHtmlOutput() {
             let html = getQuillHtml();
             console.log(html);
             document.getElementById('full_des').value = html;
-            document.getElementById('output-html').innerText = html;
         }
     </script>
 
     <script>
         var counter = 0;
-=======
-{{!-- <script>
-     $(document).ready(function() {
-            //option A
-            $("frmCourse").submit(function(e){
-                e.preventDefault(e);
-                var isValid;
-                $("input").each(function() {
-                    var element = $(this);
-                    if (element.val() == "") {
-                        isValid = false;
-                        element.val() = 'this';
-                        alert('pleasesdf');
-
-                    }
-                });
-
-
-
-            });
-        });
-
-    
-</script> --}}
-
-<script>
-    var counter = 0;
->>>>>>> Stashed changes
 
         function addanlesson() {
             var thisList = document.getElementById("lesson");
@@ -198,19 +168,10 @@
         <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
         <form id="frmCourse" class="form form-vertical" action="" method="post" enctype="multipart/form-data">
             <div class="row">
-<<<<<<< Updated upstream
-                <div class="col-sm-4 text-center ">
-                    <div class="mt-5">
-                        <div class="kv-avatar">
-                            <div class="file-loading">
-                                <input id="avatar-2" name="avatar-2" type="file">
-                            </div>
-=======
                 <div class="col-sm-4 text-center">
                     <div class="kv-avatar bg-white ">
                         <div class="file-loading">
                             <input id="avatar-2" name="avatar-2" type="file">
->>>>>>> Stashed changes
                         </div>
                         <p>Anh khoa hoc</p>
                     </div>
@@ -230,22 +191,6 @@
                         <span class="alert-heading">MESSAGE</span>
                         </div>
                         {{/if}}
-<<<<<<< Updated upstream
-
-                        
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="courseName">Ten khoa hoc<span style="color: red;">*</span></label>
-                                <input type="text" class="form-control" id="courseName" name="courseName" autofocus>
-                            </div>
-                        </div>
-                        
-                    
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="short_des">Mo ta ngan gon<span style="color: red;">*</span></label>
-                                <input type="text" class="form-control" id="short_des" name="short_des">
-=======
                         <div class="mt-3 px-3">
                             <div class="">
                                 <label for="txtCourseName">Khóa học</label>
@@ -263,7 +208,6 @@
                                 <div id="short-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname" style="display: none;">
                                    <label for="short-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
@@ -272,23 +216,6 @@
                             <div class="form-group">
                                 <label for="full_des">Mo ta day du<span style="color: red;">*</span></label>
                                 <div id="editor" style="height: 300px;"></div>
-<<<<<<< Updated upstream
-                                <input type="text" class="form-control" id="full_des" name="full_des" style="visibility: hidden; height: 0px;">
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="price">Hoc phi<span style="color: red;">*</span></label>
-                                <input type="number" class="form-control" id="price" name="price">
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="discount">Thong tin khuyen mai</label>
-                                <input type="text" class="form-control" id="discount" name="discount">
-=======
                                 <div id="full-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname" style="display: none;">
                                    <label for="full-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
@@ -326,7 +253,6 @@
                             <div class="">
                                 <label for="discount">Thông tin khuyến mãi</label>
                                 <input type="text" class="form-control" id="discount" name="discount" value="0" >
->>>>>>> Stashed changes
                             </div>
                         </div>
 
@@ -342,18 +268,10 @@
                             </div>
                         </div>
 
-<<<<<<< Updated upstream
-
-                        <div class="card-footer text-muted text-right">
-                            <button type="submit" id="submitAddCourse" class="btn btn-outline-success">
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                                Save
-=======
                         <div class="card-footer text-muted text-center">
                             <button type="button" id="submitAddCourse" onclick="myValidate()" class="btn btn-outline-success px-3">
                                 <i class="fas fa-save mr-3"></i>
                                 Lưu
->>>>>>> Stashed changes
                             </button>
                         </div>
                     </div>

@@ -16,8 +16,6 @@ router.get('/', async function(req, res) {
             empty: rows.length === 0
         });
     } catch (err) {
-<<<<<<< Updated upstream
-=======
         res.send('View error log at server console.');
     }
 })
@@ -209,19 +207,14 @@ router.get('/search/', async function (req, res) {
         else
             listCourse.sort((a, b) => (a.coursePrice < b.coursePrice) ? 1 : -1)
     }
->>>>>>> Stashed changes
 
         res.send('View error log at server console.');
-    }
 })
 
-<<<<<<< Updated upstream
-//Adding an Course-- get
-router.get('/add', function(req, res) {
-    res.render('vwCourses/add');
-=======
 //Adding an Course Pages
-router.get('/add', ensureAuthenticated, async function (req, res) {
+//router.get('/add', ensureAuthenticated, async function (req, res) {
+router.get('/add', async function (req, res) {
+
     const category = await categoriesLevelModel.all();
 
     console.log(category);
@@ -232,9 +225,10 @@ router.get('/add', ensureAuthenticated, async function (req, res) {
     });
 })
 
-router.get('/watchList', ensureAuthenticated, async function (req, res) {
+//router.get('/watchList', ensureAuthenticated, async function (req, res) {
+router.get('/watchList', async function (req, res) {
+
     const rows = await watchListModel.byUsername(req.session.passport.user.userUsername);
->>>>>>> Stashed changes
 
 })
 
@@ -273,27 +267,13 @@ router.post('/add', async function(req, res) {
             // An error occurred when uploading
             console.log(err);
         } else {
-<<<<<<< Updated upstream
-            const { courseName, short_des, full_des, price, discount, lesson } = req.body;
-
-=======
             const { courseName, short_des, full_des, category, price, discount, lesson } = req.body;
             console.log(req.body);
->>>>>>> Stashed changes
 
             if (!courseName || !short_des || !full_des || !price) {
                 errors.push({ msg: 'Please enter all fields' });
             }
 
-<<<<<<< Updated upstream
-            console.log(req.body);
-            console.log(courseName);
-            console.log(short_des);
-            console.log(full_des);
-            console.log(price);
-            console.log(discount);
-
-=======
             console.log(category);
 
             var cat1 = category[0];
@@ -301,7 +281,6 @@ router.post('/add', async function(req, res) {
 
             console.log(cat1);
             console.log(cat2);
->>>>>>> Stashed changes
 
             if (!(lesson === undefined)) {
                 for (i = 0; i < lesson.length; i++) {
@@ -326,12 +305,8 @@ router.post('/add', async function(req, res) {
                         const date = new Date().toISOString().slice(0,9).replace('T',' ');
                         courseModel.add({
                             courseID: courseID,
-<<<<<<< Updated upstream
-                            courseCatLevel2ID: 1,
-=======
                             courseLecturer: lecturerUsername,
                             courseCatLevel2ID: cat2,
->>>>>>> Stashed changes
                             courseName: courseName,
                             courseDes: short_des,
                             courseDetail: full_des,
@@ -468,37 +443,12 @@ router.post('/upload_course/:courseID/:lessonID', async function(req, res) {
 
 })
 
-<<<<<<< Updated upstream
-//Edit course info -- get
-router.get('/edit_course/:courseID', async function(req, res){
-=======
 //Edit course Image -- post
 router.post('/upload_courses/img/:courseID', async function (req, res) {
->>>>>>> Stashed changes
     const courseID = req.params.courseID;
 
-<<<<<<< Updated upstream
-    lesson.forEach(item => {
-        item.stt = item.lessonID + 1;
-    });
-
-    res.render('vwCourses/edit_info', {
-        course: details,
-        lesson_items: lesson,
-        empty: lesson.length === 0
-    });
-})
-
-//Edit course info -- post
-router.post('/edit_course/:courseID', async function(req, res){
-    let errors = [];
-    const courseID = req.params.courseID;
-
-    console.log('thsi is debug');
-=======
     console.log('edit image');
     console.log(courseID);
->>>>>>> Stashed changes
 
     var filename = "course-img";
 
@@ -551,31 +501,6 @@ router.get('/edit_course/:courseID', async function (req, res) {
         }
     });
 
-<<<<<<< Updated upstream
-         
-            await courseModel.single(courseID).then(course => {
-                if (course) {
-                    courseModel.patch({
-                        courseID: courseID,
-                        courseCatLevel2ID: 1,
-                        courseName: courseName,
-                        courseDes: short_des,
-                        courseDetail: full_des,
-                        courseImage: "/public/imagesCourse/" + courseID + "/" + filename,
-                        coursePrice: price,
-                        courseDiscount: discount
-                    });
-                } else {
-                    errors.push({ msg: 'Course does not exists' });
-                    res.render('vwCourses/edit_info', {
-                        err: true,
-                        errorMsg: errors[0].msg
-                    });
-                }
-            });
-            
-            res.redirect('/courses/upload_course/' + courseID);
-=======
     res.render('vwCourses/edit_info', {
         course: details,
         lesson_items: lesson,
@@ -639,7 +564,6 @@ router.post('/edit_course/:courseID', async function (req, res) {
                 err: true,
                 errorMsg: errors[0].msg
             });
->>>>>>> Stashed changes
         }
     });
 
