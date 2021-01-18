@@ -30,7 +30,31 @@
         <div class="mt-auto">
           <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format coursePrice}}</span>
           </span>
+<<<<<<< HEAD
           <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+=======
+          <div class="mt-auto">
+            <span class="card-text">Giá:
+              <span class="text-danger font-weight-bold">
+                {{#if (isZero coursePrice)}}
+                Miễn Phí
+                {{else}}
+                {{#if courseDiscount}} <del>{{format coursePrice}}</del> {{format courseNewPrice}}
+                (-{{courseDiscount}}%)
+                {{else}} {{format coursePrice}}
+                {{/if}}
+                {{/if}}
+              </span>
+            </span>
+            <span class="card-text d-block">Số lượng học viên: {{courseRegistered}}</span>
+            <span class="card-text d-block">Lần cập nhật cuối: {{courseUpdatedAt}}</span>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="my-rating pl-2 pb-2 " data-rating="{{coursePointEval}}"></div>
+          <div class=" mt-1 text-danger ml-2 font-weight-bold">{{coursePointEval}}</div>
+          <div class="mt-1 ml-2">({{courseAmountEval}} lượt bình chọn)</div>
+>>>>>>> 562ff383bdc9591f5e5d5ccd2257c8a2ee08b7aa
         </div>
       </div>
       <div class="d-flex">
@@ -62,6 +86,45 @@
       <h3>{{courseDetail}}</h3>
     </div>
 
+<<<<<<< HEAD
+=======
+    <div class="course-lesson-preview my-5">
+      <div class="select-box shadow" style="">
+        <div class="options-container active">
+          {{#each ../lessons}}
+          <div class="option pl-2 d-block p-3" style="color: black;text-decoration: none;"
+            id="btn_preview_{{lessonID}}">
+            <input type="radio" class="radio" id="automobiles" name="category" />
+            <span for="automobiles" style="max-width: 180px; overflow: hidden;">{{lessonName}}</span>
+            <span class="badge badge-danger float-right" style="padding: 5px" id="span_{{lessonID}}">
+              {{#if done}}
+              Đã hoàn thành
+              {{else}}
+              Chưa hoàn thành
+              {{/if}}
+            </span>
+          </div>
+          <div id="id_{{lessonID}}" class="modal"
+            style="width: 800px; height: 500px; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+            <video controls id="player">
+              <!-- Video files -->
+              <source src="/public/imagesCourse/{{courseID}}/{{lessonID}}/video.mp4" type="video/mp4" size="576">
+              <source src="/public/imagesCourse/{{courseID}}/{{lessonID}}/video.mp4" type="video/mp4" size="720">
+            </video>
+
+          </div>
+          {{/each}}
+        </div>
+        <a href="javascript:void(0)"
+          class="selected list-group-item list-group-item-action rounded bg-primary text-white border-0"
+          style="border: 2px rgba(0,0,0,.125) solid !important">
+          <h5 style="color: white !important">Danh sách bài học</h5>
+        </a>
+      </div>
+    </div>
+
+    {{#each ../lecturer}}
+>>>>>>> 562ff383bdc9591f5e5d5ccd2257c8a2ee08b7aa
     <div class="course-instructor mt-5">
       <div class="styles--instructors--2JsS3">
         <h4 class="font-weight-bold pb-2" style="border-bottom: 1px rgb(151, 144, 144) solid">Giảng viên</h4>
@@ -176,10 +239,43 @@
       <div class="user-avatar rounded-circle p-3 mr-3">
         <img class="rounded-circle" src="https://avatar-redirect.appspot.com/google/106274965921876463717?size=400" style="width: 50px" alt="">
       </div>
+<<<<<<< HEAD
       <div class="form-group flex-grow-1">
         <textarea class="form-control" name="" id="" rows="3"></textarea>
       </div>
     </div>
+=======
+      <form class="form-group flex-grow-1 text-right formSubmit" action="/users/sendComment" method="POST">
+        <textarea class="form-control" name="content" id="" rows="3" cols="50" placeholder="Viết bình luận của bạn ..."
+          required></textarea>
+        <input type="text" name="courseID" class="d-none" value="{{courseID}}">
+        <input type="text" name="vote" class="d-none getVote inputVote" value="">
+        <button class="btn btn-primary btnSend mt-2" type="submit">
+          <i class="fa fa-send" aria-hidden="true"></i>
+          Gửi
+        </button>
+      </form>
+    </div>
+    {{!-- vote --}}
+    {{#if ../this.isRegistered}}
+    <div class="position-relative" style="width:250px; top: -60px; left: 300px">
+      {{#if ../this.isVote}}
+      <div class="my-vote my-2" data-rating="{{../this.vote.voteValue}}"></div>
+      <form action="/users/editVote" method="post" class="formSubmit" id="formVote">
+        <input type="text" name="vote" class="d-none getVote inputVote" value="">
+        <input type="text" name="courseID" class="d-none" value="{{courseID}}">
+      </form>
+      {{else}}
+      <div class="my-vote my-2"></div>
+      <form action="/users/vote" method="post" class="formSubmit" id="formVote">
+        <input type="text" name="vote" class="d-none getVote inputVote" value="">
+        <input type="text" name="courseID" class="d-none" value="{{courseID}}">
+      </form>
+      {{/if}}
+    </div>
+    {{/if}}
+    {{/if}}
+>>>>>>> 562ff383bdc9591f5e5d5ccd2257c8a2ee08b7aa
 
   </div>
 
@@ -189,6 +285,7 @@
       <img src="{{largeImage courseImage}}" alt="{{courseName}}" title="{{courseName}}">
       <div class="p-2 d-flex flex-column flex-grow-1">
 
+<<<<<<< HEAD
         <div class="mt-auto d-flex flex-column p-3">
           <a class="btn btn-sm btn-outline-primary p-2 w-35 m-1" href="/courses/{{courseID}}" role="button">
             THÊM VÀO GIỎ
@@ -201,6 +298,48 @@
             <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 " style="width: 20px"></i> Giá: <span
                 class="text-danger font-weight-bold">{{#if (isZero coursePrice)}}Miễn Phí
                 {{else}}{{coursePrice}}{{/if}}</span>
+=======
+        <div class="mt-auto d-flex flex-column p-3 mx-auto">
+          {{#if ../this.isFavorite}}
+          <form action="/users/removeFavorite" method="POST" class="formSubmit d-flex flex-column">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button type="submit" class="btn btn-sm btn-outline-primary p-2 m-1"> KHÓA HỌC YÊU THÍCH</button>
+          </form>
+          {{else}}
+          <form action="/users/addFavorite" method="POST" class="formSubmit">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button type="submit" class="btn btn-sm btn-outline-primary p-2 m-1"> THÊM VÀO KHÓA HỌC YÊU
+              THÍCH</button>
+          </form>
+          {{/if}}
+          {{#if ../this.isRegistered}}
+          <form action="/courses/learn?courseID={{courseID}}" method="GET" class="d-flex flex-column">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button class="btn btn-sm btn-outline-success p-2 m-1" type="submit"> HỌC </button>
+          </form>
+          {{else}}
+          <form action="/users/registerCourse" method="POST" class="d-flex flex-column formSubmit">
+            <input type="text" value="{{courseID}}" name="courseID" class="d-none">
+            <button class="btn btn-sm btn-outline-success p-2 m-1" type="submit"> ĐĂNG KÝ KHÓA HỌC </button>
+          </form>
+          {{/if}}
+          <h5 class="my-3">Miêu tả về khóa học:</h5>
+          <div class="ml-4">
+            <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 " style="width: 20px"></i> Giá: <span
+                class="text-danger font-weight-bold">
+                {{#if (isZero coursePrice)}}
+                Miễn Phí
+                {{else}}
+                {{#if courseDiscount}} <del>{{format coursePrice}}</del> {{format courseNewPrice}}
+                {{else}} {{format coursePrice}}
+                {{/if}}
+                {{/if}}
+            </li>
+            {{#if courseDiscount}}
+            <li class="card-text d-block"><i class="fas fa-money mr-3   " style="width: 20px"></i> Khuyến mãi:
+              -{{courseDiscount}}%
+              {{/if}}
+>>>>>>> 562ff383bdc9591f5e5d5ccd2257c8a2ee08b7aa
             </li>
             <li class="card-text d-block"><i class="fas fa-user-friends mr-3   " style="width: 20px"></i> Số lượng học
               viên: {{courseRegistered}}

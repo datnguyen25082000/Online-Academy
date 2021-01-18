@@ -170,7 +170,7 @@ router.post('/patch', async function (req, res) {
 
 // Profile
 router.get("/profile", async function (req, res) {
-  const info = await UserModel.single(req.session.passport.user.userUsername);
+  const info = req.session.passport.user;
   if (info === null) {
     return res.redirect("/");
   }
@@ -209,7 +209,29 @@ router.post("/profile", function (req, res) {
 
 //save info
 router.post("/profile/save", async function (req, res) {
-  const ret = await UserModel.patch(req.body);
+  let info = req.body;
+
+  if (info.userPassword != undefined) {
+    const password = info.userPassword;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
+        if (err) throw err;
+        info.userPassword = hash;
+        info.userUsername = req.session.passport.user.userUsername;
+        req.session.passport.user.userPassword = hash;
+        req.session.save();
+        await UserModel.patch(info);
+      });
+    });
+  }
+  else
+    await UserModel.patch(info);
+
+  req.session.passport.user.userDisplayName = info.userDisplayName;
+  req.session.passport.user.userEmail = info.userEmail;
+  req.session.passport.user.userIntro = info.userIntro;
+  req.session.save();
+
   res.redirect("/users/profile");
 });
 
