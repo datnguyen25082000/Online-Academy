@@ -26,11 +26,11 @@
           $.post("/auth/checkPass", { password: input },
             function (data, status) {
               if (data) {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'OK..',
-                  text: "Bạn đã nhập đúng mật khẩu",
-                })
+                Swal.fire(
+                  "Bạn đã nhập đúng mật khẩu",
+                  'OK..',
+                  'success'
+                )
               }
               else {
                 Swal.fire({

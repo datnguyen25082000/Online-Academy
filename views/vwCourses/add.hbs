@@ -70,11 +70,18 @@
         updateHtmlOutput()
     })
 
+    function getQuillHtml() {
+        return editor.root.innerHTML;
+    }
+
     function updateHtmlOutput() {
         let html = getQuillHtml();
         console.log(html);
         document.getElementById('full_des').value = html;
     }
+
+</script>
+
 
 </script>
 
@@ -207,7 +214,7 @@
                             <div class="">
                                 <label for="short_des">Mô tả ngắn gọn</label>
                                 <input type="text" class="form-control" id="short_des" name="short_des">
-                                <div id="short-err" class="p-0 m-0 alert-success mb-1 text-danger" for="short_des"
+                                <div id="short-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname"
                                     style="display: none;">
                                     <label for="short-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
@@ -219,7 +226,7 @@
                             <div class="">
                                 <label for="full_des">Mô tả chi tiết</label>
                                 <div id="editor" style="height: 300px;"></div>
-                                <div id="full-err" class="p-0 m-0 alert-success mb-1 text-danger" for="full_des"
+                                <div id="full-err" class="p-0 m-0 alert-success mb-1 text-danger" for="fullname"
                                     style="display: none;">
                                     <label for="full-err" class="m-0">Vui lòng nhập dữ liệu</label>
                                 </div>
