@@ -4,6 +4,7 @@ const multer = require('multer');
 const lessonsModel = require('../models/lessons.model');
 var mkdirp = require('mkdirp');
 const { route } = require('./lecturer.route');
+const categoriesLevelModel = require('../models/category.model')
 
 
 const router = express.Router();
