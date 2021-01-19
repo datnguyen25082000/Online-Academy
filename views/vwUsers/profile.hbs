@@ -20,6 +20,7 @@
           autocapitalize: 'off'
         },
         showCancelButton: true,
+        cancelButtonText: 'Huỷ',
         confirmButtonText: 'Kiểm tra',
         showLoaderOnConfirm: true,
         preConfirm: (input) => {
@@ -33,11 +34,11 @@
                 )
               }
               else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: 'Bạn đã nhập sai mật khẩu!!!',
-                }).then(function () {
+                Swal.fire(
+                  'Bạn đã nhập sai mật khẩu!!!',
+                  'Oops...',
+                  'error',
+                ).then(function () {
                   window.location = "/users/profile"
                 })
               }
@@ -45,16 +46,62 @@
         },
         allowOutsideClick: () => !Swal.isLoading()
       }).then((result) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Bạn đã nhập sai mật khẩu!!!',
-        }).then(function () {
+        Swal.fire(
+          'Bạn đã không nhập mật khẩu!!!',
+          'Oops...',
+          'error'
+        ).then(function () {
           window.location = "/users/profile"
         })
       })
     }
   })
+
+  $('.err').hide();
+  $('.validate').on("click", function () {
+    $('.err').hide();
+  })
+
+  $("#submitEdit").click(function (e) {
+    e.preventDefault();
+    console.log("abc" + $('#name').val());
+    if (!$('.validate').val()) {
+      $('.err').show();
+      return;
+    }
+
+    if ($('#password').length != 0)
+      if ($('#password').val().length < 6) {
+        $('.err').show();
+        return;
+      }
+
+    Swal.fire({
+      title: 'Bạn chắc chứ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sửa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.value) {
+        var action = $(this).attr('formaction')
+        var form = $("#formEdit");
+        form.attr('action', action);
+        form.submit();
+        Swal.fire(
+          'Đã lưu thông tin!',
+          'OK',
+          'success'
+        ).then((r) => {
+          if (r.value)
+            $(location).attr('href', '/users/profile')
+        })
+      }
+    })
+
+  });
 </script>
 
 
@@ -69,15 +116,29 @@
     ],
   });
 
+  var src_avatar = '/public/imagesAvatar/' + $('#src_avatar').text() + '.png';
   $('#fuMain').fileinput({
-    theme: 'fa',
-    dropZoneEnabled: false,
-    allowedFileExtensions: ['png', 'jpg', 'gif'],
+    overwriteInitial: true,
+    maxFileSize: 1500,
+    showClose: false,
+    showCaption: false,
+    showBrowse: false,
+    browseOnZoneClick: true,
+    removeLabel: '',
+    removeIcon: '<i class="fa fa-remove"></i>',
+    removeTitle: 'Cancel or reset changes',
+    elErrorContainer: '#kv-avatar-errors-2',
+    msgErrorClass: 'alert alert-block alert-danger',
+    defaultPreviewContent: `<img src="` + src_avatar + `" alt="YourAvatar "><div class="text-muted">Nhấn để chỉnh sửa</div>`,
+    layoutTemplates: { main2: '{preview} ' + '{upload} {remove} {browse}' },
+    allowedFileExtensions: ["jpg", "png", "gif"]
   });
 </script>
 
 {{/section}}
 <div class="container overflow-hidden mt-5 mb-5">
+  <div id="kv-avatar-errors-2" class="align-self-center" style="width:800px;display:none"></div>
+  <div id="src_avatar" class="d-none">{{this.info.userUsername}}</div>
   <div class="card">
     <h5 class="card-header text-center">
       THÔNG TIN CÁ NHÂN
@@ -113,12 +174,14 @@
       </div>
 
       <div class="card-body col-md-8 mt-2">
-        <form action="/users/profile/save" method="POST">
+        <form action="/users/profile/save" method="POST" id="formEdit">
           {{#if this.isGeneralTab}}
           <div class="form-group">
             <label for="name">Họ tên</label>
-            <input type="text" class="form-control" id="name" name="userDisplayName"
+            <input type="text" class="form-control validate" id="name" name="userDisplayName"
               value="{{this.info.userDisplayName}}" required>
+            <div class="alert alert-warning err" id="errName" role="alert">Bạn cần phải nhập tên!
+            </div>
           </div>
 
           <div class="form-group">
@@ -129,7 +192,7 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="userEmail" aria-describedby="emailHelp"
-              value="{{this.info.userEmail}}" required>
+              value="{{this.info.userEmail}}" disabled>
           </div>
           <div class="form-group">
             <label for="describe">Giới thiệu bản thân</label>
@@ -141,7 +204,8 @@
 
           <div class="form-group">
             <label for="password">Mật khẩu</label>
-            <input type="password" class="form-control" id="password" name="userPassword">
+            <input type="password" class="form-control validate" id="password" name="userPassword">
+            <div class="alert alert-warning err" id="errPassword" role="alert">Mật khẩu cần dài hơn 6 kí tự !!!</div>
           </div>
           {{/if}}
           <div class="text-right">
@@ -149,7 +213,7 @@
               <i class="fa fa-backward mr-2" aria-hidden="true"></i>
               Quay về
             </a>
-            <button type="submit" class="btn btn-primary">
+            <button type="button" class="btn btn-primary" id="submitEdit">
               <i class="fas fa-save mr-2"></i>
               Lưu
             </button>

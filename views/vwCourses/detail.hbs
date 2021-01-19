@@ -98,10 +98,10 @@
                 {{#if (isZero coursePrice)}}
                 Miễn Phí
                 {{else}}
-                {{#if courseDiscount}} <del>{{format coursePrice}}</del> {{format courseNewPrice}}
-                (-{{courseDiscount}}%)
-                {{else}} {{format coursePrice}}
-                {{/if}}
+                  {{#if courseDiscount}} {{format coursePrice}}
+                  {{else}} 
+                  <del>{{format coursePrice}}</del> {{format courseNewPrice}} (-{{courseDiscount}}%)
+                  {{/if}}
                 {{/if}}
               </span>
             </span>
@@ -126,7 +126,7 @@
 <div class="row container p-5 m-auto d-flex" style="z-index: 7; position: relative">
   <div class="course-main-content col-8">
     <div class="course-detail">
-      <h3>{{courseDetail}}</h3>
+      <div>{{{courseDetail}}}</div>
     </div>
 
     <div class="course-lesson-preview my-5">
@@ -195,7 +195,7 @@
             <div class="show-more--content">
               <div>
                 <div class="udlite-text-sm instructor--instructor__description--1dHxF">
-                  {{userIntro}}
+                  {{{userIntro}}}
                 </div>
               </div>
             </div>
@@ -306,15 +306,19 @@
             <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 " style="width: 20px"></i> Giá: <span
                 class="text-danger font-weight-bold">
                 {{#if (isZero coursePrice)}}
-                Miễn Phí
+                  Miễn Phí
                 {{else}}
-                {{#if courseDiscount}} <del>{{format coursePrice}}</del> {{format courseNewPrice}}
-                {{else}} {{format coursePrice}}
-                {{/if}}
+                  {{#if courseDiscount}} {{format coursePrice}}
+                  {{else}} <del>{{format coursePrice}}</del> 
+                  {{/if}}
                 {{/if}}
             </li>
             {{#if courseDiscount}}
-            <li class="card-text d-block"><i class="fas fa-money mr-3   " style="width: 20px"></i> Khuyến mãi:
+            {{else}}
+            <li class="card-text d-block"><i class="fas fa-money mr-3   " style="width: 20px"></i> Giảm còn: <span class="text-danger font-weight-bold">{{format courseNewPrice}}</span> 
+            </li>
+            
+            <li class="card-text d-block"><i class="fas fa-percent mr-3   " style="width: 20px"></i> Khuyến mãi:
               -{{courseDiscount}}%
               {{/if}}
             </li>

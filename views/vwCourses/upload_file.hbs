@@ -5,10 +5,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.4/js/locales/vi.min.js"></script>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/jquery.star-rating-svg.min.js"></script>
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/css/star-rating-svg.min.css">
 
 <script>
-
+    $(".my-rating").starRating({
+        readOnly: true,
+        strokeColor: '#EB8A2F',
+        strokeWidth: 10,
+        starSize: 18
+    });
     $('.video_0').fileinput({
         theme: 'fa',
         dropZoneEnabled: true,
@@ -215,13 +223,29 @@
                             {{{course.courseDes}}}
                         </span>
                         <div class="mt-auto">
-                            <span class="card-text">Giá: <span class="text-danger font-weight-bold">{{format
-                                    coursePrice}}</span>
+                            <span class="card-text">Giá:
+                                <span class="text-danger font-weight-bold">
+                                    {{#if (isZero course.coursePrice)}}
+                                    Miễn Phí
+                                    {{else}}
+                                    {{#if course.courseDiscount}} {{format course.coursePrice}}
+                                    {{else}}
+                                    <del>{{format course.coursePrice}}</del> {{format course.courseNewPrice}}
+                                    (-{{course.courseDiscount}}%)
+                                    {{/if}}
+                                    {{/if}}
+                                </span>
                             </span>
                             <span class="card-text d-block">Số lượng học viên: {{course.courseRegistered}}</span>
+                            <span class="card-text d-block">Lần cập nhật cuối: {{course.courseUpdatedAt}}</span>
+                        </div>
+                        <div class="d-flex">
+                            <div class=" mt-1 text-danger ml-2 font-weight-bold">{{course.coursePointEval}}</div>
+                            <div class="my-rating pl-2 pb-2 " data-rating="{{course.coursePointEval}}"></div>
+                            <div class="mt-1 ml-2">({{course.courseAmountEval}} lượt bình chọn)</div>
                         </div>
                     </div>
-                   
+
 
                 </div>
                 <div class="">
@@ -242,10 +266,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-4 fixed-course-content mt-5" id="fixed-course-content"
-               >
+            <div class="row col-4 fixed-course-content mt-5" id="fixed-course-content">
                 <div class="card shadow d-flex m-auto">
-                  
+
                     <div class="p-2 d-flex flex-column flex-grow-1">
 
                         <div class="mt-auto d-flex flex-column p-3">
@@ -253,9 +276,26 @@
                             <h5 class="my-3">Miêu tả về khóa học:</h5>
                             <div class="ml-4">
                                 <li class="card-text d-block"><i class="fas fa-dollar-sign mr-3 "
-                                        style="width: 20px"></i> Giá: <span class="text-danger font-weight-bold">{{#if
-                                        (isZero course.coursePrice)}}Miễn Phí
-                                        {{else}}{{course.coursePrice}}{{/if}}</span>
+                                        style="width: 20px"></i> Giá: <span class="text-danger font-weight-bold">
+                                        {{#if (isZero course.coursePrice)}}
+                                        Miễn Phí
+                                        {{else}}
+                                        {{#if course.courseDiscount}} {{format course.coursePrice}}
+                                        {{else}} <del>{{format course.coursePrice}}</del>
+                                        {{/if}}
+                                        {{/if}}
+                                </li>
+                                {{#if course.courseDiscount}}
+                                {{else}}
+                                <li class="card-text d-block"><i class="fas fa-money mr-3   " style="width: 20px"></i>
+                                    Giảm còn: <span class="text-danger font-weight-bold">{{format
+                                        course.courseNewPrice}}</span>
+                                </li>
+
+                                <li class="card-text d-block"><i class="fas fa-percent mr-3   " style="width: 20px"></i>
+                                    Khuyến mãi:
+                                    -{{course.courseDiscount}}%
+                                    {{/if}}
                                 </li>
                                 <li class="card-text d-block"><i class="fas fa-user-friends mr-3   "
                                         style="width: 20px"></i> Số lượng học
@@ -274,134 +314,136 @@
                 </div>
                 <div class="text-muted text-right" style="width: 100%;">
                     <div class="mx-auto ">
-                      
 
-                    <div class="p-2 d-flex flex-column flex-grow-1">
 
-                   
+                        <div class="p-2 d-flex flex-column flex-grow-1">
+
+
+                        </div>
                     </div>
-                </div>
-                <div class="text-muted d-flex justify-content-between" style="width: 100%;">
-                    <div class="mx-auto p-5">
-                        <a href="/courses/edit_course/{{course.courseID}}" type="button" onclick=""
-                            class=" btn btn-outline-success mr-2">Chỉnh sửa</a>
-                        <button type="button" id="btnRemoveCourse" class=" btn btn-outline-danger">Xóa khóa học</button>
+                    <div class="text-muted d-flex justify-content-between" style="width: 100%;">
+                        <div class="mx-auto p-5">
+                            <a href="/courses/edit_course/{{course.courseID}}" type="button" onclick=""
+                                class=" btn btn-outline-success mr-2">Chỉnh sửa</a>
+                            <button type="button" id="btnRemoveCourse" class=" btn btn-outline-danger">Xóa khóa
+                                học</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
 
+        <div class="card p-0 mx-5 mb-5 container mx-auto" style="">
+            <div class="card-header ">
+                <label>
+                    <h5>Danh sách bài học</h5>
 
-    </div>
-
-    <div class="card p-0 mx-5 mb-5 container mx-auto" style="">
-        <div class="card-header ">
-            <label>
-                <h5>Danh sách bài học</h5>
-
-            </label>
-            <div class="text-muted text-right" style="display: inline; float :right;">
-                <button class="addNewLesson btn btn-primary" type="button" id="addNewLesson" placeholder="Thêm bài học"
-                    value={{course.courseID}}>Thêm bài học</button>
+                </label>
+                <div class="text-muted text-right" style="display: inline; float :right;">
+                    <button class="addNewLesson btn btn-primary" type="button" id="addNewLesson"
+                        placeholder="Thêm bài học" value={{course.courseID}}>Thêm bài học</button>
+                </div>
             </div>
-        </div>
-        <div class="p-2">
-            <table class="table table-hover px-3">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Tên bài học</th>
-                        <th scope="col text-right">Thay đổi bài học</th>
-                        <th scope="col" class="text-right">Trạng thái</th>
-                        <th scope="col" class="text-right">Xóa bài học</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each this.lesson_items}}
-                    <tr>
-                        <th scope="row"> {{stt}}</th>
-                        <td>{{lessonName}}</td>
-                        <div id="upload" name="upload">
-                            <td>
-                                <button onclick="document.getElementById('id{{lessonID}}').style.display='block'"
-                                    type="button" class="btn btn-primary">Đăng tài liệu</button>
-                                <div id="id{{lessonID}}" class="modal">
-                                    <span onclick="document.getElementById('id{{lessonID}}').style.display='none'"
-                                        class="close" title="Close Modal">×</span>
-                                    <form class="upload_course rounded" id="upload_course"
-                                        action="/courses/upload_course/{{courseID}}/{{lessonID}}" method="post"
-                                        enctype="multipart/form-data">
-                                        <div class=" formcontainer rounded">
-                                            <h1>Tải file</h1>
-                                            <span>Bạn cần tải Video bài giảng vào đây</span>
-                                            <div class="card-body container">
-                                                <div class="form-group">
-                                                    <input type="number" name="courseID" id="courseID"
-                                                        value="{{courseID}}" hidden>
-                                                    <input type="number" name="lessonID" id="lessonID"
-                                                        value="{{lessonID}}" hidden>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <input type="file" class="file video_0" name="dom_{{lessonID}}"
-                                                            id="dom_{{lessonID}}">
+            <div class="p-2">
+                <table class="table table-hover px-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tên bài học</th>
+                            <th scope="col text-right">Thay đổi bài học</th>
+                            <th scope="col" class="text-right">Trạng thái</th>
+                            <th scope="col" class="text-right">Xóa bài học</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each this.lesson_items}}
+                        <tr>
+                            <th scope="row"> {{stt}}</th>
+                            <td>{{lessonName}}</td>
+                            <div id="upload" name="upload">
+                                <td>
+                                    <button onclick="document.getElementById('id{{lessonID}}').style.display='block'"
+                                        type="button" class="btn btn-primary">Đăng tài liệu</button>
+                                    <div id="id{{lessonID}}" class="modal">
+                                        <span onclick="document.getElementById('id{{lessonID}}').style.display='none'"
+                                            class="close" title="Close Modal">×</span>
+                                        <form class="upload_course rounded" id="upload_course"
+                                            action="/courses/upload_course/{{courseID}}/{{lessonID}}" method="post"
+                                            enctype="multipart/form-data">
+                                            <div class=" formcontainer rounded">
+                                                <h1>Tải file</h1>
+                                                <span>Bạn cần tải Video bài giảng vào đây</span>
+                                                <div class="card-body container">
+                                                    <div class="form-group">
+                                                        <input type="number" name="courseID" id="courseID"
+                                                            value="{{courseID}}" hidden>
+                                                        <input type="number" name="lessonID" id="lessonID"
+                                                            value="{{lessonID}}" hidden>
                                                     </div>
-                                                    <div class="col-6 d-flex flex-column">
-                                                        <div>
-                                                            <label for="lessonName">Tên bài học: </label>
-                                                            <input type="text" name="lessonName" id="lessonName"
-                                                                value="{{lessonName}}" class="rounded py-1 px-3 m-3">
+                                                </div>
+                                                <div class="clearfix">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <input type="file" class="file video_0"
+                                                                name="dom_{{lessonID}}" id="dom_{{lessonID}}">
                                                         </div>
-                                                        <div class="mt-auto mx-auto">
-
-                                                            <span>Bạn có thể chỉ thay đổi tên bài học tại đây</span>
+                                                        <div class="col-6 d-flex flex-column">
                                                             <div>
-                                                                <button type="button"
-                                                                    onclick="document.getElementById('id{{lessonID}}').style.display='none'"
-                                                                    class="btn btn-secondary px-4 m-3"><i
-                                                                        class="fa fa-backward mr-2"
-                                                                        aria-hidden="true"></i> Trở về</button>
-                                                                <button type="submit"
-                                                                    onclick="document.getElementById('id{{lessonID}}').style.display='none'; checkdone();"
-                                                                    class=" btn btn-primary m-3 px-4"><i
-                                                                        class="fas fa-save  mr-2   "></i> Lưu thay
-                                                                    đổi</button>
+                                                                <label for="lessonName">Tên bài học: </label>
+                                                                <input type="text" name="lessonName" id="lessonName"
+                                                                    value="{{lessonName}}"
+                                                                    class="rounded py-1 px-3 m-3">
+                                                            </div>
+                                                            <div class="mt-auto mx-auto">
+
+                                                                <span>Bạn có thể chỉ thay đổi tên bài học tại đây</span>
+                                                                <div>
+                                                                    <button type="button"
+                                                                        onclick="document.getElementById('id{{lessonID}}').style.display='none'"
+                                                                        class="btn btn-secondary px-4 m-3"><i
+                                                                            class="fa fa-backward mr-2"
+                                                                            aria-hidden="true"></i> Trở về</button>
+                                                                    <button type="submit"
+                                                                        onclick="document.getElementById('id{{lessonID}}').style.display='none'; checkdone();"
+                                                                        class=" btn btn-primary m-3 px-4"><i
+                                                                            class="fas fa-save  mr-2   "></i> Lưu thay
+                                                                        đổi</button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
-                            <td class="text-right">
-                                {{#if done}}
-                                Hoàn thành
-                                {{else}}
-                                Chưa hoàn thành
-                                {{/if}}
-                            </td>
-                            <td class="text-right">
-                                <button type="button" value={{lessonID}}
-                                    class="btn btn-outline-danger btnRemoveLesson">Xóa
-                                    bài học</button>
-                            </td>
-                        </div>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    {{#if done}}
+                                    Hoàn thành
+                                    {{else}}
+                                    Chưa hoàn thành
+                                    {{/if}}
+                                </td>
+                                <td class="text-right">
+                                    <button type="button" value={{lessonID}}
+                                        class="btn btn-outline-danger btnRemoveLesson">Xóa
+                                        bài học</button>
+                                </td>
+                            </div>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="card-footer text-muted text-right">
-            <a href="/courses/courses" type="button" id="submitAddCourse" class="btn btn-outline-success">
-                <i class="fa fa-check" aria-hidden="true"></i>
-                Lưu thay đổi
-            </a>
+            <div class="card-footer text-muted text-right">
+                <a href="/courses/courses" type="button" id="submitAddCourse" class="btn btn-outline-success">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Lưu thay đổi
+                </a>
+            </div>
         </div>
     </div>
-</div>

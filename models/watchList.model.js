@@ -10,10 +10,20 @@ module.exports = {
 
 
 
-  byUsername(username) {
-    return db.load(`select * 
-                    from ${TBL_FAVORITES} r join ${TBL_COURSES} c on c.courseID = r.courseID
+  async byUsername(username) {
+    const rows = await db.load(`select * 
+                    from ${TBL_FAVORITES} r 
+                    join ${TBL_COURSES} c on c.courseID = r.courseID
+                    left join (
+                      select avg(voteValue) as point, votes.voteCourse
+                          from votes) as v on v.voteCourse = c.courseID
                     where username = '${username}'`);
+    rows.forEach(row => {
+      if (row.point) {
+        row.coursePointEval = row.point;
+      }
+    });
+    return rows;
   },
 
   add(entity) {

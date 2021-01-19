@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require('bcrypt');
+var mkdirp = require('mkdirp');
 
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated, typeAuthenticated, userAuthenticated, adminAuthenticated } = require("./controllers/auth");
@@ -10,6 +11,7 @@ const multer = require("multer");
 const reviewModel = require("../models/review.model");
 const learnModel = require("../models/learn.model");
 const voteModel = require("../models/vote.model");
+const sharp = require("sharp");
 
 router.get("/", adminAuthenticated, async function (req, res) {
   const rows = await UserModel.all();
@@ -36,7 +38,6 @@ router.get("/add", adminAuthenticated, function (req, res) {
 
 router.post('/add',adminAuthenticated, async function (req, res) {
   try {
-    console.log(req.body)
     const {userUsername, userPassword, userDisplayName, userEmail, userType} = req.body;
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(userPassword, salt, (err, hash) => {
@@ -113,9 +114,6 @@ router.post("/sendComment", async function (req, res) {
     dateReview: new Date().toISOString().slice(0, 19).replace('T', ' ')
   };
 
-  console.log("abc");
-  console.log(data);
-
   const ret = await reviewModel.add(data);
 
   res.redirect(`/courses/${data.courseID}`);
@@ -187,24 +185,45 @@ router.get("/profile", async function (req, res) {
 
 // save avatar
 router.post("/profile", function (req, res) {
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "./public");
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-    },
-  });
-  const upload = multer({ storage });
-  // upload.single('fuMain')(req, res, function (err) {
+  var filename = req.session.passport.user.userUsername;
 
-  upload.array("fuMain", 1)(req, res, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("vwUsers/profile");
-    }
-  });
+    var des_save = "/public/imagesAvatar/";
+    var des_file = "." + des_save;
+    console.log(des_file);
+
+    mkdirp(des_file, function (err) {
+
+    });
+
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, des_file)
+        },
+        filename: function (req, file, cb) {
+            cb(null, filename);
+        }
+    });
+    console.log(req.file);
+
+    var upload = multer({ storage: storage }).single('fuMain');
+    upload(req, res, function (err) {
+        if (req.file == undefined) {
+            res.json({ success: false });
+        } else {
+            sharp(req.file.path).resize(200, 200).toFile(des_file + filename + '.png', function (err) {
+                if (err) {
+                    console.error('sharp>>>', err)
+                }
+            })
+        }
+        if (err) {
+            // An error occurred when uploading
+            console.log(err);
+        } else {
+            //Upload success
+            res.redirect('/users/profile');
+        }
+    });
 });
 
 //save info
@@ -225,12 +244,13 @@ router.post("/profile/save", async function (req, res) {
     });
   }
   else
+  {
     await UserModel.patch(info);
-
-  req.session.passport.user.userDisplayName = info.userDisplayName;
-  req.session.passport.user.userEmail = info.userEmail;
-  req.session.passport.user.userIntro = info.userIntro;
-  req.session.save();
+    req.session.passport.user.userDisplayName = info.userDisplayName;
+    req.session.passport.user.userEmail = info.userEmail;
+    req.session.passport.user.userIntro = info.userIntro;
+    req.session.save();
+  }
 
   res.redirect("/users/profile");
 });

@@ -17,9 +17,10 @@ router.get('/', forwardAuthenticated, async (req, res) => {
       mostViewedCourse,
       outStandingCourse,
       latestCourse,
-      empty: rows.length === 0
+      //empty: rows.length === 0
     });
   } catch (err) {
+    console.log(err);
     res.send('View error log at server console.');
   }
 });
@@ -39,9 +40,13 @@ router.get('/dashboard', typeAuthenticated, async (req, res) => {
 
   for (let i = 0; i < outStandingCourse.length; i++) {
     outStandingCourse[i].isFavorite = false;
+    mostViewedCourse[i].isFavorite = false;
+    latestCourse[i].isFavorite = false;
     for (let j = 0; j < favorites.length; j++) {
       if (outStandingCourse[i].courseID == favorites[j].courseID) {
         outStandingCourse[i].isFavorite = true;
+        mostViewedCourse[i].isFavorite = true;
+        latestCourse[i].isFavorite = true;
       }
     }
   }

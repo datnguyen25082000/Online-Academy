@@ -28,6 +28,7 @@ router.get('/', adminAuthenticated, async function (req, res) {
             empty: rows.length === 0
         });
     } catch (err) {
+        console.log(err);
         res.send('View error log at server console.');
     }
 })
@@ -345,9 +346,7 @@ router.post('/add', authorAuthenticated, async function (req, res) {
                 }
             }
 
-            console.log(lesson)
             if (errors.length > 0) {
-                console.log('abc');
                 res.render('vwCourses/add', {
                     err: true,
                     errorMsg: errors[0].msg
@@ -364,7 +363,7 @@ router.post('/add', authorAuthenticated, async function (req, res) {
                     } else {
                         const lecturerUsername = res.locals.user.userUsername;
                         console.log(lecturerUsername)
-                        const date = new Date().toISOString().slice(0, 9).replace('T', ' ');
+                        const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
                         await courseModel.add({
                             courseID: courseID,
                             courseLecturer: lecturerUsername,
@@ -467,6 +466,12 @@ router.post('/upload_course/:courseID/:lessonID', authorAuthenticated, async fun
         } else {
             //const ret = await lessonsModel.patch(req.body);
             const { courseID, lessonID, lessonName } = req.body;
+            const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
+            await courseModel.patch({
+                courseID: courseID,
+                courseUpdatedAt: date
+            })
 
 
             await lessonsModel.patch({
@@ -549,6 +554,11 @@ router.post('/upload_courses/img/:courseID', async function (req, res) {
             // An error occurred when uploading
             console.log(err);
         } else {
+            const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
+            await courseModel.patch({
+                courseID: courseID,
+                courseUpdatedAt: date
+            })
             //Upload success
             res.redirect('/courses/edit_course/' + courseID);
         }
@@ -611,6 +621,7 @@ router.post('/edit_course/:courseID', async function (req, res) {
 
     await courseModel.single(courseID).then(course => {
         if (course) {
+            const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
             if (full_des == ''){
                 courseModel.patch({
                     courseID: courseID,
@@ -618,7 +629,8 @@ router.post('/edit_course/:courseID', async function (req, res) {
                     courseName: courseName,
                     courseDes: short_des,
                     coursePrice: price,
-                    courseDiscount: discount
+                    courseDiscount: discount,
+                    courseUpdatedAt: date
                 });
             }else{
                 courseModel.patch({
@@ -628,7 +640,8 @@ router.post('/edit_course/:courseID', async function (req, res) {
                     courseDes: short_des,
                     courseDetail: full_des,
                     coursePrice: price,
-                    courseDiscount: discount
+                    courseDiscount: discount,
+                    courseUpdatedAt: date
                 });
             }
 
@@ -723,7 +736,6 @@ router.get("/learn", ensureAuthenticated, async function (req, res) {
     learns.forEach((learn) => {
         lessons[learn.learnLesson - 1].isLearn = true;
     })
-    console.log(lessons);
 
     res.render("vwCourses/learn", {
         lessons,
@@ -786,7 +798,6 @@ router.get("/:id", async function (req, res) {
 
     //lecturer info
     const lecturer  = await userModel.lecturerByCourse(course.courseID)
-    console.log(lecturer.userUsername);
     const lecturerInfo = await userModel.lecturerInfo(course.courseLecturer)
 
     //review info

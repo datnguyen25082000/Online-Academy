@@ -9,94 +9,12 @@
         margin-bottom: 15px;
     }
 
-    .select-box {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .option label {
-        margin-bottom: 0px !important;
-        padding: 10px
-    }
-
-    .option {
-        padding: 0px 10px;
-    }
-
-    .select-box .options-container {
-        max-height: 0;
-        width: 100%;
-        opacity: 0;
-        transition: all 0.4s;
-        overflow: hidden;
-        order: 1;
-        background-color: white !important;
-    }
-
-    .selected {
-        position: relative;
-        order: 0;
-    }
-
-    .selected::after {
-        content: "";
-        background-size: contain;
-        background-repeat: no-repeat;
-        position: absolute;
-        height: 100%;
-        width: 32px;
-        right: 10px;
-        top: 5px;
-        transition: all 0.4s;
-    }
-
-    .select-box .options-container.active {
-        max-height: fit-content;
-        opacity: 1;
-        overflow-y: scroll;
-    }
-
-    .select-box .options-container.active+.selected::after {
-        transform: rotateX(180deg);
-        top: -6px;
-    }
-
-    .select-box .options-container::-webkit-scrollbar {
-        width: 0px;
-        background: #2573c0;
-    }
-
-    #sidebar-wrapper::-webkit-scrollbar {
-        width: 0px;
-    }
-
-    .select-box .options-container::-webkit-scrollbar-thumb {
-        background: #3a7cbe;
-    }
-
     a.list-group-item:hover {
         background-color: #56a4f1 !important;
     }
 
     .list-group-item-action {
         color: black !important;
-    }
-
-    .select-box .option,
-    .selected {
-        cursor: pointer;
-    }
-
-    .select-box .option:hover {
-        background: #3b87d3;
-    }
-
-    .select-box label {
-        cursor: pointer;
-    }
-
-    .select-box .option .radio {
-        display: none;
     }
 </style>
 
@@ -106,12 +24,6 @@
 {{#section 'js'}}
 <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
 <script>
-    $(document).ready(function () {
-        $('.selected').click(function () {
-            let optionsContainer = $(this).parent().children()[0];
-            optionsContainer.classList.toggle("active");
-        });
-    });
 
     $(document).ready(function () {
         $('#searchInput').keydown(function (event) {
@@ -224,22 +136,12 @@
 
     <div class="bg-light border-left m-0 text-center" style="width: 300px; min-height: 90vh">
         <div class="list-group list-group-flush">
-            <label class="list-group-item m-0 text-white bg-primary font-weight-bold "> MỤC LỤC </label>
+            <label class="list-group-item m-0 text-white bg-dark font-weight-bold "> MỤC LỤC </label>
             <div>
                 {{#each this.lessons}}
-                <div class="select-box" style="">
-                    <div class="options-container">
-                        {{!-- {{#each units}}
-                        <a class="option pl-2 d-block p-3 sidebarClick border-bottom"
-                            style="color: black;text-decoration: none;"
-                            href="/courses/learn?courseID={{../courseID}}&lessonID={{../lessonID}}&unit={{name}}">
-                            <span for="automobiles" style="max-width: 180px; overflow: hidden;">Bài {{name}}</span>
-
-                        </a>
-                        {{/each}} --}}
-                    </div>
+                <div class="" style="">
                     <a href="/courses/learn?courseID={{courseID}}&lessonID={{lessonID}}"
-                        class="selected list-group-item list-group-item-action border-0 {{#if done}} {{else}} disabled {{/if}} {{#if isActive}} active {{/if}}"
+                        class="list-group-item list-group-item-action border-0 {{#if done}} {{else}} disabled {{/if}} {{#if isActive}} active {{/if}}"
                         style="border-bottom: 1px rgba(0,0,0,.125) solid !important">
                         <span class="">{{lessonName}}</span>
                         {{#if isLearn}}
@@ -247,7 +149,7 @@
                                 aria-hidden="true"></i></span>
                         {{/if}}
                         {{#if done}}{{else}} <span class="mr-3 font-weight-bold"
-                            style='font-size: .75rem; color: #007AFD; position: relative; top: -5px'>Sắp
+                            style='font-size: .75rem; color: #24da42; position: relative; top: -5px'>Sắp
                             có</span>{{/if}}
                     </a>
                 </div>

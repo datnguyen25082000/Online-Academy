@@ -50,7 +50,6 @@ router.get('/courses', async(req, res) => {
     const lecturerName = 'user';
     try {
         const rows = await courseModel.all_lecturer(lecturerName);
-        console.log(rows);
         res.render('vwCourses/author_courses', {
             courses: rows,
             empty: rows.length === 0
