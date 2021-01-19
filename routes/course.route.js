@@ -421,6 +421,7 @@ router.get('/upload_course/:courseID', authorAuthenticated, async function (req,
 
     res.render('vwCourses/upload_file', {
         course: details,
+        isHaveDiscount: details.courseDiscount != 0,
         lesson_items: lesson,
         empty: lesson.length === 0
     });
@@ -792,6 +793,7 @@ router.get("/:id", async function (req, res) {
 
     //course info
     const course = await courseModel.single(id);
+    console.log(course);
     let rows = await courseModel.all();
     const lessons = await lessonsModel.byCourse(id);
     const relatedCourse = await courseModel.byCatPage(course.courseCatLevel2ID, 0);
@@ -839,6 +841,7 @@ router.get("/:id", async function (req, res) {
         reviews,
         vote,
         isVote: vote != null,
+        isHaveDiscount: course.courseDiscount != 0,
         isEmptyComment: reviews === null,
         isFavorite: favorite != null,
         isRegistered: registed != null,

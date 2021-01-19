@@ -98,9 +98,10 @@
                 {{#if (isZero coursePrice)}}
                 Miễn Phí
                 {{else}}
-                  {{#if courseDiscount}} {{format coursePrice}}
+                  {{#if ../isHaveDiscount}} <del>{{format coursePrice}}</del> {{format courseNewPrice}} (-{{courseDiscount}}%)
+                 
                   {{else}} 
-                  <del>{{format coursePrice}}</del> {{format courseNewPrice}} (-{{courseDiscount}}%)
+                   {{format coursePrice}}
                   {{/if}}
                 {{/if}}
               </span>
@@ -180,12 +181,12 @@
                 width="64" height="64" style="width:6.4rem;height:6.4rem"
                 src="/public/imagesAvatar/{{userUsername}}.png"></a>
             <ul class="my-auto ml-3">
-              <li>
+              {{!-- <li>
                 <div class="udlite-block-list-item-content">232,716 Reviews</div>
               </li>
               <li>
                 <div class="udlite-block-list-item-content">678,727 Students</div>
-              </li>
+              </li> --}}
               <li>
                 <div class="udlite-block-list-item-content">Số khóa học đã đăng: {{sum}} Khóa học</div>
               </li>
@@ -308,18 +309,20 @@
                 {{#if (isZero coursePrice)}}
                   Miễn Phí
                 {{else}}
-                  {{#if courseDiscount}} {{format coursePrice}}
-                  {{else}} <del>{{format coursePrice}}</del> 
+                  {{#if ../isHaveDiscount}} <del>{{format coursePrice}}</del> 
+                  
+                  {{else}} {{format coursePrice}}
                   {{/if}}
                 {{/if}}
             </li>
-            {{#if courseDiscount}}
-            {{else}}
+            {{#if ../isHaveDiscount}}
+            
             <li class="card-text d-block"><i class="fas fa-money mr-3   " style="width: 20px"></i> Giảm còn: <span class="text-danger font-weight-bold">{{format courseNewPrice}}</span> 
             </li>
             
             <li class="card-text d-block"><i class="fas fa-percent mr-3   " style="width: 20px"></i> Khuyến mãi:
               -{{courseDiscount}}%
+              {{else}}
               {{/if}}
             </li>
             <li class="card-text d-block"><i class="fas fa-user-friends mr-3   " style="width: 20px"></i> Số lượng học

@@ -228,10 +228,11 @@
                                     {{#if (isZero course.coursePrice)}}
                                     Miễn Phí
                                     {{else}}
-                                    {{#if course.courseDiscount}} {{format course.coursePrice}}
-                                    {{else}}
-                                    <del>{{format course.coursePrice}}</del> {{format course.courseNewPrice}}
+                                    {{#if isHaveDiscount}} <del>{{format course.coursePrice}}</del> {{format
+                                    course.courseNewPrice}}
                                     (-{{course.courseDiscount}}%)
+                                    {{else}}
+                                    {{format course.coursePrice}}
                                     {{/if}}
                                     {{/if}}
                                 </span>
@@ -280,13 +281,14 @@
                                         {{#if (isZero course.coursePrice)}}
                                         Miễn Phí
                                         {{else}}
-                                        {{#if course.courseDiscount}} {{format course.coursePrice}}
-                                        {{else}} <del>{{format course.coursePrice}}</del>
+                                        {{#if isHaveDiscount}} <del>{{format course.coursePrice}}</del>
+
+                                        {{else}} {{format course.coursePrice}}
                                         {{/if}}
                                         {{/if}}
                                 </li>
-                                {{#if course.courseDiscount}}
-                                {{else}}
+                                {{#if isHaveDiscount}}
+
                                 <li class="card-text d-block"><i class="fas fa-money mr-3   " style="width: 20px"></i>
                                     Giảm còn: <span class="text-danger font-weight-bold">{{format
                                         course.courseNewPrice}}</span>
@@ -295,6 +297,7 @@
                                 <li class="card-text d-block"><i class="fas fa-percent mr-3   " style="width: 20px"></i>
                                     Khuyến mãi:
                                     -{{course.courseDiscount}}%
+                                    {{else}}
                                     {{/if}}
                                 </li>
                                 <li class="card-text d-block"><i class="fas fa-user-friends mr-3   "

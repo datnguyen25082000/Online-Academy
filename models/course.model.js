@@ -36,7 +36,8 @@ module.exports = {
     from courses
     left join (
       select avg(voteValue) as point, votes.voteCourse
-          from votes) as v on v.voteCourse = courses.courseID
+          from votes
+          group by votes.voteCourse) as v on v.voteCourse = courses.courseID
     `);
     rows.forEach(row => {
       if (row.point) {
@@ -80,12 +81,9 @@ module.exports = {
     rows[0].courseCatName = Cate.catName;
     rows[0].courseNewPrice =
       (rows[0].coursePrice * (100 - rows[0].courseDiscount)) / 100;
-    rows[0].courseUpdatedAt.setHours(rows[0].courseUpdatedAt.getHours() + 7);
-    rows[0].courseUpdatedAt = rows[0].courseUpdatedAt
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
-
+    rows[0].courseUpdatedAt.setHours(rows[0].courseUpdatedAt.getHours() + 14);
+    rows[0].courseUpdatedAt = rows[0].courseUpdatedAt.toISOString().slice(0, 19).replace("T", " ");
+    console.log(rows[0].courseUpdatedAt);
     return rows[0];
   },
 
@@ -102,7 +100,8 @@ module.exports = {
 	  group by reviews.courseID) as c on c.courseID = courses.courseID
 	  left join (
 		select avg(voteValue) as point, votes.voteCourse
-        from votes) as v on v.voteCourse = courses.courseID
+        from votes
+        group by votes.voteCourse) as v on v.voteCourse = courses.courseID
     ORDER BY v.point DESC, c.sum DESC LIMIT 4 `);
     rows.forEach(row => {
       if (row.point) {
@@ -129,7 +128,8 @@ module.exports = {
         group by registed.courseID) as r on r.courseID = courses.courseID
     left join (
       select avg(voteValue) as point, votes.voteCourse
-      from votes) as v on v.voteCourse = courses.courseID
+      from votes
+      group by votes.voteCourse) as v on v.voteCourse = courses.courseID
     ORDER BY sumRegisted DESC LIMIT ${maxCourseHomepage}`);
     rows.forEach(row => {
       if (row.point) {
@@ -152,7 +152,8 @@ module.exports = {
     group by reviews.courseID) as c on c.courseID = courses.courseID
     left join (
       select avg(voteValue) as point, votes.voteCourse
-          from votes) as v on v.voteCourse = courses.courseID
+          from votes
+          group by votes.voteCourse) as v on v.voteCourse = courses.courseID
     ORDER BY courseUpdatedAt DESC LIMIT ${maxCourseHomepage}`);
     rows.forEach(row => {
       if (row.point) {
@@ -167,7 +168,8 @@ module.exports = {
       `select * from ${TBL_COURSES}
       left join (
         select avg(voteValue) as point, votes.voteCourse
-            from votes) as v on v.voteCourse = courses.courseID
+            from votes
+            group by votes.voteCourse) as v on v.voteCourse = courses.courseID
        where courseLecturer ='${lecturerName}'`
     );
     rows.forEach(row => {

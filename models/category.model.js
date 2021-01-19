@@ -16,7 +16,6 @@ module.exports = {
 		select count(*) as RES, r.courseID
         from registed r
         group by r.courseID) as r on c.courseID = r.courseID
-    group by catID 
     ORDER BY RES DESC LIMIT 5
     `;
     const rows = await db.load(sql);
