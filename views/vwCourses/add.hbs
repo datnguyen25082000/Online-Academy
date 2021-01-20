@@ -119,6 +119,11 @@
     function myValidate() {
         var isValid = true;
 
+        var img = document.forms["frmCourse"]["avatar-2"].value;
+        if (img == ""){
+            isValid = false;
+            alert("Vui lòng đăng một ảnh của khóa học");
+        }
 
         var name = document.forms["frmCourse"]["courseName"].value;
         if (name == "") {
@@ -138,7 +143,8 @@
             document.getElementById("short-err").style.display = "block";
         }
         var full = document.forms["frmCourse"]["full_des"].value;
-        if (full == "") {
+        if ((full == "")||(full =="<p><br></p>"))
+        {
 
             isValid = false;
             document.getElementById("full_des").style.borderColor = "#cd353b";
@@ -178,7 +184,7 @@
                 <div class="col-sm-4 text-center">
                     <div class="kv-avatar bg-white ">
                         <div class="file-loading">
-                            <input id="avatar-2" name="avatar-2" type="file">
+                            <input id="avatar-2" name="avatar-2" type="file" required>
                         </div>
 
                     </div>
